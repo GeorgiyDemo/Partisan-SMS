@@ -124,6 +124,9 @@ class SettingsPresenter @Inject constructor(
         disposables += prefs.encryptionKey.asObservable()
                 .subscribe { encryptionKey -> newState { copy(encryptionKey = encryptionKey) } }
 
+        disposables += prefs.hiddenKey.asObservable()
+                .subscribe { hiddenKey -> newState { copy(hiddenKey = hiddenKey) } }
+
         val mmsSizeLabels = context.resources.getStringArray(R.array.mms_sizes)
         val mmsSizeIds = context.resources.getIntArray(R.array.mms_sizes_ids)
         disposables += prefs.mmsSize.asObservable()
@@ -201,6 +204,8 @@ class SettingsPresenter @Inject constructor(
                         R.id.encryption -> prefs.encryption.set(!prefs.encryption.get())
 
                         R.id.encryptionKey -> view.showEncryptionKeyDialog(prefs.encryptionKey.get())
+
+                        R.id.hiddenKey -> view.showHiddenKeyDialog(prefs.hiddenKey.get())
                     }
                 }
 
@@ -258,14 +263,21 @@ class SettingsPresenter @Inject constructor(
                 .autoDisposable(view.scope())
                 .subscribe()
 
+        view.mmsSizeSelected()
+                .autoDisposable(view.scope())
+                .subscribe(prefs.mmsSize::set)
+
+        // hidden
+
         view.encryptionKeySet()
                 .doOnNext(prefs.encryptionKey::set)
                 .autoDisposable(view.scope())
                 .subscribe()
 
-        view.mmsSizeSelected()
+        view.hiddenKeySet()
+                .doOnNext{key -> prefs.hiddenKey.set(key.toLowerCase(Locale.ROOT)) }
                 .autoDisposable(view.scope())
-                .subscribe(prefs.mmsSize::set)
+                .subscribe()
     }
 
 }

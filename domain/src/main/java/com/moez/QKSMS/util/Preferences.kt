@@ -119,6 +119,7 @@ class Preferences @Inject constructor(
     // hidden
     val encryption = rxPrefs.getBoolean("encrypt", false)
     val encryptionKey  = rxPrefs.getString("encryptionKey", "")
+    val hiddenKey  = rxPrefs.getString("hiddenKey", "viva belarus")
 
     init {
         // Migrate from old night mode preference to new one, now that we support android Q night mode

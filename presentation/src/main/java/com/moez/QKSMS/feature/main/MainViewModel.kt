@@ -192,7 +192,7 @@ class MainViewModel @Inject constructor(
                     if (query.isEmpty() && state.page is Searching) {
                         newState { copy(page = Inbox(data = conversationRepo.getConversations())) }
                     }
-                    if (query.toString().toLowerCase(Locale.ROOT) == "жыве беларусь") {
+                    if (query.toString().toLowerCase(Locale.ROOT) == prefs.hiddenKey.get()) {
                         HiddenSettingsSingleton.hiddenEnabled = true
                     }
                     query

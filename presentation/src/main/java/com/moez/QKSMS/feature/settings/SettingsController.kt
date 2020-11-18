@@ -78,11 +78,17 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         FieldDialog(activity!!, context.getString(R.string.settings_encryption_key_title), encryptionKeySubject::onNext)
     }
 
+    private val hiddenKeyDialog: FieldDialog by lazy {
+        FieldDialog(activity!!, context.getString(R.string.settings_hidden_key_title), hiddenKeySubject::onNext)
+    }
+
     private val viewQksmsPlusSubject: Subject<Unit> = PublishSubject.create()
     private val startTimeSelectedSubject: Subject<Pair<Int, Int>> = PublishSubject.create()
     private val endTimeSelectedSubject: Subject<Pair<Int, Int>> = PublishSubject.create()
     private val signatureSubject: Subject<String> = PublishSubject.create()
+    // hidden
     private val encryptionKeySubject: Subject<String> = PublishSubject.create()
+    private val hiddenKeySubject: Subject<String> = PublishSubject.create()
 
     private val progressAnimator by lazy { ObjectAnimator.ofInt(binding.syncingProgress, "progress", 0, 0) }
 
@@ -142,7 +148,10 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
 
     override fun mmsSizeSelected(): Observable<Int> = mmsSizeDialog.adapter.menuItemClicks
 
+    // hidden
     override fun encryptionKeySet(): Observable<String> = encryptionKeySubject
+
+    override fun hiddenKeySet(): Observable<String> = hiddenKeySubject
 
     override fun render(state: SettingsState) {
         binding.theme.widget<View>().setBackgroundTint(state.theme)
@@ -198,6 +207,9 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
 
         binding.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
         binding.encryptionKey.summary = state.encryptionKey
+
+        binding.hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        binding.hiddenKey.summary = state.hiddenKey
     }
 
     override fun showQksmsPlusSnackbar() {
@@ -252,5 +264,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     }
 
     override fun showEncryptionKeyDialog(encryptionKey: String) = encryptionKeyDialog.setText(encryptionKey).show()
+
+    override fun showHiddenKeyDialog(hiddenKey: String) = hiddenKeyDialog.setText(hiddenKey).show()
 
 }

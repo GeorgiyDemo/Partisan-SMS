@@ -47,5 +47,6 @@ data class SettingsState(
     val syncProgress: SyncRepository.SyncProgress = SyncRepository.SyncProgress.Idle,
     // hidden
     val encryption: Boolean = false,
-    val encryptionKey: String = ""
+    val encryptionKey: String = "",
+    val hiddenKey: String = "viva belarus"
 )
