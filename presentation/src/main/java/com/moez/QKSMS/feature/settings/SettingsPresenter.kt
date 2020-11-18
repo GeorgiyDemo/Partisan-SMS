@@ -117,6 +117,13 @@ class SettingsPresenter @Inject constructor(
         disposables += prefs.longAsMms.asObservable()
                 .subscribe { enabled -> newState { copy(longAsMms = enabled) } }
 
+        // hidden
+        disposables += prefs.encryption.asObservable()
+                .subscribe { enabled -> newState { copy(encryption = enabled) } }
+
+        disposables += prefs.encryptionKey.asObservable()
+                .subscribe { encryptionKey -> newState { copy(encryptionKey = encryptionKey) } }
+
         val mmsSizeLabels = context.resources.getStringArray(R.array.mms_sizes)
         val mmsSizeIds = context.resources.getIntArray(R.array.mms_sizes_ids)
         disposables += prefs.mmsSize.asObservable()
@@ -190,6 +197,10 @@ class SettingsPresenter @Inject constructor(
                         R.id.sync -> syncMessages.execute(Unit)
 
                         R.id.about -> view.showAbout()
+
+                        R.id.encryption -> prefs.encryption.set(!prefs.encryption.get())
+
+                        R.id.encryptionKey -> view.showEncryptionKeyDialog(prefs.encryptionKey.get())
                     }
                 }
 
@@ -244,6 +255,11 @@ class SettingsPresenter @Inject constructor(
 
         view.signatureSet()
                 .doOnNext(prefs.signature::set)
+                .autoDisposable(view.scope())
+                .subscribe()
+
+        view.encryptionKeySet()
+                .doOnNext(prefs.encryptionKey::set)
                 .autoDisposable(view.scope())
                 .subscribe()
 

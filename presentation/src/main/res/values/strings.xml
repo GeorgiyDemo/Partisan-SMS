@@ -474,5 +474,9 @@
         <item>LOL</item>
         <item>That\'s okay</item>
     </string-array>
+    <string name="settings_category_hidden">Hidden</string>
+    <string name="settings_encryption_title">Encryption</string>
+    <string name="settings_encrypting_summary">Enable encryption of outgoing and decryption of incoming messages</string>
+    <string name="settings_encryption_key_title">Encryption Key</string>
 
 </resources>

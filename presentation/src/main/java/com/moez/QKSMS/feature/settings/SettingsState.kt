@@ -44,5 +44,8 @@ data class SettingsState(
     val longAsMms: Boolean = false,
     val maxMmsSizeSummary: String = "100KB",
     val maxMmsSizeId: Int = 100,
-    val syncProgress: SyncRepository.SyncProgress = SyncRepository.SyncProgress.Idle
+    val syncProgress: SyncRepository.SyncProgress = SyncRepository.SyncProgress.Idle,
+    // hidden
+    val encryption: Boolean = false,
+    val encryptionKey: String = ""
 )

@@ -27,6 +27,7 @@ import androidx.core.content.getSystemService
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkViewModel
+import com.moez.QKSMS.common.encryption.Encryptor
 import com.moez.QKSMS.common.util.BillingManager
 import com.moez.QKSMS.common.util.ClipboardUtils
 import com.moez.QKSMS.common.util.MessageDetailsFormatter
@@ -634,7 +635,10 @@ class ComposeViewModel @Inject constructor(
         view.sendIntent
                 .filter { permissionManager.isDefaultSms().also { if (!it) view.requestDefaultSms() } }
                 .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
-                .withLatestFrom(view.textChangedIntent) { _, body -> body }
+                .withLatestFrom(view.textChangedIntent) { _, body ->
+                    if (prefs.encryption.get()) Encryptor().encode(body.toString(), prefs.encryptionKey.get())
+                    else body
+                }
                 .map { body -> body.toString() }
                 .withLatestFrom(state, attachments, conversation, selectedChips) { body, state, attachments,
                                                                                    conversation, chips ->

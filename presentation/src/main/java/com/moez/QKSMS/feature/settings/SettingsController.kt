@@ -31,6 +31,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.view.longClicks
 import com.moez.QKSMS.BuildConfig
 import com.moez.QKSMS.R
+import com.moez.QKSMS.common.HiddenSettingsSingleton
 import com.moez.QKSMS.common.MenuItem
 import com.moez.QKSMS.common.QkChangeHandler
 import com.moez.QKSMS.common.QkDialog
@@ -73,10 +74,15 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         FieldDialog(activity!!, context.getString(R.string.settings_signature_title), signatureSubject::onNext)
     }
 
+    private val encryptionKeyDialog: FieldDialog by lazy {
+        FieldDialog(activity!!, context.getString(R.string.settings_encryption_key_title), encryptionKeySubject::onNext)
+    }
+
     private val viewQksmsPlusSubject: Subject<Unit> = PublishSubject.create()
     private val startTimeSelectedSubject: Subject<Pair<Int, Int>> = PublishSubject.create()
     private val endTimeSelectedSubject: Subject<Pair<Int, Int>> = PublishSubject.create()
     private val signatureSubject: Subject<String> = PublishSubject.create()
+    private val encryptionKeySubject: Subject<String> = PublishSubject.create()
 
     private val progressAnimator by lazy { ObjectAnimator.ofInt(binding.syncingProgress, "progress", 0, 0) }
 
@@ -136,6 +142,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
 
     override fun mmsSizeSelected(): Observable<Int> = mmsSizeDialog.adapter.menuItemClicks
 
+    override fun encryptionKeySet(): Observable<String> = encryptionKeySubject
+
     override fun render(state: SettingsState) {
         binding.theme.widget<View>().setBackgroundTint(state.theme)
         binding.night.summary = state.nightModeSummary
@@ -182,6 +190,14 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
                 binding.syncingProgress.isIndeterminate = state.syncProgress.indeterminate
             }
         }
+
+        // hiden
+        binding.hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        binding.encryption.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        binding.encryption.widget<QkSwitch>().isChecked = state.encryption
+
+        binding.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
+        binding.encryptionKey.summary = state.encryptionKey
     }
 
     override fun showQksmsPlusSnackbar() {
@@ -234,5 +250,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
                 .pushChangeHandler(QkChangeHandler())
                 .popChangeHandler(QkChangeHandler()))
     }
+
+    override fun showEncryptionKeyDialog(encryptionKey: String) = encryptionKeyDialog.setText(encryptionKey).show()
 
 }

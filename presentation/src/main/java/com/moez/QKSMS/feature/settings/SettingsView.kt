@@ -33,6 +33,7 @@ interface SettingsView : QkViewContract<SettingsState> {
     fun sendDelaySelected(): Observable<Int>
     fun signatureSet(): Observable<String>
     fun mmsSizeSelected(): Observable<Int>
+    fun encryptionKeySet(): Observable<String>
 
     fun showQksmsPlusSnackbar()
     fun showNightModeDialog()
@@ -45,4 +46,5 @@ interface SettingsView : QkViewContract<SettingsState> {
     fun showSwipeActions()
     fun showThemePicker()
     fun showAbout()
+    fun showEncryptionKeyDialog(encryptionKey: String)
 }

@@ -36,6 +36,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.base.QkRealmAdapter
 import com.moez.QKSMS.common.base.QkViewHolder
+import com.moez.QKSMS.common.encryption.Encryptor
 import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.DateFormatter
 import com.moez.QKSMS.common.util.TextViewStyler
@@ -268,7 +269,11 @@ class MessagesAdapter @Inject constructor(
             false -> TextViewStyler.SIZE_PRIMARY
         })
 
-        holder.binding.body.text = messageText
+        holder.binding.body.text = if (prefs.encryption.get()) {
+            Encryptor().tryDecode(messageText.toString(), prefs.encryptionKey.get())
+        } else {
+            messageText
+        }
         holder.binding.body.setVisible(message.isSms() || messageText.isNotBlank())
         holder.binding.body.setBackgroundResource(getBubble(
                 emojiOnly = emojiOnly,

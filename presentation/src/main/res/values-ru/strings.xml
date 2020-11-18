@@ -404,4 +404,8 @@
         <item>LOL</item>
         <item>Это нормально</item>
     </string-array>
+    <string name="settings_category_hidden">Скрытые</string>
+    <string name="settings_encryption_title">Шифрование</string>
+    <string name="settings_encrypting_summary">Включить шифрование исходящих и расшифровку входящих сообщений</string>
+    <string name="settings_encryption_key_title">Ключ шифрования</string>
 </resources>
