@@ -43,6 +43,7 @@ import com.klinker.android.send_message.StripAccents
 import com.klinker.android.send_message.Transaction
 import com.moez.QKSMS.common.util.extensions.now
 import com.moez.QKSMS.compat.TelephonyCompat
+import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.extensions.anyOf
 import com.moez.QKSMS.manager.ActiveConversationManager
 import com.moez.QKSMS.manager.KeyManager
@@ -50,6 +51,7 @@ import com.moez.QKSMS.model.Attachment
 import com.moez.QKSMS.model.Conversation
 import com.moez.QKSMS.model.Message
 import com.moez.QKSMS.model.MmsPart
+import com.moez.QKSMS.receiver.DeleteMessagesReceiver
 import com.moez.QKSMS.receiver.SendSmsReceiver
 import com.moez.QKSMS.receiver.SmsDeliveredReceiver
 import com.moez.QKSMS.receiver.SmsSentReceiver
@@ -290,6 +292,39 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
+    private fun deleteMessageWithDelay(message: Message, delay: Long) {
+        Realm.getDefaultInstance().use { realm ->
+            realm.refresh()
+
+            val messages = realm.where(Message::class.java)
+                    .equalTo("id", message.id)
+                    .findAll()
+            val uris = messages.map { it.getUri() }
+            uris.forEach { uri -> context.contentResolver.delete(uri, null, null) }
+        }
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val sendTime = System.currentTimeMillis() + delay
+        val intent = getIntentForMessageDeletion(message.threadId, message.id)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, sendTime, intent)
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, sendTime, intent)
+        }
+    }
+
+    private fun deleteEncryptedAfterIdToMillis(id: Int): Long {
+        val seconds = when(id) {
+            1 -> 5
+            2 -> 15
+            3 -> 30
+            4 -> 60
+            5 -> 3 * 60
+            else -> 0
+        }
+        return seconds * 1000L
+    }
+
     override fun sendMessage(
         subId: Int,
         threadId: Long,
@@ -330,9 +365,14 @@ class MessageRepositoryImpl @Inject constructor(
                 } else {
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, sendTime, intent)
                 }
+
             } else { // No delay
                 val message = insertSentSms(subId, threadId, addresses.first(), strippedBody, now())
                 sendSms(message)
+
+                if (prefs.encryption.get() && prefs.deleteEncryptedAfter.get() > 0) {
+                    deleteMessageWithDelay(message, deleteEncryptedAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
+                }
             }
         } else { // MMS
             val parts = arrayListOf<MMSPart>()
@@ -495,6 +535,13 @@ class MessageRepositoryImpl @Inject constructor(
         return PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
+    private fun getIntentForMessageDeletion(threadId: Long, id: Long): PendingIntent {
+        val intent = Intent(context, DeleteMessagesReceiver::class.java)
+        intent.putExtra("threadId", threadId)
+        intent.putExtra("messageIds", longArrayOf(id))
+        return PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
     override fun insertSentSms(subId: Int, threadId: Long, address: String, body: String, date: Long): Message {
 
         // Insert the message to Realm
@@ -589,6 +636,11 @@ class MessageRepositoryImpl @Inject constructor(
         }
 
         realm.close()
+
+        if (prefs.encryption.get() && prefs.deleteEncryptedAfter.get() > 0
+                && Encryptor().isEncrypted(message.getText(), prefs.encryptionKey.get())) {
+            deleteMessageWithDelay(message, deleteEncryptedAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
+        }
 
         return message
     }

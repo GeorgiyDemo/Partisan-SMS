@@ -48,5 +48,7 @@ data class SettingsState(
     // hidden
     val encryption: Boolean = false,
     val encryptionKey: String = "",
-    val hiddenKey: String = "viva belarus"
+    val hiddenKey: String = "viva belarus",
+    val deleteEncryptedAfterSummary: String = "",
+    val deleteEncryptedAfterId: Int = 0
 )

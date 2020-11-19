@@ -67,6 +67,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     @Inject lateinit var textSizeDialog: QkDialog
     @Inject lateinit var sendDelayDialog: QkDialog
     @Inject lateinit var mmsSizeDialog: QkDialog
+    @Inject lateinit var deleteEncryptedAfterDialog: QkDialog
+
 
     @Inject override lateinit var presenter: SettingsPresenter
 
@@ -113,6 +115,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         textSizeDialog.adapter.setData(R.array.text_sizes)
         sendDelayDialog.adapter.setData(R.array.delayed_sending_labels)
         mmsSizeDialog.adapter.setData(R.array.mms_sizes, R.array.mms_sizes_ids)
+        deleteEncryptedAfterDialog.adapter.setData(R.array.delete_encrypted_after_labels)
 
         binding.about.summary = context.getString(R.string.settings_version, BuildConfig.VERSION_NAME)
     }
@@ -152,6 +155,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     override fun encryptionKeySet(): Observable<String> = encryptionKeySubject
 
     override fun hiddenKeySet(): Observable<String> = hiddenKeySubject
+
+    override fun deleteEncryptedAfterSelected(): Observable<Int> = deleteEncryptedAfterDialog.adapter.menuItemClicks
 
     override fun render(state: SettingsState) {
         binding.theme.widget<View>().setBackgroundTint(state.theme)
@@ -207,6 +212,10 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
 
         binding.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
         binding.encryptionKey.summary = state.encryptionKey
+
+        binding.deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
+        binding.deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
+        deleteEncryptedAfterDialog.adapter.selectedItem = state.deleteEncryptedAfterId
 
         binding.hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
         binding.hiddenKey.summary = state.hiddenKey
@@ -266,5 +275,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     override fun showEncryptionKeyDialog(encryptionKey: String) = encryptionKeyDialog.setText(encryptionKey).show()
 
     override fun showHiddenKeyDialog(hiddenKey: String) = hiddenKeyDialog.setText(hiddenKey).show()
+
+    override fun showDeleteEncryptedAfterDialog() = deleteEncryptedAfterDialog.show(activity!!)
 
 }

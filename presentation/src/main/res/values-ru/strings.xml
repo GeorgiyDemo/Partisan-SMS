@@ -409,4 +409,14 @@
     <string name="settings_encrypting_summary">Включить шифрование исходящих и расшифровку входящих сообщений</string>
     <string name="settings_encryption_key_title">Ключ шифрования</string>
     <string name="settings_hidden_key_title">Ключ скрытых настроек</string>
+    <string name="settings_delete_encrypted_after_title">Удалять зашифрованные сообщения через</string>
+    <string name="settings_delete_encrypted_after_default">Не удалять</string>
+    <string-array name="delete_encrypted_after_labels">
+        <item>Не удалять</item>
+        <item>5 секунд</item>
+        <item>15 секунд</item>
+        <item>30 секунд</item>
+        <item>1 минута</item>
+        <item>3 минуты</item>
+    </string-array>
 </resources>

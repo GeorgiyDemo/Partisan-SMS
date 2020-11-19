@@ -27,7 +27,7 @@ import androidx.core.content.getSystemService
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkViewModel
-import com.moez.QKSMS.common.encryption.Encryptor
+import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.common.util.BillingManager
 import com.moez.QKSMS.common.util.ClipboardUtils
 import com.moez.QKSMS.common.util.MessageDetailsFormatter
@@ -707,6 +707,7 @@ class ComposeViewModel @Inject constructor(
                     if (state.editingMode) {
                         newState { copy(editingMode = false, hasError = !sendAsGroup) }
                     }
+                    //deleteMessages.execute(DeleteMessages.Params(longArrayOf() , conversation.id))
                 }
                 .autoDisposable(view.scope())
                 .subscribe()

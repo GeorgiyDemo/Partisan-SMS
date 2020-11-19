@@ -127,6 +127,11 @@ class SettingsPresenter @Inject constructor(
         disposables += prefs.hiddenKey.asObservable()
                 .subscribe { hiddenKey -> newState { copy(hiddenKey = hiddenKey) } }
 
+        val deleteEncryptedAfterDialogLabels = context.resources.getStringArray(R.array.delete_encrypted_after_labels)
+        disposables += prefs.deleteEncryptedAfter.asObservable()
+                .subscribe { id -> newState { copy(deleteEncryptedAfterSummary =
+                deleteEncryptedAfterDialogLabels[id], deleteEncryptedAfterId = id) } }
+
         val mmsSizeLabels = context.resources.getStringArray(R.array.mms_sizes)
         val mmsSizeIds = context.resources.getIntArray(R.array.mms_sizes_ids)
         disposables += prefs.mmsSize.asObservable()
@@ -206,6 +211,8 @@ class SettingsPresenter @Inject constructor(
                         R.id.encryptionKey -> view.showEncryptionKeyDialog(prefs.encryptionKey.get())
 
                         R.id.hiddenKey -> view.showHiddenKeyDialog(prefs.hiddenKey.get())
+
+                        R.id.deleteEncryptedAfter -> view.showDeleteEncryptedAfterDialog()
                     }
                 }
 
@@ -276,6 +283,13 @@ class SettingsPresenter @Inject constructor(
 
         view.hiddenKeySet()
                 .doOnNext{key -> prefs.hiddenKey.set(key.toLowerCase(Locale.ROOT)) }
+                .autoDisposable(view.scope())
+                .subscribe()
+
+        view.deleteEncryptedAfterSelected()
+                .doOnNext { duration ->
+                    prefs.deleteEncryptedAfter.set(duration)
+                }
                 .autoDisposable(view.scope())
                 .subscribe()
     }

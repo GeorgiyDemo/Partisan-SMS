@@ -1,4 +1,4 @@
-package com.moez.QKSMS.common.encryption
+package com.moez.QKSMS.encryption
 
 enum class EncryptionMode {
     CYRILLIC,

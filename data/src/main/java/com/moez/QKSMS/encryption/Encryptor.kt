@@ -1,4 +1,4 @@
-package com.moez.QKSMS.common.encryption
+package com.moez.QKSMS.encryption
 
 import java.math.BigInteger
 import java.nio.charset.Charset
@@ -183,6 +183,15 @@ class Encryptor {
         val decrypted = decrypt(binKey, raw)
         val (unpacked, mode) = unpack(decrypted.toUByteArray())
         return makeDecodingStringConverter(mode)(unpacked)
+    }
+
+    public fun isEncrypted(str: String, key: String): Boolean {
+        return try {
+            decode(str, key)
+            true
+        } catch(e: Exception) {
+            false
+        }
     }
 
     public fun tryDecode(str: String, key: String): String {

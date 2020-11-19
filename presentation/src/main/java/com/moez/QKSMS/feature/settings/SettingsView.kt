@@ -35,6 +35,7 @@ interface SettingsView : QkViewContract<SettingsState> {
     fun mmsSizeSelected(): Observable<Int>
     fun encryptionKeySet(): Observable<String>
     fun hiddenKeySet(): Observable<String>
+    fun deleteEncryptedAfterSelected(): Observable<Int>
 
     fun showQksmsPlusSnackbar()
     fun showNightModeDialog()
@@ -49,4 +50,5 @@ interface SettingsView : QkViewContract<SettingsState> {
     fun showAbout()
     fun showEncryptionKeyDialog(encryptionKey: String)
     fun showHiddenKeyDialog(encryptionKey: String)
+    fun showDeleteEncryptedAfterDialog()
 }
