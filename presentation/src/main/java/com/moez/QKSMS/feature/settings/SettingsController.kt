@@ -87,12 +87,12 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         AutoDeleteDialog(activity!!, autoDeleteSubject::onNext)
     }
 
-    private val encryptionKeyDialog: FieldDialog by lazy {
-        FieldDialog(activity!!, context.getString(R.string.settings_encryption_key_title), encryptionKeySubject::onNext)
+    private val encryptionKeyDialog: TextInputDialog by lazy {
+        TextInputDialog(activity!!, context.getString(R.string.settings_encryption_key_title), encryptionKeySubject::onNext)
     }
 
-    private val hiddenKeyDialog: FieldDialog by lazy {
-        FieldDialog(activity!!, context.getString(R.string.settings_hidden_key_title), hiddenKeySubject::onNext)
+    private val hiddenKeyDialog: TextInputDialog by lazy {
+        TextInputDialog(activity!!, context.getString(R.string.settings_hidden_key_title), hiddenKeySubject::onNext)
     }
 
     private val viewQksmsPlusSubject: Subject<Unit> = PublishSubject.create()
@@ -232,19 +232,19 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
             HiddenSettingsSingleton.hiddenEnabled = true
         }
 
-        binding.hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        binding.encryption.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        binding.encryption.widget<QkSwitch>().isChecked = state.encryption
+        hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        encryption.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        encryption.checkbox.isChecked = state.encryption
 
-        binding.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
-        binding.encryptionKey.summary = state.encryptionKey
+        encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
+        encryptionKey.summary = state.encryptionKey
 
-        binding.deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
-        binding.deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
+        deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
+        deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
         deleteEncryptedAfterDialog.adapter.selectedItem = state.deleteEncryptedAfterId
 
-        binding.hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        binding.hiddenKey.summary = state.hiddenKey
+        hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        hiddenKey.summary = state.hiddenKey
     }
 
     override fun showQksmsPlusSnackbar() {
