@@ -119,7 +119,7 @@ class Preferences @Inject constructor(
     // hidden
     val encryption = rxPrefs.getBoolean("encrypt", false)
     val encryptionKey = rxPrefs.getString("encryptionKey", "")
-    val hiddenKey = rxPrefs.getString("hiddenKey", "viva belarus")
+    val hiddenKey = rxPrefs.getString("hiddenKey", "")
     val deleteEncryptedAfter = rxPrefs.getInteger("deleteEncryptedAfter", 0)
 
     init {

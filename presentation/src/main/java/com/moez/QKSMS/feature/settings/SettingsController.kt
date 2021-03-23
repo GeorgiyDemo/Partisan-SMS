@@ -68,6 +68,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     @Inject lateinit var sendDelayDialog: QkDialog
     @Inject lateinit var mmsSizeDialog: QkDialog
     @Inject lateinit var deleteEncryptedAfterDialog: QkDialog
+    @Inject lateinit var prefs: Preferences
 
 
     @Inject override lateinit var presenter: SettingsPresenter
@@ -206,6 +207,10 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         }
 
         // hiden
+        if (!HiddenSettingsSingleton.hiddenEnabled && (!prefs.hiddenKey.isSet() || prefs.hiddenKey.get().isEmpty())) {
+            HiddenSettingsSingleton.hiddenEnabled = true
+        }
+
         binding.hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
         binding.encryption.isVisible = HiddenSettingsSingleton.hiddenEnabled
         binding.encryption.widget<QkSwitch>().isChecked = state.encryption
