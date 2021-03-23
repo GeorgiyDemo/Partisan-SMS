@@ -97,7 +97,8 @@ class ConversationInfoPresenter @Inject constructor(
                             name = conversation.name,
                             recipients = conversation.recipients,
                             archived = conversation.archived,
-                            blocked = conversation.blocked)
+                            blocked = conversation.blocked,
+                            encryptionKey = conversation.encryptionKey)
                     data += parts.map(::ConversationInfoMedia)
 
                     newState { copy(data = data) }
@@ -188,6 +189,12 @@ class ConversationInfoPresenter @Inject constructor(
         view.mediaClicks()
                 .autoDisposable(view.scope())
                 .subscribe(navigator::showMedia)
+
+        // Hidden
+        view.encryptionKeyClicks()
+                .withLatestFrom(conversation) { _, conversation -> conversation }
+                .autoDisposable(view.scope())
+                .subscribe { conversation -> view.showEncryptionKeyDialog(conversation) }
     }
 
 }

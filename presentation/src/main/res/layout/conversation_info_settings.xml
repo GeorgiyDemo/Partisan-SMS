@@ -71,4 +71,18 @@
         android:layout_marginTop="8dp"
         android:background="?android:attr/divider" />
 
+    <com.moez.QKSMS.common.widget.PreferenceView
+        android:id="@+id/encryptionKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@android:drawable/ic_secure"
+        app:title="@string/settings_encryption_key_title" />
+
+    <View
+        android:id="@+id/hiddenSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/divider" />
+
 </LinearLayout>

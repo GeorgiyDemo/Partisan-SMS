@@ -91,4 +91,6 @@ interface ConversationRepository {
 
     fun deleteConversations(vararg threadIds: Long)
 
+    fun setEncryptionKey(threadId: Long, encryptionKey: String)
+
 }

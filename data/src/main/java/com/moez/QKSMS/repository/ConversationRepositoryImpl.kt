@@ -420,6 +420,18 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun setEncryptionKey(threadId: Long, encryptionKey: String) {
+        Realm.getDefaultInstance().use { realm ->
+            val conversation = realm.where(Conversation::class.java)
+                    .equalTo("id", threadId)
+                    .findFirst()
+
+            realm.executeTransaction {
+                conversation?.encryptionKey = encryptionKey
+            }
+        }
+    }
+
     /**
      * Returns a [Conversation] from the system SMS ContentProvider, based on the [threadId]
      *

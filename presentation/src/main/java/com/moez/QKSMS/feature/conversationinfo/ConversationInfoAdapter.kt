@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.jakewharton.rxbinding2.view.clicks
 import com.moez.QKSMS.R
+import com.moez.QKSMS.common.HiddenSettingsSingleton
 import com.moez.QKSMS.common.base.QkAdapter
 import com.moez.QKSMS.common.base.QkViewHolder
 import com.moez.QKSMS.common.util.Colors
@@ -35,6 +36,7 @@ class ConversationInfoAdapter @Inject constructor(
     val blockClicks: Subject<Unit> = PublishSubject.create()
     val deleteClicks: Subject<Unit> = PublishSubject.create()
     val mediaClicks: Subject<Long> = PublishSubject.create()
+    val encryptionKeyClicks: Subject<Unit> = PublishSubject.create()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QkViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -63,6 +65,7 @@ class ConversationInfoAdapter @Inject constructor(
                 archive.clicks().subscribe(archiveClicks)
                 block.clicks().subscribe(blockClicks)
                 delete.clicks().subscribe(deleteClicks)
+                encryptionKey.clicks().subscribe(encryptionKeyClicks)
             }
 
             2 -> QkViewHolder(inflater.inflate(R.layout.conversation_media_list_item, parent, false)).apply {
@@ -109,6 +112,10 @@ class ConversationInfoAdapter @Inject constructor(
                     true -> R.string.info_unblock
                     false -> R.string.info_block
                 })
+
+                holder.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
+                holder.encryptionKey.summary = item.encryptionKey
+                holder.hiddenSeparator.isVisible = HiddenSettingsSingleton.hiddenEnabled
             }
 
             is ConversationInfoMedia -> {

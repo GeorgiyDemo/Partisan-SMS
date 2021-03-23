@@ -19,6 +19,7 @@
 package com.moez.QKSMS.feature.conversationinfo
 
 import com.moez.QKSMS.common.base.QkViewContract
+import com.moez.QKSMS.model.Conversation
 import io.reactivex.Observable
 
 interface ConversationInfoView : QkViewContract<ConversationInfoState> {
@@ -34,11 +35,13 @@ interface ConversationInfoView : QkViewContract<ConversationInfoState> {
     fun deleteClicks(): Observable<*>
     fun confirmDelete(): Observable<*>
     fun mediaClicks(): Observable<Long>
+    fun encryptionKeyClicks(): Observable<*>
 
     fun showNameDialog(name: String)
     fun showThemePicker(recipientId: Long)
     fun showBlockingDialog(conversations: List<Long>, block: Boolean)
     fun requestDefaultSms()
     fun showDeleteDialog()
+    fun showEncryptionKeyDialog(conversation: Conversation)
 
 }

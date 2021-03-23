@@ -228,10 +228,6 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         }
 
         // hiden
-        if (!HiddenSettingsSingleton.hiddenEnabled && (!prefs.hiddenKey.isSet() || prefs.hiddenKey.get().isEmpty())) {
-            HiddenSettingsSingleton.hiddenEnabled = true
-        }
-
         hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
         encryption.isVisible = HiddenSettingsSingleton.hiddenEnabled
         encryption.checkbox.isChecked = state.encryption

@@ -637,8 +637,14 @@ class ComposeViewModel @Inject constructor(
         view.sendIntent
                 .filter { permissionManager.isDefaultSms().also { if (!it) view.requestDefaultSms() } }
                 .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
-                .withLatestFrom(view.textChangedIntent) { _, body ->
-                    if (prefs.encryption.get()) Encryptor().encode(body.toString(), prefs.encryptionKey.get())
+                .withLatestFrom(view.textChangedIntent, conversation) { _, body, conversation ->
+                    if (prefs.encryption.get()) {
+                        if (!conversation.encryptionKey.isEmpty()) {
+                            Encryptor().encode(body.toString(), conversation.encryptionKey)
+                        } else {
+                            Encryptor().encode(body.toString(), prefs.encryptionKey.get())
+                        }
+                    }
                     else body
                 }
                 .map { body -> body.toString() }

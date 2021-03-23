@@ -277,7 +277,11 @@ class MessagesAdapter @Inject constructor(
         })
 
         holder.body.text = if (prefs.encryption.get()) {
-            Encryptor().tryDecode(messageText.toString(), prefs.encryptionKey.get())
+            if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
+                Encryptor().tryDecode(messageText.toString(), conversation!!.encryptionKey)
+            } else {
+                Encryptor().tryDecode(messageText.toString(), prefs.encryptionKey.get())
+            }
         } else {
             messageText
         }
