@@ -276,12 +276,11 @@ class MessagesAdapter @Inject constructor(
             false -> TextViewStyler.SIZE_PRIMARY
         })
 
-        holder.body.text = if (prefs.encryption.get()) {
-            if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
-                Encryptor().tryDecode(messageText.toString(), conversation!!.encryptionKey)
-            } else {
-                Encryptor().tryDecode(messageText.toString(), prefs.encryptionKey.get())
-            }
+        holder.body.text =
+        if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
+            Encryptor().tryDecode(messageText.toString(), conversation!!.encryptionKey)
+        } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
+            Encryptor().tryDecode(messageText.toString(), prefs.globalEncryptionKey.get())
         } else {
             messageText
         }

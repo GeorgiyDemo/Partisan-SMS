@@ -421,9 +421,7 @@
         <item>Это нормально</item>
     </string-array>
     <string name="settings_category_hidden">Скрытые</string>
-    <string name="settings_encryption_title">Шифрование</string>
-    <string name="settings_encrypting_summary">Включить шифрование исходящих и расшифровку входящих сообщений</string>
-    <string name="settings_encryption_key_title">Ключ шифрования</string>
+    <string name="conversation_encryption_key_title">Ключ шифрования</string>
     <string name="settings_hidden_key_title">Ключ скрытых настроек</string>
     <string name="settings_delete_encrypted_after_title">Удалять зашифрованные сообщения через</string>
     <string name="settings_delete_encrypted_after_default">Не удалять</string>
@@ -435,4 +433,5 @@
         <item>1 минута</item>
         <item>3 минуты</item>
     </string-array>
+    <string name="settings_global_encryption_key_title">Глобальный ключ шифрования</string>
 </resources>

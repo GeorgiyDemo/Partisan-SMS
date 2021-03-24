@@ -373,7 +373,7 @@ class MessageRepositoryImpl @Inject constructor(
                 val message = insertSentSms(subId, threadId, addresses.first(), strippedBody, now())
                 sendSms(message)
 
-                if (prefs.encryption.get() && prefs.deleteEncryptedAfter.get() > 0) {
+                if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0) {
                     deleteMessageWithDelay(message, deleteEncryptedAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
                 }
             }
@@ -640,8 +640,8 @@ class MessageRepositoryImpl @Inject constructor(
 
         realm.close()
 
-        if (prefs.encryption.get() && prefs.deleteEncryptedAfter.get() > 0
-                && Encryptor().isEncrypted(message.getText(), prefs.encryptionKey.get())) {
+        if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0
+                && Encryptor().isEncrypted(message.getText(), prefs.globalEncryptionKey.get())) {
             deleteMessageWithDelay(message, deleteEncryptedAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
         }
 

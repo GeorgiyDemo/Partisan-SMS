@@ -21,7 +21,6 @@ package com.moez.QKSMS.feature.conversationinfo
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bluelinelabs.conductor.RouterTransaction
@@ -31,7 +30,6 @@ import com.moez.QKSMS.common.QkChangeHandler
 import com.moez.QKSMS.common.base.QkController
 import com.moez.QKSMS.common.util.extensions.scrapViews
 import com.moez.QKSMS.common.widget.TextInputDialog
-import com.moez.QKSMS.extensions.anyOf
 import com.moez.QKSMS.feature.blocking.BlockingDialog
 import com.moez.QKSMS.feature.conversationinfo.injection.ConversationInfoModule
 import com.moez.QKSMS.feature.themepicker.ThemePickerController
@@ -43,7 +41,6 @@ import com.uber.autodispose.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
-import io.realm.Realm
 import kotlinx.android.synthetic.main.conversation_info_controller.*
 import kotlinx.android.synthetic.main.text_input_dialog.view.*
 import javax.inject.Inject
@@ -148,7 +145,7 @@ class ConversationInfoController(
         val layout = LayoutInflater.from(context).inflate(R.layout.text_input_dialog, null)
         layout.field.setText(conversation.encryptionKey)
         AlertDialog.Builder(activity!!)
-                .setTitle(context.getString(R.string.settings_encryption_key_title))
+                .setTitle(context.getString(R.string.conversation_encryption_key_title))
                 .setView(layout)
                 .setPositiveButton(R.string.button_save) { _, _ -> setEncryptionKey.execute(SetEncryptionKey.Params(conversation.id, layout.field.text.toString())) }
                 .setNegativeButton(R.string.button_delete) { _, _ -> setEncryptionKey.execute(SetEncryptionKey.Params(conversation.id, "")) }

@@ -118,8 +118,7 @@ class Preferences @Inject constructor(
     val mmsSize = rxPrefs.getInteger("mmsSize", 300)
     val logging = rxPrefs.getBoolean("logging", false)
     // hidden
-    val encryption = rxPrefs.getBoolean("encrypt", false)
-    val encryptionKey = rxPrefs.getString("encryptionKey", "")
+    val globalEncryptionKey = rxPrefs.getString("globalEncryptionKey", "")
     val hiddenKey = rxPrefs.getString("hiddenKey", "")
     val deleteEncryptedAfter = rxPrefs.getInteger("deleteEncryptedAfter", 0)
 

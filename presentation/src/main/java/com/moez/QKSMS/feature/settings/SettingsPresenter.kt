@@ -128,11 +128,8 @@ class SettingsPresenter @Inject constructor(
                 .subscribe { enabled -> newState { copy(longAsMms = enabled) } }
 
         // hidden
-        disposables += prefs.encryption.asObservable()
-                .subscribe { enabled -> newState { copy(encryption = enabled) } }
-
-        disposables += prefs.encryptionKey.asObservable()
-                .subscribe { encryptionKey -> newState { copy(encryptionKey = encryptionKey) } }
+        disposables += prefs.globalEncryptionKey.asObservable()
+                .subscribe { globalEncryptionKey -> newState { copy(globalEncryptionKey = globalEncryptionKey) } }
 
         disposables += prefs.hiddenKey.asObservable()
                 .subscribe { hiddenKey -> newState { copy(hiddenKey = hiddenKey) } }
@@ -218,9 +215,7 @@ class SettingsPresenter @Inject constructor(
 
                         R.id.about -> view.showAbout()
 
-                        R.id.encryption -> prefs.encryption.set(!prefs.encryption.get())
-
-                        R.id.encryptionKey -> view.showEncryptionKeyDialog(prefs.encryptionKey.get())
+                        R.id.globalEncryptionKey -> view.showGlobalEncryptionKeyDialog(prefs.globalEncryptionKey.get())
 
                         R.id.hiddenKey -> view.showHiddenKeyDialog(prefs.hiddenKey.get())
 
@@ -316,7 +311,7 @@ class SettingsPresenter @Inject constructor(
         // hidden
 
         view.encryptionKeySet()
-                .doOnNext(prefs.encryptionKey::set)
+                .doOnNext(prefs.globalEncryptionKey::set)
                 .autoDisposable(view.scope())
                 .subscribe()
 

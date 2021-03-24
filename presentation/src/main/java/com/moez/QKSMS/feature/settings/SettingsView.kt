@@ -51,7 +51,7 @@ interface SettingsView : QkViewContract<SettingsState> {
     fun showSwipeActions()
     fun showThemePicker()
     fun showAbout()
-    fun showEncryptionKeyDialog(encryptionKey: String)
-    fun showHiddenKeyDialog(encryptionKey: String)
+    fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String)
+    fun showHiddenKeyDialog(hiddenKey: String)
     fun showDeleteEncryptedAfterDialog()
 }

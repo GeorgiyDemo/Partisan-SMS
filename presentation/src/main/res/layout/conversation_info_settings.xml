@@ -72,11 +72,11 @@
         android:background="?android:attr/divider" />
 
     <com.moez.QKSMS.common.widget.PreferenceView
-        android:id="@+id/encryptionKey"
+        android:id="@+id/globalEncryptionKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@android:drawable/ic_secure"
-        app:title="@string/settings_encryption_key_title" />
+        app:title="@string/conversation_encryption_key_title" />
 
     <View
         android:id="@+id/hiddenSeparator"

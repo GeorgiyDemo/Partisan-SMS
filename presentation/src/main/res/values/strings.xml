@@ -487,11 +487,9 @@
         <item>That\'s okay</item>
     </string-array>
     <string name="settings_category_hidden">Hidden</string>
-    <string name="settings_encryption_title">Encryption</string>
-    <string name="settings_encrypting_summary">Enable encryption of outgoing and decryption of incoming messages</string>
-    <string name="settings_encryption_key_title">Encryption Key</string>
+    <string name="conversation_encryption_key_title">Encryption Key</string>
     <string name="settings_hidden_key_title">Hidden Settings Key</string>
-    <string name="settings_delete_encrypted_after_title">Encrypted Message Expiration</string>
+    <string name="settings_delete_encrypted_after_title">Delete Encrypted Messages After</string>
     <string name="settings_delete_encrypted_after_default">Do not delete</string>
     <string-array name="delete_encrypted_after_labels">
         <item>Do not delete</item>
@@ -501,4 +499,5 @@
         <item>1 minute</item>
         <item>3 minute</item>
     </string-array>
+    <string name="settings_global_encryption_key_title">Global Encryption Key</string>
 </resources>

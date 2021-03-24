@@ -65,7 +65,7 @@ class ConversationInfoAdapter @Inject constructor(
                 archive.clicks().subscribe(archiveClicks)
                 block.clicks().subscribe(blockClicks)
                 delete.clicks().subscribe(deleteClicks)
-                encryptionKey.clicks().subscribe(encryptionKeyClicks)
+                globalEncryptionKey.clicks().subscribe(encryptionKeyClicks)
             }
 
             2 -> QkViewHolder(inflater.inflate(R.layout.conversation_media_list_item, parent, false)).apply {
@@ -113,8 +113,8 @@ class ConversationInfoAdapter @Inject constructor(
                     false -> R.string.info_block
                 })
 
-                holder.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
-                holder.encryptionKey.summary = item.encryptionKey
+                holder.globalEncryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
+                holder.globalEncryptionKey.summary = item.encryptionKey
                 holder.hiddenSeparator.isVisible = HiddenSettingsSingleton.hiddenEnabled
             }
 

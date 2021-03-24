@@ -42,7 +42,6 @@ import com.moez.QKSMS.common.util.extensions.animateLayoutChanges
 import com.moez.QKSMS.common.util.extensions.setBackgroundTint
 import com.moez.QKSMS.common.util.extensions.setVisible
 import com.moez.QKSMS.common.widget.PreferenceView
-import com.moez.QKSMS.common.widget.QkSwitch
 import com.moez.QKSMS.common.widget.TextInputDialog
 import com.moez.QKSMS.feature.settings.about.AboutController
 import com.moez.QKSMS.feature.settings.autodelete.AutoDeleteDialog
@@ -88,7 +87,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     }
 
     private val encryptionKeyDialog: TextInputDialog by lazy {
-        TextInputDialog(activity!!, context.getString(R.string.settings_encryption_key_title), encryptionKeySubject::onNext)
+        TextInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), encryptionKeySubject::onNext)
     }
 
     private val hiddenKeyDialog: TextInputDialog by lazy {
@@ -229,13 +228,11 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
 
         // hiden
         hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        encryption.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        encryption.checkbox.isChecked = state.encryption
 
-        encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
-        encryptionKey.summary = state.encryptionKey
+        globalEncryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        globalEncryptionKey.summary = state.globalEncryptionKey
 
-        deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.encryption
+        deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.globalEncryptionKey.isNotEmpty()
         deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
         deleteEncryptedAfterDialog.adapter.selectedItem = state.deleteEncryptedAfterId
 
@@ -308,7 +305,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
                 .popChangeHandler(QkChangeHandler()))
     }
 
-    override fun showEncryptionKeyDialog(encryptionKey: String) = encryptionKeyDialog.setText(encryptionKey).show()
+    override fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String) = encryptionKeyDialog.setText(globalEncryptionKey).show()
 
     override fun showHiddenKeyDialog(hiddenKey: String) = hiddenKeyDialog.setText(hiddenKey).show()
 

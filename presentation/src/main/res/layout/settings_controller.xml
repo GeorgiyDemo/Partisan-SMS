@@ -243,20 +243,11 @@
             android:text="@string/settings_category_hidden" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
-            android:id="@+id/encryption"
+            android:id="@+id/globalEncryptionKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:icon="@android:drawable/ic_secure"
-            app:summary="@string/settings_encrypting_summary"
-            app:title="@string/settings_encryption_title"
-            app:widget="@layout/settings_switch_widget" />
-
-        <com.moez.QKSMS.common.widget.PreferenceView
-            android:id="@+id/encryptionKey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_short_text_black_24dp"
-            app:title="@string/settings_encryption_key_title" />
+            app:title="@string/settings_global_encryption_key_title" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
             android:id="@+id/deleteEncryptedAfter"
