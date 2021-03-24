@@ -93,4 +93,10 @@ interface ConversationRepository {
 
     fun setEncryptionKey(threadId: Long, encryptionKey: String)
 
+    fun setDeleteEncryptedAfter(threadId: Long, durationId: Int)
+
+    fun setDeleteReceivedAfter(threadId: Long, durationId: Int)
+
+    fun setDeleteSentAfter(threadId: Long, durationId: Int)
+
 }

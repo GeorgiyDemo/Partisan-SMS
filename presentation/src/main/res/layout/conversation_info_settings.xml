@@ -21,7 +21,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <View
         android:layout_width="match_parent"
@@ -72,11 +73,35 @@
         android:background="?android:attr/divider" />
 
     <com.moez.QKSMS.common.widget.PreferenceView
-        android:id="@+id/globalEncryptionKey"
+        android:id="@+id/encryptionKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:icon="@android:drawable/ic_secure"
         app:title="@string/conversation_encryption_key_title" />
+
+    <com.moez.QKSMS.common.widget.PreferenceView
+        android:id="@+id/conversationDeleteEncryptedAfter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_av_timer_black_24dp"
+        app:title="@string/settings_delete_encrypted_after_title"
+        tools:summary="@string/settings_delete_encrypted_after_default" />
+
+    <com.moez.QKSMS.common.widget.PreferenceView
+        android:id="@+id/conversationDeleteReceivedAfter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_av_timer_black_24dp"
+        app:title="@string/conversation_delete_received_after"
+        tools:summary="@string/settings_delete_encrypted_after_default" />
+
+    <com.moez.QKSMS.common.widget.PreferenceView
+        android:id="@+id/conversationDeleteSentAfter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_av_timer_black_24dp"
+        app:title="@string/conversation_delete_sent_after"
+        tools:summary="@string/settings_delete_encrypted_after_default" />
 
     <View
         android:id="@+id/hiddenSeparator"

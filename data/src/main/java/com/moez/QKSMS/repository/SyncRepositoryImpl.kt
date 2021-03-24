@@ -173,6 +173,9 @@ class SyncRepositoryImpl @Inject constructor(
                             blockingClient = persistedConversation.blockingClient
                             blockReason = persistedConversation.blockReason
                             encryptionKey = persistedConversation.encryptionKey
+                            deleteEncryptedAfter = persistedConversation.deleteEncryptedAfter
+                            deleteReceivedAfter = persistedConversation.deleteReceivedAfter
+                            deleteSentAfter = persistedConversation.deleteSentAfter
                         }
                         lastMessage = realm.where(Message::class.java)
                                 .sort("date", Sort.DESCENDING)

@@ -82,7 +82,8 @@ class MessageRepositoryImpl @Inject constructor(
     private val messageIds: KeyManager,
     private val phoneNumberUtils: PhoneNumberUtils,
     private val prefs: Preferences,
-    private val syncRepository: SyncRepository
+    private val syncRepository: SyncRepository,
+    private val conversationRepository: ConversationRepository
 ) : MessageRepository {
 
     override fun getMessages(threadId: Long, query: String): RealmResults<Message> {
@@ -316,7 +317,7 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun deleteEncryptedAfterIdToMillis(id: Int): Long {
+    private fun deleteMessageAfterIdToMillis(id: Int): Long {
         val seconds = when(id) {
             1 -> 5
             2 -> 15
@@ -377,8 +378,16 @@ class MessageRepositoryImpl @Inject constructor(
                 val message = insertSentSms(subId, threadId, addresses.first(), strippedBody, now())
                 sendSms(message)
 
-                if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0) {
-                    deleteMessageWithDelay(message, deleteEncryptedAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
+                val conversation = conversationRepository.getConversation(threadId)
+
+                if (conversation != null && (conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 || conversation.deleteSentAfter > 0)) {
+                    var minTimeoutId = conversation.deleteSentAfter
+                    if (minTimeoutId == 0 || conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 && conversation.deleteEncryptedAfter < minTimeoutId) {
+                        minTimeoutId = conversation.deleteEncryptedAfter
+                    }
+                    deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(minTimeoutId))
+                } else if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0) {
+                    deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
                 }
             }
         } else { // MMS
@@ -644,9 +653,19 @@ class MessageRepositoryImpl @Inject constructor(
 
         realm.close()
 
-        if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0
+        val conversation = conversationRepository.getConversation(message.threadId)
+        val isEncryptedByConversationKey = conversation != null && conversation.encryptionKey.isNotEmpty()
+                && Encryptor().isEncrypted(message.getText(), conversation.encryptionKey)
+
+        if (conversation != null && (isEncryptedByConversationKey && conversation.deleteEncryptedAfter > 0 || conversation.deleteReceivedAfter > 0)) {
+            var minTimeoutId = conversation.deleteReceivedAfter
+            if (minTimeoutId == 0 || isEncryptedByConversationKey && conversation.deleteEncryptedAfter > 0 && conversation.deleteEncryptedAfter < minTimeoutId) {
+                minTimeoutId = conversation.deleteEncryptedAfter
+            }
+            deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(minTimeoutId))
+        } else if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0
                 && Encryptor().isEncrypted(message.getText(), prefs.globalEncryptionKey.get())) {
-            deleteMessageWithDelay(message, deleteEncryptedAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
+            deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
         }
 
         return message

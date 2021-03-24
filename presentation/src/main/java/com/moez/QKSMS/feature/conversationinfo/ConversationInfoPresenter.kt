@@ -29,9 +29,7 @@ import com.moez.QKSMS.extensions.asObservable
 import com.moez.QKSMS.extensions.mapNotNull
 import com.moez.QKSMS.feature.conversationinfo.ConversationInfoItem.ConversationInfoMedia
 import com.moez.QKSMS.feature.conversationinfo.ConversationInfoItem.ConversationInfoRecipient
-import com.moez.QKSMS.interactor.DeleteConversations
-import com.moez.QKSMS.interactor.MarkArchived
-import com.moez.QKSMS.interactor.MarkUnarchived
+import com.moez.QKSMS.interactor.*
 import com.moez.QKSMS.manager.PermissionManager
 import com.moez.QKSMS.model.Conversation
 import com.moez.QKSMS.repository.ConversationRepository
@@ -44,6 +42,7 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.withLatestFrom
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
+import kotlinx.android.synthetic.main.text_input_dialog.view.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -56,7 +55,8 @@ class ConversationInfoPresenter @Inject constructor(
     private val markArchived: MarkArchived,
     private val markUnarchived: MarkUnarchived,
     private val navigator: Navigator,
-    private val permissionManager: PermissionManager
+    private val permissionManager: PermissionManager,
+    private val setDeleteMessagesAfter: SetDeleteMessagesAfter
 ) : QkPresenter<ConversationInfoView, ConversationInfoState>(
         ConversationInfoState(threadId = threadId)
 ) {
@@ -98,7 +98,10 @@ class ConversationInfoPresenter @Inject constructor(
                             recipients = conversation.recipients,
                             archived = conversation.archived,
                             blocked = conversation.blocked,
-                            encryptionKey = conversation.encryptionKey)
+                            encryptionKey = conversation.encryptionKey,
+                            deleteEncryptedAfter = conversation.deleteEncryptedAfter,
+                            deleteReceivedAfter = conversation.deleteReceivedAfter,
+                            deleteSentAfter = conversation.deleteSentAfter)
                     data += parts.map(::ConversationInfoMedia)
 
                     newState { copy(data = data) }
@@ -195,6 +198,45 @@ class ConversationInfoPresenter @Inject constructor(
                 .withLatestFrom(conversation) { _, conversation -> conversation }
                 .autoDisposable(view.scope())
                 .subscribe { conversation -> view.showEncryptionKeyDialog(conversation) }
+
+        view.deleteEncryptedAfterClicks()
+                .withLatestFrom(conversation) { _, conversation -> conversation }
+                .autoDisposable(view.scope())
+                .subscribe { conversation -> view.showDeleteEncryptedAfterDialog(conversation) }
+
+        view.deleteReceivedAfterClicks()
+                .withLatestFrom(conversation) { _, conversation -> conversation }
+                .autoDisposable(view.scope())
+                .subscribe { conversation -> view.showDeleteReceivedAfterDialog(conversation) }
+
+        view.deleteSentAfterClicks()
+                .withLatestFrom(conversation) { _, conversation -> conversation }
+                .autoDisposable(view.scope())
+                .subscribe { conversation -> view.showDeleteSentAfterDialog(conversation) }
+
+        view.deleteEncryptedAfterSelected()
+                .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
+                .doOnNext { (conversation, duration) ->
+                    setDeleteMessagesAfter.execute(SetDeleteMessagesAfter.Params(conversation.id, SetDeleteMessagesAfter.MessageType.ENCRYPTED, duration))
+                }
+                .autoDisposable(view.scope())
+                .subscribe()
+
+        view.deleteReceivedAfterSelected()
+                .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
+                .doOnNext { (conversation, duration) ->
+                    setDeleteMessagesAfter.execute(SetDeleteMessagesAfter.Params(conversation.id, SetDeleteMessagesAfter.MessageType.RECEIVED, duration))
+                }
+                .autoDisposable(view.scope())
+                .subscribe()
+
+        view.deleteSentAfterSelected()
+                .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
+                .doOnNext { (conversation, duration) ->
+                    setDeleteMessagesAfter.execute(SetDeleteMessagesAfter.Params(conversation.id, SetDeleteMessagesAfter.MessageType.SENT, duration))
+                }
+                .autoDisposable(view.scope())
+                .subscribe()
     }
 
 }

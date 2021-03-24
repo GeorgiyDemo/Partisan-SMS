@@ -432,6 +432,42 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun setDeleteEncryptedAfter(threadId: Long, durationId: Int) {
+        Realm.getDefaultInstance().use { realm ->
+            val conversation = realm.where(Conversation::class.java)
+                    .equalTo("id", threadId)
+                    .findFirst()
+
+            realm.executeTransaction {
+                conversation?.deleteEncryptedAfter = durationId
+            }
+        }
+    }
+
+    override fun setDeleteReceivedAfter(threadId: Long, durationId: Int) {
+        Realm.getDefaultInstance().use { realm ->
+            val conversation = realm.where(Conversation::class.java)
+                    .equalTo("id", threadId)
+                    .findFirst()
+
+            realm.executeTransaction {
+                conversation?.deleteReceivedAfter = durationId
+            }
+        }
+    }
+
+    override fun setDeleteSentAfter(threadId: Long, durationId: Int) {
+        Realm.getDefaultInstance().use { realm ->
+            val conversation = realm.where(Conversation::class.java)
+                    .equalTo("id", threadId)
+                    .findFirst()
+
+            realm.executeTransaction {
+                conversation?.deleteSentAfter = durationId
+            }
+        }
+    }
+
     /**
      * Returns a [Conversation] from the system SMS ContentProvider, based on the [threadId]
      *

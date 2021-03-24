@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import com.jakewharton.rxbinding2.view.clicks
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.HiddenSettingsSingleton
+import com.moez.QKSMS.common.QkDialog
 import com.moez.QKSMS.common.base.QkAdapter
 import com.moez.QKSMS.common.base.QkViewHolder
 import com.moez.QKSMS.common.util.Colors
@@ -18,13 +19,19 @@ import com.moez.QKSMS.util.GlideApp
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.conversation_info_settings.*
+import kotlinx.android.synthetic.main.conversation_info_settings.notifications
 import kotlinx.android.synthetic.main.conversation_media_list_item.*
 import kotlinx.android.synthetic.main.conversation_recipient_list_item.*
+import kotlinx.android.synthetic.main.conversation_recipient_list_item.theme
+import kotlinx.android.synthetic.main.settings_controller.*
 import javax.inject.Inject
 
 class ConversationInfoAdapter @Inject constructor(
     private val context: Context,
-    private val colors: Colors
+    private val colors: Colors,
+    val deleteEncryptedAfterDialog: QkDialog,
+    val deleteReceivedAfterDialog: QkDialog,
+    val deleteSentAfterDialog: QkDialog
 ) : QkAdapter<ConversationInfoItem>() {
 
     val recipientClicks: Subject<Long> = PublishSubject.create()
@@ -37,6 +44,10 @@ class ConversationInfoAdapter @Inject constructor(
     val deleteClicks: Subject<Unit> = PublishSubject.create()
     val mediaClicks: Subject<Long> = PublishSubject.create()
     val encryptionKeyClicks: Subject<Unit> = PublishSubject.create()
+    val deleteEncryptedAfterClicks: Subject<Unit> = PublishSubject.create()
+    val deleteReceivedAfterClicks: Subject<Unit> = PublishSubject.create()
+    val deleteSentAfterClicks: Subject<Unit> = PublishSubject.create()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QkViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -65,7 +76,10 @@ class ConversationInfoAdapter @Inject constructor(
                 archive.clicks().subscribe(archiveClicks)
                 block.clicks().subscribe(blockClicks)
                 delete.clicks().subscribe(deleteClicks)
-                globalEncryptionKey.clicks().subscribe(encryptionKeyClicks)
+                encryptionKey.clicks().subscribe(encryptionKeyClicks)
+                conversationDeleteEncryptedAfter.clicks().subscribe(deleteEncryptedAfterClicks)
+                conversationDeleteReceivedAfter.clicks().subscribe(deleteReceivedAfterClicks)
+                conversationDeleteSentAfter.clicks().subscribe(deleteSentAfterClicks)
             }
 
             2 -> QkViewHolder(inflater.inflate(R.layout.conversation_media_list_item, parent, false)).apply {
@@ -113,8 +127,25 @@ class ConversationInfoAdapter @Inject constructor(
                     false -> R.string.info_block
                 })
 
-                holder.globalEncryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
-                holder.globalEncryptionKey.summary = item.encryptionKey
+                // hidden
+
+                holder.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
+                holder.encryptionKey.summary = item.encryptionKey
+
+                val labels = context.resources.getStringArray(R.array.delete_message_after_labels)
+
+                holder.conversationDeleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && item.encryptionKey.isNotEmpty()
+                holder.conversationDeleteEncryptedAfter.summary = labels[item.deleteEncryptedAfter]
+                deleteEncryptedAfterDialog.adapter.selectedItem = item.deleteEncryptedAfter
+
+                holder.conversationDeleteReceivedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled
+                holder.conversationDeleteReceivedAfter.summary = labels[item.deleteReceivedAfter]
+                deleteReceivedAfterDialog.adapter.selectedItem = item.deleteReceivedAfter
+
+                holder.conversationDeleteSentAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled
+                holder.conversationDeleteSentAfter.summary = labels[item.deleteSentAfter]
+                deleteSentAfterDialog.adapter.selectedItem = item.deleteSentAfter
+
                 holder.hiddenSeparator.isVisible = HiddenSettingsSingleton.hiddenEnabled
             }
 

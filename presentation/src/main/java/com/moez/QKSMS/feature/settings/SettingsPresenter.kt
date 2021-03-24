@@ -310,7 +310,7 @@ class SettingsPresenter @Inject constructor(
 
         // hidden
 
-        view.encryptionKeySet()
+        view.globalEncryptionKeySet()
                 .doOnNext(prefs.globalEncryptionKey::set)
                 .autoDisposable(view.scope())
                 .subscribe()

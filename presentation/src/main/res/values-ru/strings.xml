@@ -438,4 +438,6 @@
         <item>1 час</item>
     </string-array>
     <string name="settings_global_encryption_key_title">Глобальный ключ шифрования</string>
+    <string name="conversation_delete_received_after">Удалять полученные сообщения через</string>
+    <string name="conversation_delete_sent_after">Удалять отправленные сообщения через</string>
 </resources>

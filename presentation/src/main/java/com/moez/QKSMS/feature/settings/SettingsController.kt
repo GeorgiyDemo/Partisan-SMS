@@ -87,7 +87,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     }
 
     private val encryptionKeyDialog: TextInputDialog by lazy {
-        TextInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), encryptionKeySubject::onNext)
+        TextInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), globalEncryptionKeySubject::onNext)
     }
 
     private val hiddenKeyDialog: TextInputDialog by lazy {
@@ -100,7 +100,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     private val signatureSubject: Subject<String> = PublishSubject.create()
     private val autoDeleteSubject: Subject<Int> = PublishSubject.create()
     // hidden
-    private val encryptionKeySubject: Subject<String> = PublishSubject.create()
+    private val globalEncryptionKeySubject: Subject<String> = PublishSubject.create()
     private val hiddenKeySubject: Subject<String> = PublishSubject.create()
 
     private val progressAnimator by lazy { ObjectAnimator.ofInt(syncingProgress, "progress", 0, 0) }
@@ -166,7 +166,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     override fun mmsSizeSelected(): Observable<Int> = mmsSizeDialog.adapter.menuItemClicks
 
     // hidden
-    override fun encryptionKeySet(): Observable<String> = encryptionKeySubject
+    override fun globalEncryptionKeySet(): Observable<String> = globalEncryptionKeySubject
 
     override fun hiddenKeySet(): Observable<String> = hiddenKeySubject
 

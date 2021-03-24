@@ -38,7 +38,11 @@ open class Conversation(
     var name: String = "", // For group chats, the user is allowed to set a custom title for the conversation
 
     // hidden
-    var encryptionKey: String = ""
+    var encryptionKey: String = "",
+    var deleteEncryptedAfter: Int = 0,
+    var deleteReceivedAfter: Int = 0,
+    var deleteSentAfter: Int = 0
+
 
 ) : RealmObject() {
 

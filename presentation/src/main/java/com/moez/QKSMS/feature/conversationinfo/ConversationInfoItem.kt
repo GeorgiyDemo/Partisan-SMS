@@ -14,7 +14,10 @@ sealed class ConversationInfoItem {
         val archived: Boolean,
         val blocked: Boolean,
         // hidden
-        val encryptionKey: String
+        val encryptionKey: String,
+        val deleteEncryptedAfter: Int,
+        var deleteReceivedAfter: Int,
+        var deleteSentAfter: Int
     ) : ConversationInfoItem()
 
     data class ConversationInfoMedia(val value: MmsPart) : ConversationInfoItem()
