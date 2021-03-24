@@ -377,18 +377,6 @@ class MessageRepositoryImpl @Inject constructor(
             } else { // No delay
                 val message = insertSentSms(subId, threadId, addresses.first(), strippedBody, now())
                 sendSms(message)
-
-                val conversation = conversationRepository.getConversation(threadId)
-
-                if (conversation != null && (conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 || conversation.deleteSentAfter > 0)) {
-                    var minTimeoutId = conversation.deleteSentAfter
-                    if (minTimeoutId == 0 || conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 && conversation.deleteEncryptedAfter < minTimeoutId) {
-                        minTimeoutId = conversation.deleteEncryptedAfter
-                    }
-                    deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(minTimeoutId))
-                } else if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0) {
-                    deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
-                }
             }
         } else { // MMS
             val parts = arrayListOf<MMSPart>()
@@ -610,6 +598,18 @@ class MessageRepositoryImpl @Inject constructor(
         // to the native ContentProvider
         if (threadId == 0L) {
             uri?.let(syncRepository::syncMessage)
+        }
+
+        val conversation = conversationRepository.getConversation(threadId)
+
+        if (conversation != null && (conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 || conversation.deleteSentAfter > 0)) {
+            var minTimeoutId = conversation.deleteSentAfter
+            if (minTimeoutId == 0 || conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 && conversation.deleteEncryptedAfter < minTimeoutId) {
+                minTimeoutId = conversation.deleteEncryptedAfter
+            }
+            deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(minTimeoutId))
+        } else if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0) {
+            deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
         }
 
         return message
