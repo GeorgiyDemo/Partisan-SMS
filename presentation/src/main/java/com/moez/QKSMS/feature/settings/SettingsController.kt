@@ -127,7 +127,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         textSizeDialog.adapter.setData(R.array.text_sizes)
         sendDelayDialog.adapter.setData(R.array.delayed_sending_labels)
         mmsSizeDialog.adapter.setData(R.array.mms_sizes, R.array.mms_sizes_ids)
-        deleteEncryptedAfterDialog.adapter.setData(R.array.delete_encrypted_after_labels)
+        deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
 
         about.summary = context.getString(R.string.settings_version, BuildConfig.VERSION_NAME)
     }

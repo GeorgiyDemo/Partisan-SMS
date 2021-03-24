@@ -323,6 +323,10 @@ class MessageRepositoryImpl @Inject constructor(
             3 -> 30
             4 -> 60
             5 -> 3 * 60
+            6 -> 5 * 60
+            7 -> 15 * 60
+            8 -> 30 * 60
+            9 -> 60 * 60
             else -> 0
         }
         return seconds * 1000L

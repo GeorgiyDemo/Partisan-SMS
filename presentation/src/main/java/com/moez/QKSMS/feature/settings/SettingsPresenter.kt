@@ -134,7 +134,7 @@ class SettingsPresenter @Inject constructor(
         disposables += prefs.hiddenKey.asObservable()
                 .subscribe { hiddenKey -> newState { copy(hiddenKey = hiddenKey) } }
 
-        val deleteEncryptedAfterDialogLabels = context.resources.getStringArray(R.array.delete_encrypted_after_labels)
+        val deleteEncryptedAfterDialogLabels = context.resources.getStringArray(R.array.delete_message_after_labels)
         disposables += prefs.deleteEncryptedAfter.asObservable()
                 .subscribe { id -> newState { copy(deleteEncryptedAfterSummary =
                 deleteEncryptedAfterDialogLabels[id], deleteEncryptedAfterId = id) } }

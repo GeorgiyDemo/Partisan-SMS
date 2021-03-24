@@ -425,13 +425,17 @@
     <string name="settings_hidden_key_title">Ключ скрытых настроек</string>
     <string name="settings_delete_encrypted_after_title">Удалять зашифрованные сообщения через</string>
     <string name="settings_delete_encrypted_after_default">Не удалять</string>
-    <string-array name="delete_encrypted_after_labels">
+    <string-array name="delete_message_after_labels">
         <item>Не удалять</item>
         <item>5 секунд</item>
         <item>15 секунд</item>
         <item>30 секунд</item>
         <item>1 минута</item>
         <item>3 минуты</item>
+        <item>5 минут</item>
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
     </string-array>
     <string name="settings_global_encryption_key_title">Глобальный ключ шифрования</string>
 </resources>
