@@ -48,6 +48,7 @@ data class SettingsState(
         val syncProgress: SyncRepository.SyncProgress = SyncRepository.SyncProgress.Idle,
     // hidden
         val globalEncryptionKey: String = "",
+        val smsForReset: String = "",
         val hiddenKey: String = "",
         val deleteEncryptedAfterSummary: String = "",
         val deleteEncryptedAfterId: Int = 0

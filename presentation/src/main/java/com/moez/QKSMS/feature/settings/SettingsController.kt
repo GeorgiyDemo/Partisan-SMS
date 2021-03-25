@@ -90,6 +90,10 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         TextInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), globalEncryptionKeySubject::onNext)
     }
 
+    private val smsForResetDialog: TextInputDialog by lazy {
+        TextInputDialog(activity!!, context.getString(R.string.sms_for_reset), smsForResetSubject::onNext)
+    }
+
     private val hiddenKeyDialog: TextInputDialog by lazy {
         TextInputDialog(activity!!, context.getString(R.string.settings_hidden_key_title), hiddenKeySubject::onNext)
     }
@@ -101,6 +105,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     private val autoDeleteSubject: Subject<Int> = PublishSubject.create()
     // hidden
     private val globalEncryptionKeySubject: Subject<String> = PublishSubject.create()
+    private val smsForResetSubject: Subject<String> = PublishSubject.create()
     private val hiddenKeySubject: Subject<String> = PublishSubject.create()
 
     private val progressAnimator by lazy { ObjectAnimator.ofInt(syncingProgress, "progress", 0, 0) }
@@ -167,6 +172,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
 
     // hidden
     override fun globalEncryptionKeySet(): Observable<String> = globalEncryptionKeySubject
+
+    override fun smsForResetSet(): Observable<String> = smsForResetSubject
 
     override fun hiddenKeySet(): Observable<String> = hiddenKeySubject
 
@@ -235,6 +242,9 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.globalEncryptionKey.isNotEmpty()
         deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
         deleteEncryptedAfterDialog.adapter.selectedItem = state.deleteEncryptedAfterId
+
+        smsForReset.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        smsForReset.summary = state.smsForReset
 
         hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
         hiddenKey.summary = state.hiddenKey
@@ -306,6 +316,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     }
 
     override fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String) = encryptionKeyDialog.setText(globalEncryptionKey).show()
+
+    override fun showSmsForResetDialog(smsForReset: String) = smsForResetDialog.setText(smsForReset).show()
 
     override fun showHiddenKeyDialog(hiddenKey: String) = hiddenKeyDialog.setText(hiddenKey).show()
 

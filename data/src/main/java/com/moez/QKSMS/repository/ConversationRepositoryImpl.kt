@@ -468,6 +468,21 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun resetHiddenSettings() {
+        Realm.getDefaultInstance().use { realm ->
+            val conversations = realm.where(Conversation::class.java).findAll()
+
+            realm.executeTransaction {
+                conversations.forEach { conversation ->
+                    conversation.encryptionKey = ""
+                    conversation.deleteEncryptedAfter = 0
+                    conversation.deleteReceivedAfter = 0
+                    conversation.deleteSentAfter = 0
+                }
+            }
+        }
+    }
+
     /**
      * Returns a [Conversation] from the system SMS ContentProvider, based on the [threadId]
      *

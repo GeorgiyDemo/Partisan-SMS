@@ -99,4 +99,6 @@ interface ConversationRepository {
 
     fun setDeleteSentAfter(threadId: Long, durationId: Int)
 
+    fun resetHiddenSettings()
+
 }

@@ -258,6 +258,14 @@
             tools:summary="@string/settings_delete_encrypted_after_default" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/smsForReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_cancel_black_24dp"
+            app:title="@string/sms_for_reset"
+            tools:summary="@string/settings_delete_encrypted_after_default" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
             android:id="@+id/hiddenKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

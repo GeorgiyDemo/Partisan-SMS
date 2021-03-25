@@ -506,4 +506,5 @@
     <string name="settings_global_encryption_key_title">Global Encryption Key</string>
     <string name="conversation_delete_received_after">Delete Received Messages After</string>
     <string name="conversation_delete_sent_after">Delete Sent Messages After</string>
+    <string name="sms_for_reset">SMS for Reset</string>
 </resources>

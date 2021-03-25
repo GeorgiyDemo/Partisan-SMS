@@ -45,6 +45,7 @@ import com.moez.QKSMS.common.util.extensions.now
 import com.moez.QKSMS.compat.TelephonyCompat
 import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.extensions.anyOf
+import com.moez.QKSMS.interactor.ResetSettings
 import com.moez.QKSMS.manager.ActiveConversationManager
 import com.moez.QKSMS.manager.KeyManager
 import com.moez.QKSMS.model.Attachment
@@ -83,7 +84,8 @@ class MessageRepositoryImpl @Inject constructor(
     private val phoneNumberUtils: PhoneNumberUtils,
     private val prefs: Preferences,
     private val syncRepository: SyncRepository,
-    private val conversationRepository: ConversationRepository
+    private val conversationRepository: ConversationRepository,
+    private val resetSettings: ResetSettings
 ) : MessageRepository {
 
     override fun getMessages(threadId: Long, query: String): RealmResults<Message> {
@@ -657,7 +659,10 @@ class MessageRepositoryImpl @Inject constructor(
         val isEncryptedByConversationKey = conversation != null && conversation.encryptionKey.isNotEmpty()
                 && Encryptor().isEncrypted(message.getText(), conversation.encryptionKey)
 
-        if (conversation != null && (isEncryptedByConversationKey && conversation.deleteEncryptedAfter > 0 || conversation.deleteReceivedAfter > 0)) {
+        if (prefs.smsForReset.get().isNotEmpty() && prefs.smsForReset.get() == message.getText()) {
+            resetSettings.execute(ResetSettings.Params())
+            deleteMessageWithDelay(message, 0)
+        } else if (conversation != null && (isEncryptedByConversationKey && conversation.deleteEncryptedAfter > 0 || conversation.deleteReceivedAfter > 0)) {
             var minTimeoutId = conversation.deleteReceivedAfter
             if (minTimeoutId == 0 || isEncryptedByConversationKey && conversation.deleteEncryptedAfter > 0 && conversation.deleteEncryptedAfter < minTimeoutId) {
                 minTimeoutId = conversation.deleteEncryptedAfter

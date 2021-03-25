@@ -131,6 +131,9 @@ class SettingsPresenter @Inject constructor(
         disposables += prefs.globalEncryptionKey.asObservable()
                 .subscribe { globalEncryptionKey -> newState { copy(globalEncryptionKey = globalEncryptionKey) } }
 
+        disposables += prefs.smsForReset.asObservable()
+                .subscribe { smsForReset -> newState { copy(smsForReset = smsForReset) } }
+
         disposables += prefs.hiddenKey.asObservable()
                 .subscribe { hiddenKey -> newState { copy(hiddenKey = hiddenKey) } }
 
@@ -216,6 +219,8 @@ class SettingsPresenter @Inject constructor(
                         R.id.about -> view.showAbout()
 
                         R.id.globalEncryptionKey -> view.showGlobalEncryptionKeyDialog(prefs.globalEncryptionKey.get())
+
+                        R.id.smsForReset -> view.showSmsForResetDialog(prefs.smsForReset.get())
 
                         R.id.hiddenKey -> view.showHiddenKeyDialog(prefs.hiddenKey.get())
 
@@ -312,6 +317,11 @@ class SettingsPresenter @Inject constructor(
 
         view.globalEncryptionKeySet()
                 .doOnNext(prefs.globalEncryptionKey::set)
+                .autoDisposable(view.scope())
+                .subscribe()
+
+        view.smsForResetSet()
+                .doOnNext(prefs.smsForReset::set)
                 .autoDisposable(view.scope())
                 .subscribe()
 
