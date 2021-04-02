@@ -35,8 +35,10 @@ import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.DateFormatter
 import com.moez.QKSMS.common.util.extensions.resolveThemeColor
 import com.moez.QKSMS.common.util.extensions.setTint
+import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.model.Conversation
 import com.moez.QKSMS.util.PhoneNumberUtils
+import com.moez.QKSMS.util.Preferences
 import kotlinx.android.synthetic.main.conversation_list_item.*
 import kotlinx.android.synthetic.main.conversation_list_item.view.*
 import javax.inject.Inject
@@ -46,7 +48,8 @@ class ConversationsAdapter @Inject constructor(
     private val context: Context,
     private val dateFormatter: DateFormatter,
     private val navigator: Navigator,
-    private val phoneNumberUtils: PhoneNumberUtils
+    private val phoneNumberUtils: PhoneNumberUtils,
+    private val prefs: Preferences
 ) : QkRealmAdapter<Conversation>() {
 
     init {
@@ -114,10 +117,19 @@ class ConversationsAdapter @Inject constructor(
             }
         }
         holder.date.text = conversation.date.takeIf { it > 0 }?.let(dateFormatter::getConversationTimestamp)
+
+        val snippetText = if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
+            Encryptor().tryDecode(conversation.snippet.toString(), conversation!!.encryptionKey)
+        } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
+            Encryptor().tryDecode(conversation.snippet.toString(), prefs.globalEncryptionKey.get())
+        } else {
+            conversation.snippet
+        }
+
         holder.snippet.text = when {
             conversation.draft.isNotEmpty() -> conversation.draft
-            conversation.me -> context.getString(R.string.main_sender_you, conversation.snippet)
-            else -> conversation.snippet
+            conversation.me -> context.getString(R.string.main_sender_you, snippetText)
+            else -> snippetText
         }
         holder.pinned.isVisible = conversation.pinned
         holder.unread.setTint(theme)
