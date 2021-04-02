@@ -45,6 +45,7 @@ import com.moez.QKSMS.model.SyncLog
 import com.moez.QKSMS.util.PhoneNumberUtils
 import com.moez.QKSMS.util.tryOrNull
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import io.realm.Realm
 import io.realm.RealmList
@@ -70,6 +71,8 @@ class SyncRepositoryImpl @Inject constructor(
 
     override val syncProgress: Subject<SyncRepository.SyncProgress> =
             BehaviorSubject.createDefault(SyncRepository.SyncProgress.Idle)
+
+    override val syncedMessage: Subject<Message> = PublishSubject.create()
 
     override fun syncMessages() {
 
@@ -263,6 +266,7 @@ class SyncRepositoryImpl @Inject constructor(
 
                 conversationRepo.getOrCreateConversation(threadId)
                 insertOrUpdate()
+                syncedMessage.onNext(this)
             }
         }
     }
