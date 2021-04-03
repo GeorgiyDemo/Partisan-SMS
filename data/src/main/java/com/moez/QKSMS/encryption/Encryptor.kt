@@ -2,19 +2,13 @@ package com.moez.QKSMS.encryption
 
 import java.math.BigInteger
 import java.nio.charset.Charset
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.collections.ArrayList
-import kotlin.collections.fold
-import kotlin.collections.map
-import kotlin.collections.plus
-import kotlin.collections.reverse
-import kotlin.collections.slice
-import kotlin.collections.toByteArray
-import kotlin.collections.toCharArray
-import kotlin.collections.toList
 
 
 const val SIGNATURE: Byte = 0b11000011.toByte()
@@ -75,8 +69,7 @@ class Encryptor {
 
     private fun pack(data: UByteArray, mode: EncryptionMode): UByteArray {
         val merged = if (mode == EncryptionMode.CYRILLIC || mode == EncryptionMode.LATIN) {
-            data.toList().fold(BigInteger.ZERO) {
-                acc: BigInteger, x: UByte -> (acc shl 7) + x.toInt().toBigInteger()
+            data.toList().fold(BigInteger.ZERO) { acc: BigInteger, x: UByte -> (acc shl 7) + x.toInt().toBigInteger()
             }.toByteArray().toUByteArray()
         } else {
             data
@@ -107,9 +100,9 @@ class Encryptor {
     private fun makeEncodingStringConverter(mode: EncryptionMode): (String) -> UByteArray {
         return when (mode) {
             EncryptionMode.LATIN ->
-                { s: String -> s.map{ c -> encodeShortCp1251Latin(c).toUByte() }.toUByteArray() }
+                { s: String -> s.map { c -> encodeShortCp1251Latin(c).toUByte() }.toUByteArray() }
             EncryptionMode.CYRILLIC ->
-                { s: String -> s.map{ c -> encodeShortCp1251Cyrillic(c).toUByte() }.toUByteArray() }
+                { s: String -> s.map { c -> encodeShortCp1251Cyrillic(c).toUByte() }.toUByteArray() }
             EncryptionMode.CP1251 ->
                 { s: String -> s.toByteArray(Charset.forName("Windows-1251")).toUByteArray() }
             else ->
@@ -120,10 +113,10 @@ class Encryptor {
     private fun makeDecodingStringConverter(mode: EncryptionMode): (UByteArray) -> String {
         return when (mode) {
             EncryptionMode.LATIN -> { data: UByteArray ->
-                String(data.map{ x -> decodeShortCp1251Latin(x) }.toCharArray())
+                String(data.map { x -> decodeShortCp1251Latin(x) }.toCharArray())
             }
             EncryptionMode.CYRILLIC -> { data: UByteArray ->
-                String(data.map{ x -> decodeShortCp1251Cyrillic(x) }.toCharArray())
+                String(data.map { x -> decodeShortCp1251Cyrillic(x) }.toCharArray())
             }
             EncryptionMode.CP1251 -> { data: UByteArray ->
                 String(data.toByteArray(), Charset.forName("Windows-1251"))
@@ -145,11 +138,10 @@ class Encryptor {
         return EncryptionMode.UTF_8
     }
 
-    private fun fixKey(key: String): String {
-        return if (key.length < 16)
-            key + " ".repeat(16 - key.length)
-        else
-            key.slice(0..15)
+    private fun md5(s: String): ByteArray {
+        val digest: MessageDigest = MessageDigest.getInstance("MD5")
+        digest.update(s.toByteArray())
+        return digest.digest()
     }
 
     private fun encrypt(key: ByteArray, plainData: ByteArray): ByteArray? {
@@ -172,14 +164,14 @@ class Encryptor {
         val realMode = mode ?: autoSelectMode(str)
         val encoded = makeEncodingStringConverter(realMode)(str)
         val binData = pack(encoded, realMode)
-        val binKey = fixKey(key).toByteArray()
+        val binKey = md5(key)
         val encryptedData = encrypt(binKey, binData.toByteArray())
         return Base64.getEncoder().encodeToString(encryptedData)
     }
 
     public fun decode(str: String, key: String): String {
         val raw = Base64.getDecoder().decode(str)
-        val binKey = fixKey(key).toByteArray()
+        val binKey = md5(key)
         val decrypted = decrypt(binKey, raw)
         val (unpacked, mode) = unpack(decrypted.toUByteArray())
         return makeDecodingStringConverter(mode)(unpacked)
@@ -189,7 +181,7 @@ class Encryptor {
         return try {
             decode(str, key)
             true
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             false
         }
     }
@@ -197,7 +189,7 @@ class Encryptor {
     public fun tryDecode(str: String, key: String): String {
         return try {
             decode(str, key)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             str
         }
     }
