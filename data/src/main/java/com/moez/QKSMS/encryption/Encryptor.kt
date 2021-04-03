@@ -3,7 +3,6 @@ package com.moez.QKSMS.encryption
 import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -12,7 +11,6 @@ import kotlin.collections.ArrayList
 
 
 const val SIGNATURE: Byte = 0b11000011.toByte()
-const val IV = "jive2020jive2020"
 
 @ExperimentalUnsignedTypes
 class Encryptor {
@@ -144,20 +142,25 @@ class Encryptor {
         return digest.digest()
     }
 
-    private fun encrypt(key: ByteArray, plainData: ByteArray): ByteArray? {
+    private fun encrypt(key: ByteArray, plainData: ByteArray): ByteArray {
         val keySpec = SecretKeySpec(key, "AES")
-        val ivSpec = IvParameterSpec(IV.toByteArray())
+        val ivSrc = ByteArray(4)
+        Random().nextBytes(ivSrc)
+        val iv = ivSrc + ivSrc + ivSrc + ivSrc
+        val ivSpec = IvParameterSpec(iv)
         val cipher: Cipher = Cipher.getInstance("AES/CFB/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
-        return cipher.doFinal(plainData)
+        return cipher.doFinal(plainData) + ivSrc
     }
 
     private fun decrypt(key: ByteArray, encryptedData: ByteArray): ByteArray {
         val keySpec = SecretKeySpec(key, "AES")
-        val ivSpec = IvParameterSpec(IV.toByteArray())
+        val payload = encryptedData.slice(0 until encryptedData.size - 4).toByteArray()
+        val ivSrc = encryptedData.slice(encryptedData.size - 4 until encryptedData.size).toByteArray()
+        val ivSpec = IvParameterSpec(ivSrc + ivSrc + ivSrc + ivSrc)
         val cipher: Cipher = Cipher.getInstance("AES/CFB/NoPadding")
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
-        return cipher.doFinal(encryptedData)
+        return cipher.doFinal(payload)
     }
 
     public fun encode(str: String, key: String, mode: EncryptionMode? = null): String {
