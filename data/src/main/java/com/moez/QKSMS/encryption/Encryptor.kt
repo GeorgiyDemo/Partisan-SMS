@@ -4,13 +4,11 @@ import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.util.*
+import java.util.zip.CRC32
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.collections.ArrayList
-
-
-const val SIGNATURE: Byte = 0b11000011.toByte()
 
 @ExperimentalUnsignedTypes
 class Encryptor {
@@ -72,14 +70,14 @@ class Encryptor {
         } else {
             data
         }
-        return merged + ubyteArrayOf(mode.ordinal.toUByte(), SIGNATURE.toUByte())
+        return merged + ubyteArrayOf(mode.ordinal.toUByte(), md5(merged.toByteArray())[0].toUByte())
     }
 
     private fun unpack(data: UByteArray): Pair<UByteArray, EncryptionMode> {
-        if (data.last() != SIGNATURE.toUByte())
+        val payload = data.slice(0 until data.size - 2)
+        if (data.last() != md5(payload.toUByteArray().toByteArray())[0].toUByte())
             throw InvalidSignatureException()
         val mode = EncryptionMode.values()[data[data.size - 2].toInt()]
-        val payload = data.slice(0..data.size - 3)
         return if (mode == EncryptionMode.CYRILLIC || mode == EncryptionMode.LATIN) {
             var number = BigInteger(payload.toUByteArray().toByteArray())
             val result = ArrayList<Byte>()
@@ -136,9 +134,9 @@ class Encryptor {
         return EncryptionMode.UTF_8
     }
 
-    private fun md5(s: String): ByteArray {
+    private fun md5(arr: ByteArray): ByteArray {
         val digest: MessageDigest = MessageDigest.getInstance("MD5")
-        digest.update(s.toByteArray())
+        digest.update(arr)
         return digest.digest()
     }
 
@@ -167,14 +165,14 @@ class Encryptor {
         val realMode = mode ?: autoSelectMode(str)
         val encoded = makeEncodingStringConverter(realMode)(str)
         val binData = pack(encoded, realMode)
-        val binKey = md5(key)
+        val binKey = md5(key.toByteArray())
         val encryptedData = encrypt(binKey, binData.toByteArray())
         return Base64.getEncoder().encodeToString(encryptedData)
     }
 
     public fun decode(str: String, key: String): String {
         val raw = Base64.getDecoder().decode(str)
-        val binKey = md5(key)
+        val binKey = md5(key.toByteArray())
         val decrypted = decrypt(binKey, raw)
         val (unpacked, mode) = unpack(decrypted.toUByteArray())
         return makeDecodingStringConverter(mode)(unpacked)
