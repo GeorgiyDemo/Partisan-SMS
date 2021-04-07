@@ -149,8 +149,10 @@ class MessagesAdapter @Inject constructor(
             view = layoutInflater.inflate(R.layout.message_list_item_out, parent, false)
             view.findViewById<ImageView>(R.id.cancelIcon).setTint(theme.theme)
             view.findViewById<ProgressBar>(R.id.cancel).setTint(theme.theme)
+            view.findViewById<ImageView>(R.id.encrypted_out).setTint(theme.theme)
         } else {
             view = layoutInflater.inflate(R.layout.message_list_item_in, parent, false)
+            view.findViewById<ImageView>(R.id.encrypted_in).setTint(theme.theme)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -243,9 +245,30 @@ class MessagesAdapter @Inject constructor(
         if (!message.isMe()) {
             holder.avatar.setRecipient(contactCache[message.address])
             holder.avatar.setVisible(!canGroup(message, next), View.INVISIBLE)
+            holder.avatar.setVisible(false, View.INVISIBLE)
 
             holder.body.setTextColor(theme.textPrimary)
             holder.body.setBackgroundTint(theme.theme)
+        }
+
+        // Bind encrypted icon
+
+        val isEncrypted = if (conversation != null) {
+            if (conversation!!.encryptionKey.isNotEmpty()) {
+                Encryptor().isEncrypted(message.body, conversation!!.encryptionKey)
+            } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
+                Encryptor().isEncrypted(message.body, prefs.globalEncryptionKey.get())
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+
+        if (message.isMe()) {
+            holder.encrypted_out.setVisible(isEncrypted, View.INVISIBLE)
+        } else {
+            holder.encrypted_in.setVisible(isEncrypted, View.INVISIBLE)
         }
 
         // Bind the body text
