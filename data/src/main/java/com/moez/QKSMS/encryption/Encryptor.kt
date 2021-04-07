@@ -10,6 +10,8 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.collections.ArrayList
 
+const val HASH_SIZE = 2;
+
 @ExperimentalUnsignedTypes
 class Encryptor {
 
@@ -70,14 +72,16 @@ class Encryptor {
         } else {
             data
         }
-        return merged + ubyteArrayOf(mode.ordinal.toUByte(), md5(merged.toByteArray())[0].toUByte())
+        val hash = md5(merged.toByteArray()).toUByteArray()
+        return merged + ubyteArrayOf(mode.ordinal.toUByte()) + hash.slice(0 until HASH_SIZE)
     }
 
     private fun unpack(data: UByteArray): Pair<UByteArray, EncryptionMode> {
-        val payload = data.slice(0 until data.size - 2)
-        if (data.last() != md5(payload.toUByteArray().toByteArray())[0].toUByte())
+        val payload = data.slice(0 until data.size - HASH_SIZE - 1)
+        val hash = md5(payload.toUByteArray().toByteArray()).toUByteArray()
+        if (data.slice(data.size-HASH_SIZE until data.size) != hash.slice(0 until HASH_SIZE))
             throw InvalidSignatureException()
-        val mode = EncryptionMode.values()[data[data.size - 2].toInt()]
+        val mode = EncryptionMode.values()[data[data.size - HASH_SIZE - 1].toInt()]
         return if (mode == EncryptionMode.CYRILLIC || mode == EncryptionMode.LATIN) {
             var number = BigInteger(payload.toUByteArray().toByteArray())
             val result = ArrayList<Byte>()
