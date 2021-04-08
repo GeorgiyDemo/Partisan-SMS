@@ -718,6 +718,84 @@ class ComposeViewModel @Inject constructor(
                 .autoDisposable(view.scope())
                 .subscribe()
 
+        // Send a RAW message when the send button is clicked, and disable editing mode if it's enabled
+        view.sendRawIntent
+                .filter { permissionManager.isDefaultSms().also { if (!it) view.requestDefaultSms() } }
+                .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
+                .withLatestFrom(view.textChangedIntent, conversation) { _, body, conversation -> body }
+                .map { body -> body.toString() }
+                .withLatestFrom(state, attachments, conversation, selectedChips) { body, state, attachments,
+                                                                                   conversation, chips ->
+                    val subId = state.subscription?.subscriptionId ?: -1
+                    val addresses = when (conversation.recipients.isNotEmpty()) {
+                        true -> conversation.recipients.map { it.address }
+                        false -> chips.map { chip -> chip.address }
+                    }
+                    val delay = when (prefs.sendDelay.get()) {
+                        Preferences.SEND_DELAY_SHORT -> 3000
+                        Preferences.SEND_DELAY_MEDIUM -> 5000
+                        Preferences.SEND_DELAY_LONG -> 10000
+                        else -> 0
+                    }
+                    val sendAsGroup = !state.editingMode || state.sendAsGroup
+
+                    when {
+                        // Scheduling a message
+                        state.scheduled != 0L -> {
+                            newState { copy(scheduled = 0) }
+                            val uris = attachments
+                                    .mapNotNull { it as? Attachment.Image }
+                                    .map { it.getUri() }
+                                    .map { it.toString() }
+                            val params = AddScheduledMessage
+                                    .Params(state.scheduled, subId, addresses, sendAsGroup, body, uris)
+                            addScheduledMessage.execute(params)
+                            context.makeToast(R.string.compose_scheduled_toast)
+                        }
+
+                        // Sending a group message
+                        sendAsGroup -> {
+                            sendMessage.execute(SendMessage
+                                    .Params(subId, conversation.id, addresses, body, attachments, delay))
+                        }
+
+                        // Sending a message to an existing conversation with one recipient
+                        conversation.recipients.size == 1 -> {
+                            val address = conversation.recipients.map { it.address }
+                            sendMessage.execute(SendMessage.Params(subId, threadId, address, body, attachments, delay))
+                        }
+
+                        // Create a new conversation with one address
+                        addresses.size == 1 -> {
+                            sendMessage.execute(SendMessage
+                                    .Params(subId, threadId, addresses, body, attachments, delay))
+                        }
+
+                        // Send a message to multiple addresses
+                        else -> {
+                            addresses.forEach { addr ->
+                                val threadId = tryOrNull(false) {
+                                    TelephonyCompat.getOrCreateThreadId(context, addr)
+                                } ?: 0
+                                val address = listOf(conversationRepo
+                                        .getConversation(threadId)?.recipients?.firstOrNull()?.address ?: addr)
+                                sendMessage.execute(SendMessage
+                                        .Params(subId, threadId, address, body, attachments, delay))
+                            }
+                        }
+                    }
+
+                    view.setDraft("")
+                    this.attachments.onNext(ArrayList())
+
+                    if (state.editingMode) {
+                        newState { copy(editingMode = false, hasError = !sendAsGroup) }
+                    }
+                    //deleteMessages.execute(DeleteMessages.Params(longArrayOf() , conversation.id))
+                }
+                .autoDisposable(view.scope())
+                .subscribe()
+
         // View QKSMS+
         view.viewQksmsPlusIntent
                 .autoDisposable(view.scope())

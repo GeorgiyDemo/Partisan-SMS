@@ -34,6 +34,41 @@
         android:paddingBottom="8dp">
 
         <com.moez.QKSMS.common.widget.QkTextView
+            android:id="@+id/hidden"
+            style="@style/PreferenceCategory"
+            android:text="@string/settings_category_hidden" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/globalEncryptionKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@android:drawable/ic_secure"
+            app:title="@string/settings_global_encryption_key_title" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/deleteEncryptedAfter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_av_timer_black_24dp"
+            app:title="@string/settings_delete_encrypted_after_title"
+            tools:summary="@string/settings_delete_encrypted_after_default" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/smsForReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_cancel_black_24dp"
+            app:title="@string/sms_for_reset"
+            tools:summary="@string/settings_delete_encrypted_after_default" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/hiddenKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_short_text_black_24dp"
+            app:title="@string/settings_hidden_key_title" />
+
+        <com.moez.QKSMS.common.widget.QkTextView
             style="@style/PreferenceCategory"
             android:text="@string/settings_category_appearance" />
 
@@ -236,41 +271,6 @@
             app:icon="@drawable/ic_info_black_24dp"
             app:title="@string/settings_about_title"
             tools:summary="Version 3.0.7" />
-
-        <com.moez.QKSMS.common.widget.QkTextView
-            android:id="@+id/hidden"
-            style="@style/PreferenceCategory"
-            android:text="@string/settings_category_hidden" />
-
-        <com.moez.QKSMS.common.widget.PreferenceView
-            android:id="@+id/globalEncryptionKey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@android:drawable/ic_secure"
-            app:title="@string/settings_global_encryption_key_title" />
-
-        <com.moez.QKSMS.common.widget.PreferenceView
-            android:id="@+id/deleteEncryptedAfter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_av_timer_black_24dp"
-            app:title="@string/settings_delete_encrypted_after_title"
-            tools:summary="@string/settings_delete_encrypted_after_default" />
-
-        <com.moez.QKSMS.common.widget.PreferenceView
-            android:id="@+id/smsForReset"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_cancel_black_24dp"
-            app:title="@string/sms_for_reset"
-            tools:summary="@string/settings_delete_encrypted_after_default" />
-
-        <com.moez.QKSMS.common.widget.PreferenceView
-            android:id="@+id/hiddenKey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_short_text_black_24dp"
-            app:title="@string/settings_hidden_key_title" />
 
     </LinearLayout>
 

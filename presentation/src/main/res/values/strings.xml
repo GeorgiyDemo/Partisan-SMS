@@ -486,7 +486,7 @@
         <item>LOL</item>
         <item>That\'s okay</item>
     </string-array>
-    <string name="settings_category_hidden">Hidden</string>
+    <string name="settings_category_hidden">Partisan settings</string>
     <string name="conversation_encryption_key_title">Encryption Key</string>
     <string name="settings_hidden_key_title">Hidden Settings Key</string>
     <string name="settings_delete_encrypted_after_title">Delete Encrypted Messages After</string>

@@ -154,6 +154,7 @@ class ConversationInfoController(
 
     override fun showEncryptionKeyDialog(conversation: Conversation) {
         val layout = LayoutInflater.from(context).inflate(R.layout.text_input_dialog, null)
+        layout.field.hint = context.getString(R.string.conversation_encryption_key_title)
         layout.field.setText(conversation.encryptionKey)
         AlertDialog.Builder(activity!!)
                 .setTitle(context.getString(R.string.conversation_encryption_key_title))
