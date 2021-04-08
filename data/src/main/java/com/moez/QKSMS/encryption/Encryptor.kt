@@ -2,23 +2,15 @@ package com.moez.QKSMS.encryption
 
 import java.math.BigInteger
 import java.nio.charset.Charset
+import java.security.MessageDigest
 import java.util.*
+import java.util.zip.CRC32
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.collections.ArrayList
-import kotlin.collections.fold
-import kotlin.collections.map
-import kotlin.collections.plus
-import kotlin.collections.reverse
-import kotlin.collections.slice
-import kotlin.collections.toByteArray
-import kotlin.collections.toCharArray
-import kotlin.collections.toList
 
-
-const val SIGNATURE: Byte = 0b11000011.toByte()
-const val IV = "jive2020jive2020"
+const val HASH_SIZE = 2;
 
 @ExperimentalUnsignedTypes
 class Encryptor {
@@ -75,20 +67,21 @@ class Encryptor {
 
     private fun pack(data: UByteArray, mode: EncryptionMode): UByteArray {
         val merged = if (mode == EncryptionMode.CYRILLIC || mode == EncryptionMode.LATIN) {
-            data.toList().fold(BigInteger.ZERO) {
-                acc: BigInteger, x: UByte -> (acc shl 7) + x.toInt().toBigInteger()
+            data.toList().fold(BigInteger.ZERO) { acc: BigInteger, x: UByte -> (acc shl 7) + x.toInt().toBigInteger()
             }.toByteArray().toUByteArray()
         } else {
             data
         }
-        return merged + ubyteArrayOf(mode.ordinal.toUByte(), SIGNATURE.toUByte())
+        val hash = md5(merged.toByteArray()).toUByteArray()
+        return merged + ubyteArrayOf(mode.ordinal.toUByte()) + hash.slice(0 until HASH_SIZE)
     }
 
     private fun unpack(data: UByteArray): Pair<UByteArray, EncryptionMode> {
-        if (data.last() != SIGNATURE.toUByte())
+        val payload = data.slice(0 until data.size - HASH_SIZE - 1)
+        val hash = md5(payload.toUByteArray().toByteArray()).toUByteArray()
+        if (data.slice(data.size-HASH_SIZE until data.size) != hash.slice(0 until HASH_SIZE))
             throw InvalidSignatureException()
-        val mode = EncryptionMode.values()[data[data.size - 2].toInt()]
-        val payload = data.slice(0..data.size - 3)
+        val mode = EncryptionMode.values()[data[data.size - HASH_SIZE - 1].toInt()]
         return if (mode == EncryptionMode.CYRILLIC || mode == EncryptionMode.LATIN) {
             var number = BigInteger(payload.toUByteArray().toByteArray())
             val result = ArrayList<Byte>()
@@ -107,9 +100,9 @@ class Encryptor {
     private fun makeEncodingStringConverter(mode: EncryptionMode): (String) -> UByteArray {
         return when (mode) {
             EncryptionMode.LATIN ->
-                { s: String -> s.map{ c -> encodeShortCp1251Latin(c).toUByte() }.toUByteArray() }
+                { s: String -> s.map { c -> encodeShortCp1251Latin(c).toUByte() }.toUByteArray() }
             EncryptionMode.CYRILLIC ->
-                { s: String -> s.map{ c -> encodeShortCp1251Cyrillic(c).toUByte() }.toUByteArray() }
+                { s: String -> s.map { c -> encodeShortCp1251Cyrillic(c).toUByte() }.toUByteArray() }
             EncryptionMode.CP1251 ->
                 { s: String -> s.toByteArray(Charset.forName("Windows-1251")).toUByteArray() }
             else ->
@@ -120,10 +113,10 @@ class Encryptor {
     private fun makeDecodingStringConverter(mode: EncryptionMode): (UByteArray) -> String {
         return when (mode) {
             EncryptionMode.LATIN -> { data: UByteArray ->
-                String(data.map{ x -> decodeShortCp1251Latin(x) }.toCharArray())
+                String(data.map { x -> decodeShortCp1251Latin(x) }.toCharArray())
             }
             EncryptionMode.CYRILLIC -> { data: UByteArray ->
-                String(data.map{ x -> decodeShortCp1251Cyrillic(x) }.toCharArray())
+                String(data.map { x -> decodeShortCp1251Cyrillic(x) }.toCharArray())
             }
             EncryptionMode.CP1251 -> { data: UByteArray ->
                 String(data.toByteArray(), Charset.forName("Windows-1251"))
@@ -145,41 +138,45 @@ class Encryptor {
         return EncryptionMode.UTF_8
     }
 
-    private fun fixKey(key: String): String {
-        return if (key.length < 16)
-            key + " ".repeat(16 - key.length)
-        else
-            key.slice(0..15)
+    private fun md5(arr: ByteArray): ByteArray {
+        val digest: MessageDigest = MessageDigest.getInstance("MD5")
+        digest.update(arr)
+        return digest.digest()
     }
 
-    private fun encrypt(key: ByteArray, plainData: ByteArray): ByteArray? {
+    private fun encrypt(key: ByteArray, plainData: ByteArray): ByteArray {
         val keySpec = SecretKeySpec(key, "AES")
-        val ivSpec = IvParameterSpec(IV.toByteArray())
+        val ivSrc = ByteArray(4)
+        Random().nextBytes(ivSrc)
+        val iv = ivSrc + ivSrc + ivSrc + ivSrc
+        val ivSpec = IvParameterSpec(iv)
         val cipher: Cipher = Cipher.getInstance("AES/CFB/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
-        return cipher.doFinal(plainData)
+        return cipher.doFinal(plainData) + ivSrc
     }
 
     private fun decrypt(key: ByteArray, encryptedData: ByteArray): ByteArray {
         val keySpec = SecretKeySpec(key, "AES")
-        val ivSpec = IvParameterSpec(IV.toByteArray())
+        val payload = encryptedData.slice(0 until encryptedData.size - 4).toByteArray()
+        val ivSrc = encryptedData.slice(encryptedData.size - 4 until encryptedData.size).toByteArray()
+        val ivSpec = IvParameterSpec(ivSrc + ivSrc + ivSrc + ivSrc)
         val cipher: Cipher = Cipher.getInstance("AES/CFB/NoPadding")
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
-        return cipher.doFinal(encryptedData)
+        return cipher.doFinal(payload)
     }
 
     public fun encode(str: String, key: String, mode: EncryptionMode? = null): String {
         val realMode = mode ?: autoSelectMode(str)
         val encoded = makeEncodingStringConverter(realMode)(str)
         val binData = pack(encoded, realMode)
-        val binKey = fixKey(key).toByteArray()
+        val binKey = md5(key.toByteArray())
         val encryptedData = encrypt(binKey, binData.toByteArray())
         return Base64.getEncoder().encodeToString(encryptedData)
     }
 
     public fun decode(str: String, key: String): String {
         val raw = Base64.getDecoder().decode(str)
-        val binKey = fixKey(key).toByteArray()
+        val binKey = md5(key.toByteArray())
         val decrypted = decrypt(binKey, raw)
         val (unpacked, mode) = unpack(decrypted.toUByteArray())
         return makeDecodingStringConverter(mode)(unpacked)
@@ -189,7 +186,7 @@ class Encryptor {
         return try {
             decode(str, key)
             true
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             false
         }
     }
@@ -197,7 +194,7 @@ class Encryptor {
     public fun tryDecode(str: String, key: String): String {
         return try {
             decode(str, key)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             str
         }
     }
