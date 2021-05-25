@@ -54,6 +54,13 @@
             tools:summary="@string/settings_delete_encrypted_after_default" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/encodingScheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@android:drawable/ic_secure"
+            app:title="@string/encoding_scheme" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
             android:id="@+id/smsForReset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

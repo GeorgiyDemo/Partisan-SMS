@@ -74,6 +74,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     @Inject lateinit var sendDelayDialog: QkDialog
     @Inject lateinit var mmsSizeDialog: QkDialog
     @Inject lateinit var deleteEncryptedAfterDialog: QkDialog
+    @Inject lateinit var encodingSchemeDialog: QkDialog
     @Inject lateinit var prefs: Preferences
 
 
@@ -133,6 +134,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         sendDelayDialog.adapter.setData(R.array.delayed_sending_labels)
         mmsSizeDialog.adapter.setData(R.array.mms_sizes, R.array.mms_sizes_ids)
         deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
+        encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels)
 
         about.summary = context.getString(R.string.settings_version, BuildConfig.VERSION_NAME)
     }
@@ -178,6 +180,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     override fun hiddenKeySet(): Observable<String> = hiddenKeySubject
 
     override fun deleteEncryptedAfterSelected(): Observable<Int> = deleteEncryptedAfterDialog.adapter.menuItemClicks
+
+    override fun encodingSchemeSelected(): Observable<Int> = encodingSchemeDialog.adapter.menuItemClicks
 
     override fun render(state: SettingsState) {
         themePreview.setBackgroundTint(state.theme)
@@ -242,6 +246,10 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.globalEncryptionKey.isNotEmpty()
         deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
         deleteEncryptedAfterDialog.adapter.selectedItem = state.deleteEncryptedAfterId
+
+        encodingScheme.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        encodingScheme.summary = state.encodingSchemeSummary
+        encodingSchemeDialog.adapter.selectedItem = state.encodingSchemeId
 
         smsForReset.isVisible = HiddenSettingsSingleton.hiddenEnabled
         smsForReset.summary = state.smsForReset
@@ -322,5 +330,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     override fun showHiddenKeyDialog(hiddenKey: String) = hiddenKeyDialog.setText(hiddenKey).show()
 
     override fun showDeleteEncryptedAfterDialog() = deleteEncryptedAfterDialog.show(activity!!)
+
+    override fun showEncodingSchemeDialog() = encodingSchemeDialog.show(activity!!)
 
 }

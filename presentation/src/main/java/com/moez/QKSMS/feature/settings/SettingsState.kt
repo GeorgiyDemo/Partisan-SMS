@@ -51,5 +51,7 @@ data class SettingsState(
         val smsForReset: String = "",
         val hiddenKey: String = "",
         val deleteEncryptedAfterSummary: String = "",
-        val deleteEncryptedAfterId: Int = 0
+        val deleteEncryptedAfterId: Int = 0,
+        val encodingSchemeSummary: String = "",
+        val encodingSchemeId: Int = 0
 )

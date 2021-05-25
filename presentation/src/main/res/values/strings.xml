@@ -507,4 +507,9 @@
     <string name="conversation_delete_received_after">Delete Received Messages After</string>
     <string name="conversation_delete_sent_after">Delete Sent Messages After</string>
     <string name="sms_for_reset">SMS for Reset</string>
+    <string name="encoding_scheme">Encoding Scheme</string>
+    <string-array name="encoding_scheme_labels">
+        <item>Base64</item>
+        <item>Base64 Cyrillic</item>
+    </string-array>
 </resources>
