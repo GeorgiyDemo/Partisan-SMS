@@ -65,11 +65,11 @@ class Encryptor {
         val binData = pack(encoded)
         val binKey = md5(key.toByteArray())
         val encryptedData = encrypt(binKey, binData.toByteArray())
-        return Base64.getEncoder().encodeToString(encryptedData)
+        return com.moez.QKSMS.encryption.encrypted_data_encoder.Base64().encode(encryptedData)
     }
 
     public fun decode(str: String, key: String): String {
-        val raw = Base64.getDecoder().decode(str)
+        val raw = com.moez.QKSMS.encryption.encrypted_data_encoder.Base64().decode(str)
         val binKey = md5(key.toByteArray())
         val decrypted = decrypt(binKey, raw)
         val unpacked = unpack(decrypted.toUByteArray())

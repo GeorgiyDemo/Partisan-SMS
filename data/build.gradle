@@ -94,6 +94,8 @@ dependencies {
 
     withAnalyticsImplementation 'com.android.installreferrer:installreferrer:1.1'
     withAnalyticsImplementation "com.amplitude:android-sdk:2.16.0"
+
+    implementation 'commons-codec:commons-codec:1.15'
 }
 
 repositories {
