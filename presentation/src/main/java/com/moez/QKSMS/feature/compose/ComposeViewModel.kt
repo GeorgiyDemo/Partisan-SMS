@@ -63,6 +63,7 @@ import com.uber.autodispose.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.combineLatest
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.withLatestFrom
 import io.reactivex.schedulers.Schedulers
@@ -192,7 +193,6 @@ class ComposeViewModel @Inject constructor(
                 .subscribe { title -> newState { copy(conversationtitle = title) } }
 
         disposables += prefs.sendAsGroup.asObservable()
-                .distinctUntilChanged()
                 .subscribe { enabled -> newState { copy(sendAsGroup = enabled) } }
 
         disposables += attachments
@@ -216,6 +216,13 @@ class ComposeViewModel @Inject constructor(
                 newState { copy(searchSelectionPosition = position, searchResults = messages.size) }
             }
         }.subscribe()
+
+        val globalKeyObservable = prefs.globalEncryptionKey.asObservable()
+        val conversationKeyObservable = conversation.map { conversation -> conversation.encryptionKey }
+        disposables += Observables.combineLatest(globalKeyObservable, conversationKeyObservable)
+                .subscribe { (globalKey, conversationKey) ->
+                    newState { copy(encrypted = !globalKey.isNullOrEmpty() || !conversationKey.isNullOrEmpty()) }
+                }
 
         val latestSubId = messages
                 .map { messages -> messages.lastOrNull()?.subId ?: -1 }
