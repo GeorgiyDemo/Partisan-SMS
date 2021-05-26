@@ -10,6 +10,9 @@ class CyrillicBase64 : EncryptedDataEncoder {
     }
 
     override fun decode(str: String): ByteArray {
+        if (!str.all { c -> cyrillic.contains(c) }) {
+            throw IllegalAccessException("string is not in valid Cyrillic Base64 scheme")
+        }
         val base64 = String(str.map { c -> latin[cyrillic.indexOf(c)] }.toCharArray())
         return Base64().decode(base64)
     }

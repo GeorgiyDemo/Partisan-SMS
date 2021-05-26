@@ -1,5 +1,8 @@
 package com.moez.QKSMS.encryption
 
+import com.moez.QKSMS.encryption.encrypted_data_encoder.EncryptedDataEncoder
+import com.moez.QKSMS.encryption.encrypted_data_encoder.EncryptedDataEncoderFactory
+import com.moez.QKSMS.encryption.encrypted_data_encoder.Scheme
 import com.moez.QKSMS.encryption.plain_data_encoder.PlainDataEncoder
 import com.moez.QKSMS.encryption.plain_data_encoder.PlainDataEncoderFactory
 import java.math.BigInteger
@@ -16,6 +19,7 @@ const val HASH_SIZE = 2;
 class Encryptor {
 
     var plainDataEncoder: PlainDataEncoder? = null
+    var encryptedDataEncoder: EncryptedDataEncoder? = null
 
     private fun pack(data: UByteArray): UByteArray {
         val merged = plainDataEncoder!!.merge(data)
@@ -59,17 +63,19 @@ class Encryptor {
         return cipher.doFinal(payload)
     }
 
-    public fun encode(str: String, key: String): String {
+    public fun encode(str: String, key: String, encryptionSchemeId: Int): String {
+        encryptedDataEncoder = EncryptedDataEncoderFactory.create(encryptionSchemeId)
         plainDataEncoder = PlainDataEncoderFactory.createBestEncoder(str)
         val encoded = plainDataEncoder!!.encode(str)
         val binData = pack(encoded)
         val binKey = md5(key.toByteArray())
         val encryptedData = encrypt(binKey, binData.toByteArray())
-        return com.moez.QKSMS.encryption.encrypted_data_encoder.Base64().encode(encryptedData)
+        return encryptedDataEncoder!!.encode(encryptedData)
     }
 
-    public fun decode(str: String, key: String): String {
-        val raw = com.moez.QKSMS.encryption.encrypted_data_encoder.Base64().decode(str)
+    public fun decode(str: String, key: String, encryptionSchemeId: Int): String {
+        encryptedDataEncoder = EncryptedDataEncoderFactory.create(encryptionSchemeId)
+        val raw = encryptedDataEncoder!!.decode(str)
         val binKey = md5(key.toByteArray())
         val decrypted = decrypt(binKey, raw)
         val unpacked = unpack(decrypted.toUByteArray())
@@ -77,19 +83,23 @@ class Encryptor {
     }
 
     public fun isEncrypted(str: String, key: String): Boolean {
-        return try {
-            decode(str, key)
-            true
-        } catch (e: Exception) {
-            false
+        for (scheme in Scheme.values()) {
+            try {
+                decode(str, key, scheme.ordinal)
+                return true
+            } catch (ignored: Exception) {
+            }
         }
+        return false
     }
 
     public fun tryDecode(str: String, key: String): String {
-        return try {
-            decode(str, key)
-        } catch (e: Exception) {
-            str
+        for (scheme in Scheme.values()) {
+            try {
+                return decode(str, key, scheme.ordinal)
+            } catch (ignored: Exception) {
+            }
         }
+        return str
     }
 }
