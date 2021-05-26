@@ -134,6 +134,9 @@ class SettingsPresenter @Inject constructor(
         disposables += prefs.smsForReset.asObservable()
                 .subscribe { smsForReset -> newState { copy(smsForReset = smsForReset) } }
 
+        disposables += prefs.showInTaskSwitcher.asObservable()
+                .subscribe { showInTaskSwitcher -> newState { copy(showInTaskSwitcher = showInTaskSwitcher) } }
+
         disposables += prefs.hiddenKey.asObservable()
                 .subscribe { hiddenKey -> newState { copy(hiddenKey = hiddenKey) } }
 
@@ -232,6 +235,8 @@ class SettingsPresenter @Inject constructor(
                         R.id.deleteEncryptedAfter -> view.showDeleteEncryptedAfterDialog()
 
                         R.id.encodingScheme -> view.showEncodingSchemeDialog()
+
+                        R.id.showInTaskSwitcher -> prefs.showInTaskSwitcher.set(!prefs.showInTaskSwitcher.get())
                     }
                 }
 

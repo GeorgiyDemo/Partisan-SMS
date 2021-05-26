@@ -24,6 +24,7 @@ import android.content.Context
 import android.os.Build
 import android.text.format.DateFormat
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import com.bluelinelabs.conductor.RouterTransaction
@@ -254,8 +255,16 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         smsForReset.isVisible = HiddenSettingsSingleton.hiddenEnabled
         smsForReset.summary = state.smsForReset
 
+        showInTaskSwitcher.checkbox.isChecked = state.showInTaskSwitcher
+
         hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
         hiddenKey.summary = state.hiddenKey
+
+        if (state.showInTaskSwitcher) {
+            activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
     }
 
     override fun showQksmsPlusSnackbar() {

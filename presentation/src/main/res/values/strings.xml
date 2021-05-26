@@ -512,4 +512,5 @@
         <item>Base64</item>
         <item>Base64 Cyrillic</item>
     </string-array>
+    <string name="show_in_task_switcher">Show App Content in Task Switcher</string>
 </resources>

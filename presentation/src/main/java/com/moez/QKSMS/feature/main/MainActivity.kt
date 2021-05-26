@@ -25,11 +25,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewStub
+import android.view.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
@@ -131,6 +127,8 @@ class MainActivity : QkThemedActivity(), MainView {
         setContentView(R.layout.main_activity)
         viewModel.bindView(this)
         onNewIntentIntent.onNext(intent)
+
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
         (snackbar as? ViewStub)?.setOnInflateListener { _, _ ->
             snackbarButton.clicks()
