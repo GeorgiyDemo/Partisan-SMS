@@ -23,11 +23,12 @@ import android.net.Uri
 import android.os.Vibrator
 import android.provider.ContactsContract
 import android.telephony.SmsMessage
+import android.util.Base64
 import androidx.core.content.getSystemService
+import by.cyberpartisan.psms.PSmsEncryptor
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkViewModel
-import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.common.util.ClipboardUtils
 import com.moez.QKSMS.common.util.MessageDetailsFormatter
 import com.moez.QKSMS.common.util.extensions.makeToast
@@ -221,7 +222,7 @@ class ComposeViewModel @Inject constructor(
         val conversationKeyObservable = conversation.map { conversation -> conversation.encryptionKey }
         disposables += Observables.combineLatest(globalKeyObservable, conversationKeyObservable)
                 .subscribe { (globalKey, conversationKey) ->
-                    newState { copy(encrypted = !globalKey.isNullOrEmpty() || !conversationKey.isNullOrEmpty()) }
+                    newState { copy(encrypted = globalKey.isNotEmpty() || conversationKey.isNotEmpty()) }
                 }
 
         val latestSubId = messages
@@ -645,10 +646,10 @@ class ComposeViewModel @Inject constructor(
                 .filter { permissionManager.isDefaultSms().also { if (!it) view.requestDefaultSms() } }
                 .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
                 .withLatestFrom(view.textChangedIntent, conversation) { _, body, conversation ->
-                    if (!conversation.encryptionKey.isEmpty()) {
-                        Encryptor().encode(body.toString(), conversation.encryptionKey, prefs.encodingScheme.get())
+                    if (conversation.encryptionKey.isNotEmpty()) {
+                        PSmsEncryptor().encode(body.toString(), Base64.decode(conversation.encryptionKey, Base64.DEFAULT), prefs.encodingScheme.get())
                     } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-                        Encryptor().encode(body.toString(), prefs.globalEncryptionKey.get(), prefs.encodingScheme.get())
+                        PSmsEncryptor().encode(body.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT), prefs.encodingScheme.get())
                     }
                     else body
                 }

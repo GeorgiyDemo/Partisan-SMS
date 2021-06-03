@@ -185,6 +185,7 @@ dependencies {
     implementation project(":common")
     implementation project(':data')
     implementation project(':domain')
+    implementation(name:'P-SMS-lib', ext:'aar')
 
     withAnalyticsImplementation 'com.google.firebase:firebase-crashlytics:17.3.0'
     withAnalyticsImplementation "com.android.billingclient:billing:$billing_version"

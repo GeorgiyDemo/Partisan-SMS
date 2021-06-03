@@ -20,6 +20,7 @@ package com.moez.QKSMS.feature.conversations
 
 import android.content.Context
 import android.graphics.Typeface
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.bold
@@ -27,6 +28,7 @@ import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import by.cyberpartisan.psms.PSmsEncryptor
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkRealmAdapter
@@ -35,7 +37,6 @@ import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.DateFormatter
 import com.moez.QKSMS.common.util.extensions.resolveThemeColor
 import com.moez.QKSMS.common.util.extensions.setTint
-import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.model.Conversation
 import com.moez.QKSMS.util.PhoneNumberUtils
 import com.moez.QKSMS.util.Preferences
@@ -118,10 +119,10 @@ class ConversationsAdapter @Inject constructor(
         }
         holder.date.text = conversation.date.takeIf { it > 0 }?.let(dateFormatter::getConversationTimestamp)
 
-        val snippetText = if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
-            Encryptor().tryDecode(conversation.snippet.toString(), conversation!!.encryptionKey)
+        val snippetText = if (conversation.encryptionKey.isNotEmpty()) {
+            PSmsEncryptor().tryDecode(conversation.snippet.toString(), Base64.decode(conversation.encryptionKey, Base64.DEFAULT))
         } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-            Encryptor().tryDecode(conversation.snippet.toString(), prefs.globalEncryptionKey.get())
+            PSmsEncryptor().tryDecode(conversation.snippet.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
         } else {
             conversation.snippet
         }

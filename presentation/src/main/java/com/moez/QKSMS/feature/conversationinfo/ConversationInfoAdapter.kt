@@ -130,7 +130,7 @@ class ConversationInfoAdapter @Inject constructor(
                 // hidden
 
                 holder.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
-                holder.encryptionKey.summary = item.encryptionKey
+                holder.encryptionKey.summary = if (item.encryptionKey.isNotEmpty()) "***" else ""
 
                 val labels = context.resources.getStringArray(R.array.delete_message_after_labels)
 

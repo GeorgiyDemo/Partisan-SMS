@@ -91,6 +91,7 @@ dependencies {
     implementation project(":android-smsmms")
     implementation project(':common')
     implementation project(':domain')
+    implementation(name:'P-SMS-lib', ext:'aar')
 
     withAnalyticsImplementation 'com.android.installreferrer:installreferrer:1.1'
     withAnalyticsImplementation "com.amplitude:android-sdk:2.16.0"

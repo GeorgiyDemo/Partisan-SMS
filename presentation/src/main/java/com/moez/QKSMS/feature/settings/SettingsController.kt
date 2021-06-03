@@ -242,7 +242,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
 
         globalEncryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        globalEncryptionKey.summary = state.globalEncryptionKey
+        globalEncryptionKey.summary = if (state.globalEncryptionKey.isNotEmpty()) "***" else ""
 
         deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.globalEncryptionKey.isNotEmpty()
         deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
@@ -332,7 +332,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
                 .popChangeHandler(QkChangeHandler()))
     }
 
-    override fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String) = encryptionKeyDialog.setText(globalEncryptionKey).show()
+    override fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String) = encryptionKeyDialog.setText("").show()
 
     override fun showSmsForResetDialog(smsForReset: String) = smsForResetDialog.setText(smsForReset).show()
 
