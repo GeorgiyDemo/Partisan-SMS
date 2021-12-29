@@ -447,4 +447,5 @@
         <item>Кириллическая Base64</item>
     </string-array>
     <string name="show_in_task_switcher">Показывать содержимое приложения в переключателе задач</string>
+    <string name="channel_id">ID канала</string>
 </resources>

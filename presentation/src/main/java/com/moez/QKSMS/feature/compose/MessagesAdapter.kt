@@ -33,6 +33,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import by.cyberpartisan.psms.PSmsEncryptor
+import by.cyberpartisan.psms.Message as PSmsMessage
 import com.jakewharton.rxbinding2.view.clicks
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.base.QkRealmAdapter
@@ -300,14 +301,20 @@ class MessagesAdapter @Inject constructor(
             false -> TextViewStyler.SIZE_PRIMARY
         })
 
-        holder.body.text =
-        if (conversation != null && conversation!!.encryptionKey.isNotEmpty()) {
+        val decryptedMessage = if (conversation != null && conversation!!.encryptionKey.isNotEmpty()) {
             PSmsEncryptor().tryDecode(messageText.toString(), Base64.decode(conversation!!.encryptionKey, Base64.DEFAULT))
         } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
             PSmsEncryptor().tryDecode(messageText.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
         } else {
-            messageText
+            PSmsMessage(messageText.toString())
         }
+        if (decryptedMessage.channelId != null) {
+            val channelIdStr = context.resources.getString(R.string.channel_id)
+            holder.body.text = decryptedMessage.text + " (${channelIdStr}: ${decryptedMessage.channelId})"
+        } else {
+            holder.body.text = decryptedMessage.text
+        }
+
         holder.body.setVisible(message.isSms() || messageText.isNotBlank())
         holder.body.setBackgroundResource(getBubble(
                 emojiOnly = emojiOnly,

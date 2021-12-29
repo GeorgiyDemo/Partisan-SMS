@@ -26,6 +26,7 @@ import android.telephony.SmsMessage
 import android.util.Base64
 import androidx.core.content.getSystemService
 import by.cyberpartisan.psms.PSmsEncryptor
+import by.cyberpartisan.psms.Message as PSmsMessage
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkViewModel
@@ -647,9 +648,9 @@ class ComposeViewModel @Inject constructor(
                 .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
                 .withLatestFrom(view.textChangedIntent, conversation) { _, body, conversation ->
                     if (conversation.encryptionKey.isNotEmpty()) {
-                        PSmsEncryptor().encode(body.toString(), Base64.decode(conversation.encryptionKey, Base64.DEFAULT), prefs.encodingScheme.get())
+                        PSmsEncryptor().encode(PSmsMessage(body.toString()), Base64.decode(conversation.encryptionKey, Base64.DEFAULT), prefs.encodingScheme.get())
                     } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-                        PSmsEncryptor().encode(body.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT), prefs.encodingScheme.get())
+                        PSmsEncryptor().encode(PSmsMessage(body.toString()), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT), prefs.encodingScheme.get())
                     }
                     else body
                 }
