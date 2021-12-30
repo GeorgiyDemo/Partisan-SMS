@@ -445,6 +445,7 @@
     <string-array name="encoding_scheme_labels">
         <item>Base64</item>
         <item>Кириллическая Base64</item>
+        <item>Русские слова</item>
     </string-array>
     <string name="show_in_task_switcher">Показывать содержимое приложения в переключателе задач</string>
     <string name="channel_id">ID канала</string>
