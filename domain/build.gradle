@@ -61,7 +61,8 @@ dependencies {
     implementation "com.f2prateek.rx.preferences2:rx-preferences:$rx_preferences_version"
     implementation "com.jakewharton.timber:timber:$timber_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "com.ionspin.kotlin:bignum:0.3.3"
+    implementation "com.ionspin.kotlin:bignum:0.3.1"
+    implementation "com.soywiz.korlibs.krypto:krypto:2.1.1"
     implementation project(":common")
 }
 
