@@ -20,6 +20,8 @@ package com.moez.QKSMS.feature.settings
 
 import com.moez.QKSMS.repository.SyncRepository
 import com.moez.QKSMS.util.Preferences
+import kotlinx.android.synthetic.main.settings_controller.*
+import kotlinx.android.synthetic.main.settings_switch_widget.view.*
 
 data class SettingsState(
         val theme: Int = 0,
@@ -51,5 +53,8 @@ data class SettingsState(
         val smsForReset: String = "",
         val hiddenKey: String = "",
         val deleteEncryptedAfterSummary: String = "",
-        val deleteEncryptedAfterId: Int = 0
+        val deleteEncryptedAfterId: Int = 0,
+        val encodingSchemeSummary: String = "",
+        val encodingSchemeId: Int = 0,
+        val showInTaskSwitcher: Boolean = true
 )

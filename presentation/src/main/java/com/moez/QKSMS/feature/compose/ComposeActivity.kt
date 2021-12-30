@@ -35,6 +35,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.inputmethod.EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -241,6 +242,12 @@ class ComposeActivity : QkThemedActivity(), ComposeView {
 
         send.isEnabled = state.canSend
         send.imageAlpha = if (state.canSend) 255 else 128
+
+        if (state.encrypted) {
+            message.imeOptions = message.imeOptions or IME_FLAG_NO_PERSONALIZED_LEARNING
+        } else {
+            message.imeOptions = message.imeOptions and IME_FLAG_NO_PERSONALIZED_LEARNING.inv()
+        }
     }
 
     override fun clearSelection() = messageAdapter.clearSelection()

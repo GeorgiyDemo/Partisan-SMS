@@ -32,11 +32,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import by.cyberpartisan.psms.PSmsEncryptor
+import by.cyberpartisan.psms.Message as PSmsMessage
 import com.jakewharton.rxbinding2.view.clicks
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.base.QkRealmAdapter
 import com.moez.QKSMS.common.base.QkViewHolder
-import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.DateFormatter
 import com.moez.QKSMS.common.util.TextViewStyler
@@ -73,6 +74,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
+import android.util.Base64
 
 class MessagesAdapter @Inject constructor(
     subscriptionManager: SubscriptionManagerCompat,
@@ -255,9 +257,9 @@ class MessagesAdapter @Inject constructor(
 
         val isEncrypted = if (conversation != null) {
             if (conversation!!.encryptionKey.isNotEmpty()) {
-                Encryptor().isEncrypted(message.body, conversation!!.encryptionKey)
+                PSmsEncryptor().isEncrypted(message.body, Base64.decode(conversation!!.encryptionKey, Base64.DEFAULT))
             } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-                Encryptor().isEncrypted(message.body, prefs.globalEncryptionKey.get())
+                PSmsEncryptor().isEncrypted(message.body, Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
             } else {
                 false
             }
@@ -299,14 +301,20 @@ class MessagesAdapter @Inject constructor(
             false -> TextViewStyler.SIZE_PRIMARY
         })
 
-        holder.body.text =
-        if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
-            Encryptor().tryDecode(messageText.toString(), conversation!!.encryptionKey)
+        val decryptedMessage = if (conversation != null && conversation!!.encryptionKey.isNotEmpty()) {
+            PSmsEncryptor().tryDecode(messageText.toString(), Base64.decode(conversation!!.encryptionKey, Base64.DEFAULT))
         } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-            Encryptor().tryDecode(messageText.toString(), prefs.globalEncryptionKey.get())
+            PSmsEncryptor().tryDecode(messageText.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
         } else {
-            messageText
+            PSmsMessage(messageText.toString())
         }
+        if (decryptedMessage.channelId != null) {
+            val channelIdStr = context.resources.getString(R.string.channel_id)
+            holder.body.text = decryptedMessage.text + " (${channelIdStr}: ${decryptedMessage.channelId})"
+        } else {
+            holder.body.text = decryptedMessage.text
+        }
+
         holder.body.setVisible(message.isSms() || messageText.isNotBlank())
         holder.body.setBackgroundResource(getBubble(
                 emojiOnly = emojiOnly,

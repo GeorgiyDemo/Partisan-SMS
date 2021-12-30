@@ -24,6 +24,7 @@ import android.content.Context
 import android.os.Build
 import android.text.format.DateFormat
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import com.bluelinelabs.conductor.RouterTransaction
@@ -41,6 +42,7 @@ import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.extensions.animateLayoutChanges
 import com.moez.QKSMS.common.util.extensions.setBackgroundTint
 import com.moez.QKSMS.common.util.extensions.setVisible
+import com.moez.QKSMS.common.widget.KeyInputDialog
 import com.moez.QKSMS.common.widget.PreferenceView
 import com.moez.QKSMS.common.widget.TextInputDialog
 import com.moez.QKSMS.feature.settings.about.AboutController
@@ -74,6 +76,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     @Inject lateinit var sendDelayDialog: QkDialog
     @Inject lateinit var mmsSizeDialog: QkDialog
     @Inject lateinit var deleteEncryptedAfterDialog: QkDialog
+    @Inject lateinit var encodingSchemeDialog: QkDialog
     @Inject lateinit var prefs: Preferences
 
 
@@ -86,8 +89,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         AutoDeleteDialog(activity!!, autoDeleteSubject::onNext)
     }
 
-    private val encryptionKeyDialog: TextInputDialog by lazy {
-        TextInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), globalEncryptionKeySubject::onNext)
+    private val encryptionKeyDialog: KeyInputDialog by lazy {
+        KeyInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), globalEncryptionKeySubject::onNext)
     }
 
     private val smsForResetDialog: TextInputDialog by lazy {
@@ -133,6 +136,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         sendDelayDialog.adapter.setData(R.array.delayed_sending_labels)
         mmsSizeDialog.adapter.setData(R.array.mms_sizes, R.array.mms_sizes_ids)
         deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
+        encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels)
 
         about.summary = context.getString(R.string.settings_version, BuildConfig.VERSION_NAME)
     }
@@ -178,6 +182,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
     override fun hiddenKeySet(): Observable<String> = hiddenKeySubject
 
     override fun deleteEncryptedAfterSelected(): Observable<Int> = deleteEncryptedAfterDialog.adapter.menuItemClicks
+
+    override fun encodingSchemeSelected(): Observable<Int> = encodingSchemeDialog.adapter.menuItemClicks
 
     override fun render(state: SettingsState) {
         themePreview.setBackgroundTint(state.theme)
@@ -237,17 +243,29 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         hidden.isVisible = HiddenSettingsSingleton.hiddenEnabled
 
         globalEncryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
-        globalEncryptionKey.summary = state.globalEncryptionKey
+        globalEncryptionKey.summary = if (state.globalEncryptionKey.isNotEmpty()) "***" else ""
 
         deleteEncryptedAfter.isVisible = HiddenSettingsSingleton.hiddenEnabled && state.globalEncryptionKey.isNotEmpty()
         deleteEncryptedAfter.summary = state.deleteEncryptedAfterSummary
         deleteEncryptedAfterDialog.adapter.selectedItem = state.deleteEncryptedAfterId
 
+        encodingScheme.isVisible = HiddenSettingsSingleton.hiddenEnabled
+        encodingScheme.summary = state.encodingSchemeSummary
+        encodingSchemeDialog.adapter.selectedItem = state.encodingSchemeId
+
         smsForReset.isVisible = HiddenSettingsSingleton.hiddenEnabled
         smsForReset.summary = state.smsForReset
 
+        showInTaskSwitcher.checkbox.isChecked = state.showInTaskSwitcher
+
         hiddenKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
         hiddenKey.summary = state.hiddenKey
+
+        if (state.showInTaskSwitcher) {
+            activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
     }
 
     override fun showQksmsPlusSnackbar() {
@@ -315,12 +333,14 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
                 .popChangeHandler(QkChangeHandler()))
     }
 
-    override fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String) = encryptionKeyDialog.setText(globalEncryptionKey).show()
+    override fun showGlobalEncryptionKeyDialog(globalEncryptionKey: String) = encryptionKeyDialog.setText("").show()
 
     override fun showSmsForResetDialog(smsForReset: String) = smsForResetDialog.setText(smsForReset).show()
 
     override fun showHiddenKeyDialog(hiddenKey: String) = hiddenKeyDialog.setText(hiddenKey).show()
 
     override fun showDeleteEncryptedAfterDialog() = deleteEncryptedAfterDialog.show(activity!!)
+
+    override fun showEncodingSchemeDialog() = encodingSchemeDialog.show(activity!!)
 
 }

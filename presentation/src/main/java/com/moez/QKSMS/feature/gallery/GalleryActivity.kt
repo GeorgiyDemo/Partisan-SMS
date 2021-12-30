@@ -22,6 +22,7 @@ import android.Manifest
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -34,6 +35,7 @@ import com.moez.QKSMS.common.base.QkActivity
 import com.moez.QKSMS.common.util.DateFormatter
 import com.moez.QKSMS.common.util.extensions.setVisible
 import com.moez.QKSMS.model.MmsPart
+import com.moez.QKSMS.util.Preferences
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -46,6 +48,7 @@ class GalleryActivity : QkActivity(), GalleryView {
     @Inject lateinit var dateFormatter: DateFormatter
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject lateinit var pagerAdapter: GalleryPagerAdapter
+    @Inject lateinit var prefs: Preferences
 
     val partId by lazy { intent.getLongExtra("partId", 0L) }
 
@@ -79,6 +82,15 @@ class GalleryActivity : QkActivity(), GalleryView {
                         }
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (prefs.showInTaskSwitcher.get()) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
     }
 
     fun onPageSelected(position: Int) {

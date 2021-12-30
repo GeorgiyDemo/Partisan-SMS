@@ -54,12 +54,28 @@
             tools:summary="@string/settings_delete_encrypted_after_default" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/encodingScheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@android:drawable/ic_secure"
+            app:title="@string/encoding_scheme" />
+
+        <com.moez.QKSMS.common.widget.PreferenceView
             android:id="@+id/smsForReset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_cancel_black_24dp"
             app:title="@string/sms_for_reset"
             tools:summary="@string/settings_delete_encrypted_after_default" />
+
+
+        <com.moez.QKSMS.common.widget.PreferenceView
+            android:id="@+id/showInTaskSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_person_black_24dp"
+            app:title="@string/show_in_task_switcher"
+            app:widget="@layout/settings_switch_widget" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
             android:id="@+id/hiddenKey"
