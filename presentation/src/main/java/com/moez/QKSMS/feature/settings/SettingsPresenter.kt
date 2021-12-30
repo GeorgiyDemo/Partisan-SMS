@@ -19,8 +19,6 @@
 package com.moez.QKSMS.feature.settings
 
 import android.content.Context
-import android.util.Base64
-import by.cyberpartisan.psms.md5
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkPresenter
@@ -330,7 +328,6 @@ class SettingsPresenter @Inject constructor(
         // hidden
 
         view.globalEncryptionKeySet()
-                .map { key -> if (key.isNotEmpty()) Base64.encodeToString(md5(key.encodeToByteArray()), Base64.DEFAULT) else "" }
                 .doOnNext(prefs.globalEncryptionKey::set)
                 .autoDisposable(view.scope())
                 .subscribe()

@@ -448,4 +448,6 @@
     </string-array>
     <string name="show_in_task_switcher">Показывать содержимое приложения в переключателе задач</string>
     <string name="channel_id">ID канала</string>
+    <string name="invalid_key">Неверный ключ</string>
+    <string name="button_generate">Сгенерировать</string>
 </resources>

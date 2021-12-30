@@ -24,7 +24,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
-import by.cyberpartisan.psms.md5
 import com.bluelinelabs.conductor.RouterTransaction
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
@@ -32,6 +31,7 @@ import com.moez.QKSMS.common.QkChangeHandler
 import com.moez.QKSMS.common.QkDialog
 import com.moez.QKSMS.common.base.QkController
 import com.moez.QKSMS.common.util.extensions.scrapViews
+import com.moez.QKSMS.common.widget.KeyInputDialog
 import com.moez.QKSMS.common.widget.TextInputDialog
 import com.moez.QKSMS.feature.blocking.BlockingDialog
 import com.moez.QKSMS.feature.conversationinfo.injection.ConversationInfoModule
@@ -155,19 +155,9 @@ class ConversationInfoController(
     }
 
     override fun showEncryptionKeyDialog(conversation: Conversation) {
-        val layout = LayoutInflater.from(context).inflate(R.layout.text_input_dialog, null)
-        layout.field.hint = context.getString(R.string.conversation_encryption_key_title)
-        layout.field.setText("")
-        AlertDialog.Builder(activity!!)
-                .setTitle(context.getString(R.string.conversation_encryption_key_title))
-                .setView(layout)
-                .setPositiveButton(R.string.button_save) { _, _ ->
-                    val key = Base64.encodeToString(md5(layout.field.text.toString().encodeToByteArray()), Base64.DEFAULT)
-                    setEncryptionKey.execute(SetEncryptionKey.Params(conversation.id, key))
-                }
-                .setNegativeButton(R.string.button_delete) { _, _ -> setEncryptionKey.execute(SetEncryptionKey.Params(conversation.id, "")) }
-                .setNeutralButton(R.string.button_cancel, null)
-                .show()
+        KeyInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title)) { key ->
+            setEncryptionKey.execute(SetEncryptionKey.Params(conversation.id, key))
+        }.show()
     }
 
     override fun showDeleteEncryptedAfterDialog(conversation: Conversation) = adapter.deleteEncryptedAfterDialog.show(activity!!)

@@ -42,6 +42,7 @@ import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.extensions.animateLayoutChanges
 import com.moez.QKSMS.common.util.extensions.setBackgroundTint
 import com.moez.QKSMS.common.util.extensions.setVisible
+import com.moez.QKSMS.common.widget.KeyInputDialog
 import com.moez.QKSMS.common.widget.PreferenceView
 import com.moez.QKSMS.common.widget.TextInputDialog
 import com.moez.QKSMS.feature.settings.about.AboutController
@@ -88,8 +89,8 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         AutoDeleteDialog(activity!!, autoDeleteSubject::onNext)
     }
 
-    private val encryptionKeyDialog: TextInputDialog by lazy {
-        TextInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), globalEncryptionKeySubject::onNext)
+    private val encryptionKeyDialog: KeyInputDialog by lazy {
+        KeyInputDialog(activity!!, context.getString(R.string.conversation_encryption_key_title), globalEncryptionKeySubject::onNext)
     }
 
     private val smsForResetDialog: TextInputDialog by lazy {
