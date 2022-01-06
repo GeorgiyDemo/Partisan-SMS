@@ -42,7 +42,7 @@
             android:id="@+id/globalEncryptionKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@android:drawable/ic_secure"
+            app:icon="@drawable/ic_lock_24dp"
             app:title="@string/settings_global_encryption_key_title" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
@@ -57,7 +57,7 @@
             android:id="@+id/encodingScheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:icon="@android:drawable/ic_secure"
+            app:icon="@drawable/ic_secure_24dp"
             app:title="@string/encoding_scheme" />
 
         <com.moez.QKSMS.common.widget.PreferenceView
