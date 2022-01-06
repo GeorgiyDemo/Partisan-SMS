@@ -63,11 +63,11 @@
     <string name="archived_empty_text">Your archived conversations will appear here</string>
     <string name="main_fab_cd">Start new conversation</string>
     <string name="main_default_sms_title">Love texting again</string>
-    <string name="main_default_sms_message">Make QKSMS your default SMS app</string>
+    <string name="main_default_sms_message">Make P-SMS your default SMS app</string>
     <string name="main_default_sms_change">Change</string>
     <string name="main_permission_required">Permission required</string>
-    <string name="main_permission_sms">QKSMS needs permission to send and view SMS messages</string>
-    <string name="main_permission_contacts">QKSMS needs permission to view your contacts</string>
+    <string name="main_permission_sms">P-SMS needs permission to send and view SMS messages</string>
+    <string name="main_permission_contacts">P-SMS needs permission to view your contacts</string>
     <string name="main_permission_allow">Allow</string>
 
     <string name="drawer_inbox">Inbox</string>
@@ -176,7 +176,7 @@
     <string name="backup_restore_stop_title">Stop restore</string>
     <string name="backup_restore_stop_message">Messages that have already been restored will remain on your device</string>
     <string name="backup_restore_dialog_title">Backups</string>
-    <string name="backup_restore_dialog_summary" translatable="false">/QKSMS/Backups</string>
+    <string name="backup_restore_dialog_summary" translatable="false">/P-SMS/Backups</string>
     <string name="backup_restore_dialog_empty">No backups found</string>
     <plurals name="backup_message_count">
         <item quantity="zero">No messages</item>
@@ -274,8 +274,8 @@
     <string name="settings_mms_size_title">Auto-compress MMS attachments</string>
     <string name="settings_sync_title">Sync messages</string>
     <string name="settings_sync_summary">Re-sync your messages with the native Android SMS database</string>
-    <string name="settings_about_title">About QKSMS</string>
-    <string name="settings_version">Version %s\nP-SMS version %s\nP-SMS-lib version %s</string>
+    <string name="settings_about_title">About P-SMS</string>
+    <string name="settings_version">Version %s\nQKSMS version %s\nP-SMS-lib version %s</string>
     <string name="settings_logging_enabled">Debug logging enabled</string>
     <string name="settings_logging_disabled">Debug logging disabled</string>
 
@@ -287,8 +287,8 @@
     <string name="blocking_conversations">Blocked conversations</string>
 
     <string name="blocking_manager_title">Blocking Manager</string>
-    <string name="blocking_manager_qksms_title">QKSMS</string>
-    <string name="blocking_manager_qksms_summary">Built-in blocking functionality in QKSMS</string>
+    <string name="blocking_manager_qksms_title">P-SMS</string>
+    <string name="blocking_manager_qksms_summary">Built-in blocking functionality in P-SMS</string>
     <string name="blocking_manager_call_control_title" translatable="false">Call Control</string>
     <string name="blocking_manager_call_control_summary">Automatically filter your calls and messages in one convenient place! Community IQ™ allows you to prevent unwanted messages from community known spammers</string>
     <string name="blocking_manager_sia_title" translatable="false">Should I Answer?</string>
@@ -377,10 +377,10 @@
     <string name="theme_hex">HEX</string>
     <string name="theme_apply">Apply</string>
 
-    <string name="about_developer" translatable="false">Moez Bhatti</string>
-    <string name="about_source" translatable="false">https://github.com/moezbhatti/qksms</string>
-    <string name="about_changelog" translatable="false">https://github.com/moezbhatti/qksms/releases</string>
-    <string name="about_contact" translatable="false">moez@qklabs.com</string>
+    <string name="about_developer" translatable="false">Cpartisans, Moez Bhatti</string>
+    <string name="about_source" translatable="false">https://github.com/wrwrabbit/Partisan-SMS</string>
+    <string name="about_changelog" translatable="false">https://github.com/wrwrabbit/Partisan-SMS/releases</string>
+    <string name="about_contact" translatable="false">https://t.me/cpartisans</string>
     <string name="about_license" translatable="false">GNU General Public License v3.0</string>
     <string name="about_copyright" translatable="false">© 2014–2019</string>
 

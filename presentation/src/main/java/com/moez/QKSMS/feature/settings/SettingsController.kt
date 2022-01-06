@@ -138,7 +138,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
         encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels)
 
-        about.summary = context.getString(R.string.settings_version, BuildConfig.VERSION_NAME, "2.0.0", by.cyberpartisan.psms.VERSION.toString())
+        about.summary = context.getString(R.string.settings_version, "2.0.0", BuildConfig.VERSION_NAME, by.cyberpartisan.psms.VERSION.toString())
     }
 
     override fun onAttach(view: View) {
