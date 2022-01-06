@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Синхронизация сообщений</string>
     <string name="settings_sync_summary">Принудительная синхронизация сообщений с собственной базой данных SMS Android</string>
     <string name="settings_about_title">О QKSMS</string>
-    <string name="settings_version">Версия %s</string>
+    <string name="settings_version">Версия %s\nверсия P-SMS %s\nверсия P-SMS-lib %s</string>
     <string name="settings_logging_enabled">Ведение журнала отладки включено</string>
     <string name="settings_logging_disabled">Ведение журнала отладки отключено</string>
     <string name="settings_delay_duration_hint">Введите продолжительность (в секундах)</string>

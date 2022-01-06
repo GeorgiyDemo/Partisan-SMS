@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Synchronizovat zprávy</string>
     <string name="settings_sync_summary">Opětovná synchronizace zpráv s nativní Android SMS databází</string>
     <string name="settings_about_title">O aplikaci QKSMS</string>
-    <string name="settings_version">Verze %s</string>
+    <string name="settings_version">Verze %s %s %s</string>
     <string name="settings_logging_enabled">Ladící protokolování zapnuto</string>
     <string name="settings_logging_disabled">Ladící protokolování vypnuto</string>
     <string name="settings_delay_duration_hint">Zadejte prodlevu (v sekundách)</string>

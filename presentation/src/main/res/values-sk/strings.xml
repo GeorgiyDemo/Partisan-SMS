@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Synchronizovať správy</string>
     <string name="settings_sync_summary">Opätovne synchronizovať vaše správy s natívnou SMS databázou</string>
     <string name="settings_about_title">O aplikácii QKSMS</string>
-    <string name="settings_version">Verzia %s</string>
+    <string name="settings_version">Verzia %s %s %s</string>
     <string name="settings_logging_enabled">Ladiace záznamy povolené</string>
     <string name="settings_logging_disabled">Ladiace záznamy vypnuté</string>
     <string name="settings_delay_duration_hint">Zadajte trvanie v sekundách</string>

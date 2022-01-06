@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Nachrichten synchronisieren</string>
     <string name="settings_sync_summary">Nachrichten mit der Android SMS-Datenbank abgleichen</string>
     <string name="settings_about_title">Über QKSMS</string>
-    <string name="settings_version">Version %s</string>
+    <string name="settings_version">Version %s %s %s</string>
     <string name="settings_logging_enabled">Protokollierung zur Fehlerbehebung aktiviert</string>
     <string name="settings_logging_disabled">Protokollierung zur Fehlerbehebung deaktiviert</string>
     <string name="settings_delay_duration_hint">Dauer eingeben (in Sekunden)</string>

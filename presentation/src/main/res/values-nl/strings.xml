@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Synchroniseer berichten</string>
     <string name="settings_sync_summary">Hersynchroniseer jouw berichten vanuit de SMS database op je telefoon</string>
     <string name="settings_about_title">Over QKSMS</string>
-    <string name="settings_version">Versie %s</string>
+    <string name="settings_version">Versie %s %s %s</string>
     <string name="settings_logging_enabled">Foutenregistratie ingeschakeld</string>
     <string name="settings_logging_disabled">Foutenregistratie uitgeschakeld</string>
     <string name="settings_delay_duration_hint">Voer duur (seconden) in</string>

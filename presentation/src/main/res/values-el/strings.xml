@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Συγχρονισμός μηνυμάτων</string>
     <string name="settings_sync_summary">Επανασυγχρονισμός μηνυμάτων με τη βάση δεδομένων SMS του Android</string>
     <string name="settings_about_title">Σχετικά με το QKSMS</string>
-    <string name="settings_version">Έκδοση %s</string>
+    <string name="settings_version">Έκδοση %s %s %s</string>
     <string name="settings_logging_enabled">Η καταγραφή σφαλμάτων ενεργοποιήθηκε</string>
     <string name="settings_logging_disabled">Η καταγραφή σφαλμάτων απενεργοποιήθηκε</string>
     <string name="settings_delay_duration_hint">Εισάγετε τη διάρκεια (δευτερόλεπτα)</string>

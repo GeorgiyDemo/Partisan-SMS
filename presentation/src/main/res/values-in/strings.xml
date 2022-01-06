@@ -248,7 +248,7 @@
     <string name="settings_sync_title">Sinkronisasi pesan</string>
     <string name="settings_sync_summary">Sinkronisasi ulang pesan anda dengan basis data aplikasi SMS Android bawaan</string>
     <string name="settings_about_title">Tentang QKSMS</string>
-    <string name="settings_version">Versi %s</string>
+    <string name="settings_version">Versi %s %s %s</string>
     <string name="settings_logging_enabled">Log awakutu diaktifkan</string>
     <string name="settings_logging_disabled">Log awakutu dinonaktifkan</string>
     <string name="settings_delay_duration_hint">Masukkan durasi (detik)</string>

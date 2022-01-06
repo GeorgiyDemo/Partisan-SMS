@@ -248,7 +248,7 @@
     <string name="settings_sync_title">메시지 동기화하기</string>
     <string name="settings_sync_summary">기본 안드로이드 SMS 데이터베이스에 다시 동기화하기</string>
     <string name="settings_about_title">QKSMS에 대해...</string>
-    <string name="settings_version">버전 정보 %s</string>
+    <string name="settings_version">버전 정보 %s %s %s</string>
     <string name="settings_logging_enabled">디버그 로깅 설정됨</string>
     <string name="settings_logging_disabled">디버그 로깅 해제됨</string>
     <string name="settings_delay_duration_hint">기간 (초)을 입력</string>

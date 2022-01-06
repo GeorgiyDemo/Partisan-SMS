@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Sincronizar mensajes</string>
     <string name="settings_sync_summary">Vuelve a sincronizar tus mensajes con la base de datos nativa de Android SMS</string>
     <string name="settings_about_title">Acerca de QKSMS</string>
-    <string name="settings_version">Versión %s</string>
+    <string name="settings_version">Versión %s %s %s</string>
     <string name="settings_logging_enabled">Registro de depuración activado</string>
     <string name="settings_logging_disabled">Registro de depuración desactivado</string>
     <string name="settings_delay_duration_hint">Introduzca la duración (segundos)</string>

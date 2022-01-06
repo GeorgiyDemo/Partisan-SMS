@@ -248,7 +248,7 @@
     <string name="settings_sync_title">Đồng bộ tin nhắn</string>
     <string name="settings_sync_summary">Đồng bộ lại tin nhắn với thiết bị</string>
     <string name="settings_about_title">Thông tin QKSMS</string>
-    <string name="settings_version">Phiên bản: %s</string>
+    <string name="settings_version">Phiên bản: %s %s %s</string>
     <string name="settings_logging_enabled">Đã bật bản ghi gỡ lỗi</string>
     <string name="settings_logging_disabled">Đã tắt bản ghi gỡ lỗi</string>
     <string name="settings_delay_duration_hint">Nhập khoảng thời gian (giây)</string>

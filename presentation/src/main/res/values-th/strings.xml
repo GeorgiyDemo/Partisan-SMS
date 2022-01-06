@@ -248,7 +248,7 @@
     <string name="settings_sync_title">ซิงค์ข้อความ</string>
     <string name="settings_sync_summary">ซิงค์ข้อความของคุณกับฐานข้อมูลของ Android SMS</string>
     <string name="settings_about_title">เกี่ยวกับ QKSMS</string>
-    <string name="settings_version">เวอร์ชัน: %s</string>
+    <string name="settings_version">เวอร์ชัน: %s %s %s</string>
     <string name="settings_logging_enabled">Debug logging enabled</string>
     <string name="settings_logging_disabled">Debug logging disabled</string>
     <string name="settings_delay_duration_hint">ระยะเวลาการป้อน (วินาที)</string>

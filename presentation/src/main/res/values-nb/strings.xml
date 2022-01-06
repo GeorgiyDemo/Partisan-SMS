@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Synkroniser meldinger</string>
     <string name="settings_sync_summary">Resynkroniser meldinger med Androids interne meldingslager</string>
     <string name="settings_about_title">Om QKSMS</string>
-    <string name="settings_version">Versjon %s</string>
+    <string name="settings_version">Versjon %s %s %s</string>
     <string name="settings_logging_enabled">Feillogg aktivert</string>
     <string name="settings_logging_disabled">Feillogg deaktivert</string>
     <string name="settings_delay_duration_hint">Legg inn forsinkelse (i sekunder)</string>
