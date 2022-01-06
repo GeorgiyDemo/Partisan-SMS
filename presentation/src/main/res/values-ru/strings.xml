@@ -310,8 +310,8 @@
     <string name="qksms_plus_upgrade_donate">Разблокировать + пожертвовать %1$s %2$s</string>
     <string name="qksms_plus_thanks_title">Спасибо за поддержку QKSMS!</string>
     <string name="qksms_plus_thanks_summary">Теперь у вас есть доступ ко всем функциям QKSMS+</string>
-    <string name="qksms_plus_free_title">QKSMS+ является бесплатным для пользователей F-Droid! Если вы хотите поддержать развитие приложения, сделайте пожертвование.</string>
-    <string name="qksms_plus_donate">Пожертвовать через PayPal</string>
+    <string name="qksms_plus_free_title">P-SMS является бесплатным приложением. Если вы хотите поддержать развитие приложения, сделайте пожертвование.</string>
+    <string name="qksms_plus_donate">Пожертвовать через Bitcoin</string>
     <string name="qksms_plus_coming_soon">Скоро</string>
     <string name="qksms_plus_themes_title">Премиальные темы</string>
     <string name="qksms_plus_themes_summary">Разблокируйте красивые цвета темы, недоступные в палитре Material Design</string>
@@ -451,4 +451,6 @@
     <string name="channel_id">ID канала</string>
     <string name="invalid_key">Неверный ключ</string>
     <string name="button_generate">Сгенерировать</string>
+    <string name="address_copied">"Адрес скопирован"</string>
+    <string name="drawer_plus">Пожертвовать</string>
 </resources>

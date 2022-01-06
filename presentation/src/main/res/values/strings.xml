@@ -30,7 +30,7 @@
     <string name="title_theme">Theme</string>
     <string name="title_conversations">Search inbox…</string>
     <string name="title_compose">Type a name or number</string>
-    <string name="title_qksms_plus" translatable="false">QKSMS+</string>
+    <string name="title_qksms_plus" translatable="false">P-SMS</string>
 
     <string name="setup_skip">Skip</string>
     <string name="setup_next">Continue</string>
@@ -76,10 +76,10 @@
     <string name="drawer_blocking">Blocking</string>
     <string name="drawer_more">More</string>
     <string name="drawer_settings">Settings</string>
-    <string name="drawer_plus" translatable="false">QKSMS+</string>
+    <string name="drawer_plus">Donate</string>
     <string name="drawer_help">Help &amp; feedback</string>
     <string name="drawer_invite">Invite friends</string>
-    <string name="drawer_plus_banner_title" translatable="false">QKSMS+</string>
+    <string name="drawer_plus_banner_title" translatable="false">P-SMS</string>
     <string name="drawer_plus_banner_summary">Unlock amazing new features, and support development</string>
 
     <string name="rate_title">Enjoying QKSMS?</string>
@@ -338,8 +338,8 @@
     <string name="qksms_plus_thanks_title">Thank you for supporting QKSMS!</string>
     <string name="qksms_plus_thanks_summary">You now have access to all QKSMS+ features</string>
     <string name="qksms_plus_error">An error has occurred, please try again</string>
-    <string name="qksms_plus_free_title">QKSMS+ is free for F-Droid users! If you\'d like to support development, a donation would be highly appreciated.</string>
-    <string name="qksms_plus_donate">Donate via PayPal</string>
+    <string name="qksms_plus_free_title">P-SMS is free for application! If you\'d like to support development, a donation would be highly appreciated.</string>
+    <string name="qksms_plus_donate">Donate via Bitcoin</string>
     <string name="qksms_plus_coming_soon">Coming soon</string>
     <string name="qksms_plus_themes_title">Premium themes</string>
     <string name="qksms_plus_themes_summary">Unlock beautiful theme colors not available on the Material Design palette</string>
@@ -517,4 +517,5 @@
     <string name="channel_id">Channel ID</string>
     <string name="invalid_key">Invalid Key</string>
     <string name="button_generate">Generate</string>
+    <string name="address_copied">"Address copied"</string>
 </resources>

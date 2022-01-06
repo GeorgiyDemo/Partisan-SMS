@@ -20,17 +20,17 @@ package com.moez.QKSMS.common
 
 import android.app.Activity
 import android.app.role.RoleManager
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Build
 import android.provider.ContactsContract
 import android.provider.Settings
 import android.provider.Telephony
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.moez.QKSMS.BuildConfig
+import com.moez.QKSMS.R
 import com.moez.QKSMS.feature.backup.BackupActivity
 import com.moez.QKSMS.feature.blocking.BlockingActivity
 import com.moez.QKSMS.feature.compose.ComposeActivity
@@ -173,8 +173,9 @@ class Navigator @Inject constructor(
     }
 
     fun showDonation() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://bit.ly/QKSMSDonation"))
-        startActivityExternal(intent)
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("BTC", "bc1qw4yqlzgjxnl9dtzchxj7nkjdlw6uz2gdkp0679"))
+        Toast.makeText(context, context.getString(R.string.address_copied), Toast.LENGTH_SHORT).show()
     }
 
     fun showRating() {
