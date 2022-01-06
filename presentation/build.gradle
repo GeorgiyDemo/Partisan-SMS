@@ -76,6 +76,14 @@ android {
         signingConfigs.release.keyAlias = System.getenv("key_alias")
         signingConfigs.release.keyPassword = System.getenv("key_password")
     }
+
+    applicationVariants.all { variant ->
+        if (variant.name.contains("debug")) {
+            variant.mergedFlavor.applicationId = "org.cpartisans.psms.beta"
+        } else {
+            variant.mergedFlavor.applicationId = "org.cpartisans.psms"
+        }
+    }
 }
 
 androidExtensions {
