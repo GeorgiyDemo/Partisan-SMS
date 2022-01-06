@@ -248,7 +248,7 @@
     <string name="settings_sync_title">同步消息</string>
     <string name="settings_sync_summary">重新與安卓原生訊息數據庫進行同步</string>
     <string name="settings_about_title">關於QKSMS</string>
-    <string name="settings_version">版本 %s</string>
+    <string name="settings_version">版本 %s %s %s</string>
     <string name="settings_logging_enabled">除錯日誌已啓用</string>
     <string name="settings_logging_disabled">出錯日誌已停用</string>
     <string name="settings_delay_duration_hint">輸入時長 (秒)</string>

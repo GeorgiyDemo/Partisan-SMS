@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Synchronizuj wiadomości</string>
     <string name="settings_sync_summary">Zsynchronizuj wiadomości z systemową bazą danych</string>
     <string name="settings_about_title">O aplikacji</string>
-    <string name="settings_version">Wersja %s</string>
+    <string name="settings_version">Wersja %s %s %s</string>
     <string name="settings_logging_enabled">Logi włączone</string>
     <string name="settings_logging_disabled">Logi wyłączone</string>
     <string name="settings_delay_duration_hint">Wprowadź czas (w sekundach)</string>

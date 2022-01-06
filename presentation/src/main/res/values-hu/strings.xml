@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Üzenetek szinkronizálása</string>
     <string name="settings_sync_summary">Üzenetek újra-szinkronizálása a natív Android SMS-adatbázissal</string>
     <string name="settings_about_title">A QKSMS-ről</string>
-    <string name="settings_version">%s verzió</string>
+    <string name="settings_version">" %s %s %s verzió"</string>
     <string name="settings_logging_enabled">Hibanaplózás engedélyezve</string>
     <string name="settings_logging_disabled">Hibanaplózás tiltva</string>
     <string name="settings_delay_duration_hint">Nyomva tartás ideje (másodpercben)</string>

@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Sinhroniziraj sporočila</string>
     <string name="settings_sync_summary">Znova sinhroniziraj sporočila s sistemsko SMS bazo</string>
     <string name="settings_about_title">Več o QKSMS</string>
-    <string name="settings_version">Različica %s</string>
+    <string name="settings_version">Različica %s %s %s</string>
     <string name="settings_logging_enabled">Beleženje dnevnika za odpravljanje napak omogočeno</string>
     <string name="settings_logging_disabled">Beleženje dnevnika za odpravljanje napak onemogočeno</string>
     <string name="settings_delay_duration_hint">Vnesi trajanje (v sekundah)</string>

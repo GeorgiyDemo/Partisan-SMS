@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Synkronoi viestit</string>
     <string name="settings_sync_summary">Synkronoi viestisi uudelleen Androidin oman SMS-tietokannan kanssa</string>
     <string name="settings_about_title">Tietoja QKSMS:tä</string>
-    <string name="settings_version">Versio %s</string>
+    <string name="settings_version">Versio %s %s %s</string>
     <string name="settings_logging_enabled">Virheenkorjauslokien kirjaaminen käytössä</string>
     <string name="settings_logging_disabled">Virheenkorjauslokien kirjaaminen pois käytöstä</string>
     <string name="settings_delay_duration_hint">Syötä kesto (sekuntia)</string>

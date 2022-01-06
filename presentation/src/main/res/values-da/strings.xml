@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Beskedsynkronisering</string>
     <string name="settings_sync_summary">Gen-synkroniéer beskeder med den indbyggede Android SMS-database</string>
     <string name="settings_about_title">Om QKSMS</string>
-    <string name="settings_version">Version %s</string>
+    <string name="settings_version">Version %s %s %s</string>
     <string name="settings_logging_enabled">Fejlfindingslogning aktiveret</string>
     <string name="settings_logging_disabled">Fejlfindingslogning deaktiveret</string>
     <string name="settings_delay_duration_hint">Angiv varighed (sekunder)</string>

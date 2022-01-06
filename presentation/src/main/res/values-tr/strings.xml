@@ -251,7 +251,7 @@
     <string name="settings_sync_title"> İletileri eşitle</string>
     <string name="settings_sync_summary">İletilerinizi  Android SMS veritabanı ile yeniden senkronize edin</string>
     <string name="settings_about_title">QKSMS Hakkında</string>
-    <string name="settings_version">Sürüm %s</string>
+    <string name="settings_version">Sürüm %s %s %s</string>
     <string name="settings_logging_enabled">Hata ayıklama günlüğü etkin</string>
     <string name="settings_logging_disabled">Hata ayıklama günlüğü devre dışı</string>
     <string name="settings_delay_duration_hint">Süre (saniye olarak) girin</string>

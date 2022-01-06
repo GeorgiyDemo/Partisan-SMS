@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Синхронізація повідомлень</string>
     <string name="settings_sync_summary">Повторна синхронізація ваших повідомлень з власною базою даних SMS Android</string>
     <string name="settings_about_title">Про QKSMS</string>
-    <string name="settings_version">Версія %s</string>
+    <string name="settings_version">Версія %s %s %s</string>
     <string name="settings_logging_enabled">Ведення журналу зневаження увімкнуте</string>
     <string name="settings_logging_disabled">Ведення журналу зневаження вимкнуте</string>
     <string name="settings_delay_duration_hint">Введіть тривалість (у секундах)</string>

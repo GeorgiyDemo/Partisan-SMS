@@ -248,7 +248,7 @@
     <string name="settings_sync_title">メッセージを同期</string>
     <string name="settings_sync_summary">メッセージをネイティブの Android SMS データベースと再同期します</string>
     <string name="settings_about_title">QKSMS について</string>
-    <string name="settings_version">バージョン %s</string>
+    <string name="settings_version">バージョン %s %s %s</string>
     <string name="settings_logging_enabled">デバッグログが有効</string>
     <string name="settings_logging_disabled">デバッグログを無効にする</string>
     <string name="settings_delay_duration_hint">期間を入力してください (秒)</string>

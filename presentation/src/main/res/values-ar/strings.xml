@@ -263,7 +263,7 @@
     <string name="settings_sync_title">مزامنة الرسائل</string>
     <string name="settings_sync_summary">إعادة مزامنة رسائلك مع قاعدة البيانات الأصلية للرسائل في النظام</string>
     <string name="settings_about_title">حول QKSMS</string>
-    <string name="settings_version">النسخة %s</string>
+    <string name="settings_version">النسخة %s %s %s</string>
     <string name="settings_logging_enabled">تسجيل التصحيح مفعَّل</string>
     <string name="settings_logging_disabled">تسجيل التصحيح معطَّل</string>
     <string name="settings_delay_duration_hint">أدخل المدة (ثوان)</string>

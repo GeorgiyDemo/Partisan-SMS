@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Synchroniser les messages</string>
     <string name="settings_sync_summary">Resynchroniser les messages avec la base de données Android native</string>
     <string name="settings_about_title">À propos de QKSMS</string>
-    <string name="settings_version">Version %s</string>
+    <string name="settings_version">Version %s %s %s</string>
     <string name="settings_logging_enabled">Journal de débogage activé</string>
     <string name="settings_logging_disabled">Journal de débogage désactivé</string>
     <string name="settings_delay_duration_hint">Entrez la durée (en secondes)</string>
