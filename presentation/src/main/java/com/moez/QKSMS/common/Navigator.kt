@@ -173,9 +173,8 @@ class Navigator @Inject constructor(
     }
 
     fun showDonation() {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("BTC", "bc1qw4yqlzgjxnl9dtzchxj7nkjdlw6uz2gdkp0679"))
-        Toast.makeText(context, context.getString(R.string.address_copied), Toast.LENGTH_SHORT).show()
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/cpartisans/337"))
+        startActivityExternal(intent)
     }
 
     fun showRating() {
