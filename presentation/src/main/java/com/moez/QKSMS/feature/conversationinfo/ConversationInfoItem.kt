@@ -8,7 +8,7 @@ sealed class ConversationInfoItem {
 
     data class ConversationInfoRecipient(val value: Recipient) : ConversationInfoItem()
 
-    data class ConversationInfoSettings constructor(
+    data class ConversationInfoSettings(
         val name: String,
         val recipients: RealmList<Recipient>,
         val archived: Boolean,

@@ -52,6 +52,7 @@ import javax.inject.Singleton
 class Navigator @Inject constructor(
     private val context: Context,
     private val analyticsManager: AnalyticsManager,
+    private val billingManager: BillingManager,
     private val notificationManager: NotificationManager,
     private val permissions: PermissionManager
 ) {
