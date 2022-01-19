@@ -23,7 +23,7 @@ import io.realm.RealmObject
 import io.realm.annotations.Index
 import io.realm.annotations.PrimaryKey
 
-open class Conversation(
+open class Conversation constructor(
     @PrimaryKey var id: Long = 0,
     @Index var archived: Boolean = false,
     @Index var blocked: Boolean = false,
@@ -39,11 +39,10 @@ open class Conversation(
 
     // hidden
     var encryptionKey: String = "",
+    var encodingSchemeId: Int = 0,
     var deleteEncryptedAfter: Int = 0,
     var deleteReceivedAfter: Int = 0,
     var deleteSentAfter: Int = 0
-
-
 ) : RealmObject() {
 
     val date: Long get() = lastMessage?.date ?: 0

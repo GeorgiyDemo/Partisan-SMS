@@ -432,6 +432,18 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun setEncodingScheme(threadId: Long, encodingSchemeId: Int) {
+        Realm.getDefaultInstance().use { realm ->
+            val conversation = realm.where(Conversation::class.java)
+                .equalTo(Conversation::id.name, threadId)
+                .findFirst()
+
+            realm.executeTransaction {
+                conversation?.encodingSchemeId = encodingSchemeId
+            }
+        }
+    }
+
     override fun setDeleteEncryptedAfter(threadId: Long, durationId: Int) {
         Realm.getDefaultInstance().use { realm ->
             val conversation = realm.where(Conversation::class.java)

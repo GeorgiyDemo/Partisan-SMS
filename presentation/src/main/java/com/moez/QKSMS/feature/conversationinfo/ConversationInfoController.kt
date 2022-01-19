@@ -19,8 +19,6 @@
 package com.moez.QKSMS.feature.conversationinfo
 
 import android.content.Context
-import android.util.Base64
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +26,6 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.QkChangeHandler
-import com.moez.QKSMS.common.QkDialog
 import com.moez.QKSMS.common.base.QkController
 import com.moez.QKSMS.common.util.extensions.scrapViews
 import com.moez.QKSMS.common.widget.KeyInputDialog
@@ -45,7 +42,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.conversation_info_controller.*
-import kotlinx.android.synthetic.main.text_input_dialog.view.*
 import javax.inject.Inject
 
 class ConversationInfoController(
@@ -88,6 +84,7 @@ class ConversationInfoController(
         adapter.deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
         adapter.deleteSentAfterDialog.adapter.setData(R.array.delete_message_after_labels)
         adapter.deleteReceivedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
+        adapter.encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels)
 
         themedActivity?.theme
                 ?.autoDisposable(scope())
@@ -122,12 +119,14 @@ class ConversationInfoController(
     override fun confirmDelete(): Observable<*> = confirmDeleteSubject
     override fun mediaClicks(): Observable<Long> = adapter.mediaClicks
     override fun encryptionKeyClicks(): Observable<*> = adapter.encryptionKeyClicks
+    override fun encodingSchemeClicks(): Observable<*> = adapter.encodingSchemeClicks
     override fun deleteEncryptedAfterClicks(): Observable<*> = adapter.deleteEncryptedAfterClicks
     override fun deleteReceivedAfterClicks(): Observable<*>  = adapter.deleteReceivedAfterClicks
     override fun deleteSentAfterClicks(): Observable<*> = adapter.deleteSentAfterClicks
     override fun deleteEncryptedAfterSelected(): Observable<Int> = adapter.deleteEncryptedAfterDialog.adapter.menuItemClicks
     override fun deleteReceivedAfterSelected(): Observable<Int> = adapter.deleteReceivedAfterDialog.adapter.menuItemClicks
     override fun deleteSentAfterSelected(): Observable<Int> = adapter.deleteSentAfterDialog.adapter.menuItemClicks
+    override fun encodingSchemeSelected(): Observable<Int> = adapter.encodingSchemeDialog.adapter.menuItemClicks
 
     override fun showNameDialog(name: String) = nameDialog.setText(name).show()
 
@@ -165,5 +164,7 @@ class ConversationInfoController(
     override fun showDeleteReceivedAfterDialog(conversation: Conversation) = adapter.deleteReceivedAfterDialog.show(activity!!)
 
     override fun showDeleteSentAfterDialog(conversation: Conversation) = adapter.deleteSentAfterDialog.show(activity!!)
+
+    override fun showEncodingSchemeDialog(conversation: Conversation) = adapter.encodingSchemeDialog.show(requireActivity())
 
 }

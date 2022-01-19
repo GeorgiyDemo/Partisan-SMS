@@ -18,6 +18,7 @@
  */
 package com.moez.QKSMS.common.base
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,10 @@ abstract class QkController<ViewContract : QkViewContract<State>, State, Present
 
     protected val themedActivity: QkThemedActivity?
         get() = activity as? QkThemedActivity
+
+    protected fun requireActivity(): Activity {
+        return activity!!
+    }
 
     override var containerView: View? = null
 

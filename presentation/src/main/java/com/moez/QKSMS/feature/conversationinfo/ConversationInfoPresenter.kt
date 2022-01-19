@@ -56,9 +56,10 @@ class ConversationInfoPresenter @Inject constructor(
     private val markUnarchived: MarkUnarchived,
     private val navigator: Navigator,
     private val permissionManager: PermissionManager,
-    private val setDeleteMessagesAfter: SetDeleteMessagesAfter
+    private val setDeleteMessagesAfter: SetDeleteMessagesAfter,
+    private val setEncodingScheme: SetEncodingScheme,
 ) : QkPresenter<ConversationInfoView, ConversationInfoState>(
-        ConversationInfoState(threadId = threadId)
+    ConversationInfoState(threadId = threadId)
 ) {
 
     private val conversation: Subject<Conversation> = BehaviorSubject.create()
@@ -80,33 +81,38 @@ class ConversationInfoPresenter @Inject constructor(
         disposables += markUnarchived
         disposables += deleteConversations
 
+        val encodingSchemeDialogLabels = context.resources.getStringArray(R.array.encoding_scheme_labels)
+
         disposables += Observables
-                .combineLatest(
-                        conversation,
-                        messageRepo.getPartsForConversation(threadId).asObservable()
-                ) { conversation, parts ->
-                    val data = mutableListOf<ConversationInfoItem>()
+            .combineLatest(
+                conversation,
+                messageRepo.getPartsForConversation(threadId).asObservable()
+            ) { conversation, parts ->
+                val data = mutableListOf<ConversationInfoItem>()
 
-                    // If some data was deleted, this isn't the place to handle it
-                    if (!conversation.isLoaded || !conversation.isValid || !parts.isLoaded || !parts.isValid) {
-                        return@combineLatest
-                    }
-
-                    data += conversation.recipients.map(::ConversationInfoRecipient)
-                    data += ConversationInfoItem.ConversationInfoSettings(
-                            name = conversation.name,
-                            recipients = conversation.recipients,
-                            archived = conversation.archived,
-                            blocked = conversation.blocked,
-                            encryptionKey = conversation.encryptionKey,
-                            deleteEncryptedAfter = conversation.deleteEncryptedAfter,
-                            deleteReceivedAfter = conversation.deleteReceivedAfter,
-                            deleteSentAfter = conversation.deleteSentAfter)
-                    data += parts.map(::ConversationInfoMedia)
-
-                    newState { copy(data = data) }
+                // If some data was deleted, this isn't the place to handle it
+                if (!conversation.isLoaded || !conversation.isValid || !parts.isLoaded || !parts.isValid) {
+                    return@combineLatest
                 }
-                .subscribe()
+
+                data += conversation.recipients.map(::ConversationInfoRecipient)
+                data += ConversationInfoItem.ConversationInfoSettings(
+                    name = conversation.name,
+                    recipients = conversation.recipients,
+                    archived = conversation.archived,
+                    blocked = conversation.blocked,
+                    encryptionKey = conversation.encryptionKey,
+                    encodingSchemeId = conversation.encodingSchemeId,
+                    encodingSchemeSummary = encodingSchemeDialogLabels[conversation.encodingSchemeId],
+                    deleteEncryptedAfter = conversation.deleteEncryptedAfter,
+                    deleteReceivedAfter = conversation.deleteReceivedAfter,
+                    deleteSentAfter = conversation.deleteSentAfter
+                )
+                data += parts.map(::ConversationInfoMedia)
+
+                newState { copy(data = data) }
+            }
+            .subscribe()
     }
 
     override fun bindIntents(view: ConversationInfoView) {
@@ -199,6 +205,11 @@ class ConversationInfoPresenter @Inject constructor(
                 .autoDisposable(view.scope())
                 .subscribe { conversation -> view.showEncryptionKeyDialog(conversation) }
 
+        view.encodingSchemeClicks()
+            .withLatestFrom(conversation) { _, conversation -> conversation }
+            .autoDisposable(view.scope())
+            .subscribe { conversation -> view.showEncodingSchemeDialog(conversation) }
+
         view.deleteEncryptedAfterClicks()
                 .withLatestFrom(conversation) { _, conversation -> conversation }
                 .autoDisposable(view.scope())
@@ -237,6 +248,19 @@ class ConversationInfoPresenter @Inject constructor(
                 }
                 .autoDisposable(view.scope())
                 .subscribe()
+
+        view.encodingSchemeSelected()
+            .withLatestFrom(conversation) { encodingSchemeId, conversation -> Pair(conversation, encodingSchemeId) }
+            .doOnNext { (conversation, encodingSchemeId) ->
+                setEncodingScheme.execute(
+                    SetEncodingScheme.Params(
+                        conversation.id,
+                        encodingSchemeId
+                    )
+                )
+            }
+            .autoDisposable(view.scope())
+            .subscribe()
     }
 
 }

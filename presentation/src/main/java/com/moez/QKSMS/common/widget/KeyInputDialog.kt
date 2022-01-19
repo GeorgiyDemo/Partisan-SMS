@@ -9,7 +9,7 @@ import com.moez.QKSMS.R
 import kotlinx.android.synthetic.main.text_input_dialog.view.*
 import javax.crypto.KeyGenerator
 
-class KeyInputDialog(context: Activity, hint: String, val listener: (String) -> Unit) : AlertDialog(context) {
+class KeyInputDialog constructor(context: Activity, hint: String, val listener: (String) -> Unit) : AlertDialog(context) {
 
     private val layout = LayoutInflater.from(context).inflate(R.layout.text_input_dialog, null)
 
