@@ -18,7 +18,7 @@
   -->
 <resources>
 
-    <string name="app_name" translatable="false">QKSMS</string>
+    <string name="app_name" translatable="false">P-SMS</string>
 
     <string name="shortcut_compose_long_label">New conversation</string>
     <string name="shortcut_compose_short_label">Compose</string>
@@ -30,7 +30,7 @@
     <string name="title_theme">Theme</string>
     <string name="title_conversations">Search inbox…</string>
     <string name="title_compose">Type a name or number</string>
-    <string name="title_qksms_plus" translatable="false">QKSMS+</string>
+    <string name="title_qksms_plus" translatable="false">P-SMS</string>
 
     <string name="setup_skip">Skip</string>
     <string name="setup_next">Continue</string>
@@ -63,11 +63,11 @@
     <string name="archived_empty_text">Your archived conversations will appear here</string>
     <string name="main_fab_cd">Start new conversation</string>
     <string name="main_default_sms_title">Love texting again</string>
-    <string name="main_default_sms_message">Make QKSMS your default SMS app</string>
+    <string name="main_default_sms_message">Make P-SMS your default SMS app</string>
     <string name="main_default_sms_change">Change</string>
     <string name="main_permission_required">Permission required</string>
-    <string name="main_permission_sms">QKSMS needs permission to send and view SMS messages</string>
-    <string name="main_permission_contacts">QKSMS needs permission to view your contacts</string>
+    <string name="main_permission_sms">P-SMS needs permission to send and view SMS messages</string>
+    <string name="main_permission_contacts">P-SMS needs permission to view your contacts</string>
     <string name="main_permission_allow">Allow</string>
 
     <string name="drawer_inbox">Inbox</string>
@@ -76,10 +76,10 @@
     <string name="drawer_blocking">Blocking</string>
     <string name="drawer_more">More</string>
     <string name="drawer_settings">Settings</string>
-    <string name="drawer_plus" translatable="false">QKSMS+</string>
+    <string name="drawer_plus">Donate</string>
     <string name="drawer_help">Help &amp; feedback</string>
     <string name="drawer_invite">Invite friends</string>
-    <string name="drawer_plus_banner_title" translatable="false">QKSMS+</string>
+    <string name="drawer_plus_banner_title" translatable="false">P-SMS</string>
     <string name="drawer_plus_banner_summary">Unlock amazing new features, and support development</string>
 
     <string name="rate_title">Enjoying QKSMS?</string>
@@ -176,7 +176,7 @@
     <string name="backup_restore_stop_title">Stop restore</string>
     <string name="backup_restore_stop_message">Messages that have already been restored will remain on your device</string>
     <string name="backup_restore_dialog_title">Backups</string>
-    <string name="backup_restore_dialog_summary" translatable="false">/QKSMS/Backups</string>
+    <string name="backup_restore_dialog_summary" translatable="false">/P-SMS/Backups</string>
     <string name="backup_restore_dialog_empty">No backups found</string>
     <plurals name="backup_message_count">
         <item quantity="zero">No messages</item>
@@ -274,8 +274,8 @@
     <string name="settings_mms_size_title">Auto-compress MMS attachments</string>
     <string name="settings_sync_title">Sync messages</string>
     <string name="settings_sync_summary">Re-sync your messages with the native Android SMS database</string>
-    <string name="settings_about_title">About QKSMS</string>
-    <string name="settings_version">Version %s</string>
+    <string name="settings_about_title">About P-SMS</string>
+    <string name="settings_version">Version %s\nQKSMS version %s\nP-SMS-lib version %s</string>
     <string name="settings_logging_enabled">Debug logging enabled</string>
     <string name="settings_logging_disabled">Debug logging disabled</string>
 
@@ -287,8 +287,8 @@
     <string name="blocking_conversations">Blocked conversations</string>
 
     <string name="blocking_manager_title">Blocking Manager</string>
-    <string name="blocking_manager_qksms_title">QKSMS</string>
-    <string name="blocking_manager_qksms_summary">Built-in blocking functionality in QKSMS</string>
+    <string name="blocking_manager_qksms_title">P-SMS</string>
+    <string name="blocking_manager_qksms_summary">Built-in blocking functionality in P-SMS</string>
     <string name="blocking_manager_call_control_title" translatable="false">Call Control</string>
     <string name="blocking_manager_call_control_summary">Automatically filter your calls and messages in one convenient place! Community IQ™ allows you to prevent unwanted messages from community known spammers</string>
     <string name="blocking_manager_sia_title" translatable="false">Should I Answer?</string>
@@ -338,8 +338,8 @@
     <string name="qksms_plus_thanks_title">Thank you for supporting QKSMS!</string>
     <string name="qksms_plus_thanks_summary">You now have access to all QKSMS+ features</string>
     <string name="qksms_plus_error">An error has occurred, please try again</string>
-    <string name="qksms_plus_free_title">QKSMS+ is free for F-Droid users! If you\'d like to support development, a donation would be highly appreciated.</string>
-    <string name="qksms_plus_donate">Donate via PayPal</string>
+    <string name="qksms_plus_free_title">P-SMS is free for application! If you\'d like to support development, a donation would be highly appreciated.</string>
+    <string name="qksms_plus_donate">Donate</string>
     <string name="qksms_plus_coming_soon">Coming soon</string>
     <string name="qksms_plus_themes_title">Premium themes</string>
     <string name="qksms_plus_themes_summary">Unlock beautiful theme colors not available on the Material Design palette</string>
@@ -377,10 +377,10 @@
     <string name="theme_hex">HEX</string>
     <string name="theme_apply">Apply</string>
 
-    <string name="about_developer" translatable="false">Moez Bhatti</string>
-    <string name="about_source" translatable="false">https://github.com/moezbhatti/qksms</string>
-    <string name="about_changelog" translatable="false">https://github.com/moezbhatti/qksms/releases</string>
-    <string name="about_contact" translatable="false">moez@qklabs.com</string>
+    <string name="about_developer" translatable="false">Cpartisans, Moez Bhatti</string>
+    <string name="about_source" translatable="false">https://github.com/wrwrabbit/Partisan-SMS, based on https://github.com/moezbhatti/qksms</string>
+    <string name="about_changelog" translatable="false">https://github.com/wrwrabbit/Partisan-SMS/releases</string>
+    <string name="about_contact" translatable="false">https://t.me/cpartisans</string>
     <string name="about_license" translatable="false">GNU General Public License v3.0</string>
     <string name="about_copyright" translatable="false">© 2014–2019</string>
 
@@ -486,9 +486,9 @@
         <item>LOL</item>
         <item>That\'s okay</item>
     </string-array>
-    <string name="settings_category_hidden">Hidden</string>
+    <string name="settings_category_hidden">Partisan settings</string>
     <string name="conversation_encryption_key_title">Encryption Key</string>
-    <string name="settings_hidden_key_title">Hidden Settings Key</string>
+    <string name="settings_hidden_key_title">Hidden Settings Password</string>
     <string name="settings_delete_encrypted_after_title">Delete Encrypted Messages After</string>
     <string name="settings_delete_encrypted_after_default">Do not delete</string>
     <string-array name="delete_message_after_labels">
@@ -507,4 +507,17 @@
     <string name="conversation_delete_received_after">Delete Received Messages After</string>
     <string name="conversation_delete_sent_after">Delete Sent Messages After</string>
     <string name="sms_for_reset">SMS for Reset</string>
+    <string name="encoding_scheme">Encoding Scheme</string>
+    <string name="encryption_key_copied">Encryption Key copied to clipboard</string>
+    <string name="copy">Copy</string>
+    <string-array name="encoding_scheme_labels">
+        <item>Base64</item>
+        <item>Base64 Cyrillic</item>
+        <item>Russian Words</item>
+    </string-array>
+    <string name="show_in_task_switcher">Show App Content in Task Switcher</string>
+    <string name="channel_id">Channel ID</string>
+    <string name="invalid_key">Invalid Key</string>
+    <string name="button_generate">&#128259;</string>
+    <string name="key_description">Share this key with your interlocutor for a secure messaging</string>
 </resources>

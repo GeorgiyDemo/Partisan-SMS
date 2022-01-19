@@ -159,6 +159,14 @@ class MainViewModel @Inject constructor(
                 .autoDisposable(view.scope())
                 .subscribe { syncMessages.execute(Unit) }
 
+        // Show Generate Key dialog if needed
+        view.showGenerateKeyIntent
+            .first(false)
+            .autoDisposable(view.scope())
+            .subscribe { show ->
+                if(show) view.showGenerateKeyDialog()
+            }
+
         // Launch screen from intent
         view.onNewIntentIntent
                 .autoDisposable(view.scope())
