@@ -43,6 +43,8 @@ open class Conversation constructor(
     var deleteEncryptedAfter: Int = 0,
     var deleteReceivedAfter: Int = 0,
     var deleteSentAfter: Int = 0
+
+
 ) : RealmObject() {
 
     val date: Long get() = lastMessage?.date ?: 0
