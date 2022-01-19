@@ -122,6 +122,8 @@ class Preferences @Inject constructor(
     val smsForReset = rxPrefs.getString("smsForReset", "")
     val hiddenKey = rxPrefs.getString("hiddenKey", "")
     val deleteEncryptedAfter = rxPrefs.getInteger("deleteEncryptedAfter", 0)
+    val encodingScheme = rxPrefs.getInteger("encodingScheme", 0)
+    val showInTaskSwitcher = rxPrefs.getBoolean("showInTaskSwitcher", true)
 
     init {
         // Migrate from old night mode preference to new one, now that we support android Q night mode
@@ -155,10 +157,10 @@ class Preferences @Inject constructor(
 
     fun theme(
         recipientId: Long = 0,
-        default: Int = rxPrefs.getInteger("theme", 0xFF0097A7.toInt()).get()
+        default: Int = rxPrefs.getInteger("theme", 0xFFD21F34.toInt()).get()
     ): Preference<Int> {
         return when (recipientId) {
-            0L -> rxPrefs.getInteger("theme", 0xFF0097A7.toInt())
+            0L -> rxPrefs.getInteger("theme", 0xFFD21F34.toInt())
             else -> rxPrefs.getInteger("theme_$recipientId", default)
         }
     }

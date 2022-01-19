@@ -145,4 +145,15 @@
         app:textSize="tertiary"
         tools:text="Sending..." />
 
+    <ImageView
+        android:id="@+id/encrypted_out"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="4dp"
+        android:src="@android:drawable/ic_secure"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="@id/body"
+        app:layout_constraintTop_toTopOf="@id/body"
+        app:layout_constraintEnd_toStartOf="@id/body" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

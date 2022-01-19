@@ -20,6 +20,7 @@ package com.moez.QKSMS.feature.conversations
 
 import android.content.Context
 import android.graphics.Typeface
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.text.bold
@@ -27,6 +28,8 @@ import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import by.cyberpartisan.psms.PSmsEncryptor
+import by.cyberpartisan.psms.Message as PSmsMessage
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkRealmAdapter
@@ -37,8 +40,10 @@ import com.moez.QKSMS.common.util.extensions.resolveThemeColor
 import com.moez.QKSMS.common.util.extensions.setTint
 import com.moez.QKSMS.model.Conversation
 import com.moez.QKSMS.util.PhoneNumberUtils
+import com.moez.QKSMS.util.Preferences
 import kotlinx.android.synthetic.main.conversation_list_item.*
 import kotlinx.android.synthetic.main.conversation_list_item.view.*
+import kotlinx.android.synthetic.main.message_list_item_in.*
 import javax.inject.Inject
 
 class ConversationsAdapter @Inject constructor(
@@ -46,7 +51,8 @@ class ConversationsAdapter @Inject constructor(
     private val context: Context,
     private val dateFormatter: DateFormatter,
     private val navigator: Navigator,
-    private val phoneNumberUtils: PhoneNumberUtils
+    private val phoneNumberUtils: PhoneNumberUtils,
+    private val prefs: Preferences
 ) : QkRealmAdapter<Conversation>() {
 
     init {
@@ -114,10 +120,26 @@ class ConversationsAdapter @Inject constructor(
             }
         }
         holder.date.text = conversation.date.takeIf { it > 0 }?.let(dateFormatter::getConversationTimestamp)
+
+        val snippetMessage = if (conversation.encryptionKey.isNotEmpty()) {
+            PSmsEncryptor().tryDecode(conversation.snippet.toString(), Base64.decode(conversation.encryptionKey, Base64.DEFAULT))
+        } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
+            PSmsEncryptor().tryDecode(conversation.snippet.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
+        } else {
+            PSmsMessage(conversation.snippet ?: "")
+        }
+
+        val snippetText = if (snippetMessage.channelId != null) {
+            val channelIdStr = context.resources.getString(R.string.channel_id)
+            snippetMessage.text + " (${channelIdStr}: ${snippetMessage.channelId})"
+        } else {
+            snippetMessage.text
+        }
+
         holder.snippet.text = when {
             conversation.draft.isNotEmpty() -> conversation.draft
-            conversation.me -> context.getString(R.string.main_sender_you, conversation.snippet)
-            else -> conversation.snippet
+            conversation.me -> context.getString(R.string.main_sender_you, snippetText)
+            else -> snippetText
         }
         holder.pinned.isVisible = conversation.pinned
         holder.unread.setTint(theme)

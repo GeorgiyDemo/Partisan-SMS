@@ -257,7 +257,7 @@
     <string name="settings_sync_title">סנכרון הודעות</string>
     <string name="settings_sync_summary">סנכרון ההודעות שלך מחדש עם מסד הנתונים המובנה של Android</string>
     <string name="settings_about_title">על אודות QKSMS</string>
-    <string name="settings_version">גרסה %s</string>
+    <string name="settings_version">גרסה %s %s %s</string>
     <string name="settings_logging_enabled">תיעוד ניפוי שגיאות פעיל</string>
     <string name="settings_logging_disabled">תיעוד ניפוי שגיאות כבוי</string>
     <string name="settings_delay_duration_hint">משך הזמן (בשניות)</string>

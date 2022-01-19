@@ -41,7 +41,6 @@ class KeyInputDialog(context: Activity, hint: String, val listener: (String) -> 
         setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.button_save)) { _, _ -> }
     }
 
-
     fun setText(text: String): KeyInputDialog {
         if (validate(text)) {
             layout.field.setText(text)

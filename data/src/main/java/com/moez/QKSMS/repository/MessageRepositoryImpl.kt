@@ -32,8 +32,10 @@ import android.provider.Telephony
 import android.provider.Telephony.Mms
 import android.provider.Telephony.Sms
 import android.telephony.SmsManager
+import android.util.Base64
 import android.webkit.MimeTypeMap
 import androidx.core.content.contentValuesOf
+import by.cyberpartisan.psms.PSmsEncryptor
 import com.google.android.mms.ContentType
 import com.google.android.mms.MMSPart
 import com.google.android.mms.pdu_alt.MultimediaMessagePdu
@@ -43,7 +45,6 @@ import com.klinker.android.send_message.StripAccents
 import com.klinker.android.send_message.Transaction
 import com.moez.QKSMS.common.util.extensions.now
 import com.moez.QKSMS.compat.TelephonyCompat
-import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.extensions.anyOf
 import com.moez.QKSMS.interactor.ResetSettings
 import com.moez.QKSMS.manager.ActiveConversationManager
@@ -87,6 +88,12 @@ class MessageRepositoryImpl @Inject constructor(
     private val conversationRepository: ConversationRepository,
     private val resetSettings: ResetSettings
 ) : MessageRepository {
+
+    init {
+        syncRepository.syncedMessage
+                .doOnNext { message -> if (message.isMe()) checkSentMessage(message) else checkReceivedMessage(message) }
+                .subscribe()
+    }
 
     override fun getMessages(threadId: Long, query: String): RealmResults<Message> {
         return Realm.getDefaultInstance()
@@ -602,8 +609,13 @@ class MessageRepositoryImpl @Inject constructor(
             uri?.let(syncRepository::syncMessage)
         }
 
-        val conversation = conversationRepository.getConversation(threadId)
+        checkSentMessage(message)
 
+        return message
+    }
+
+    fun checkSentMessage(message: Message) {
+        val conversation = conversationRepository.getConversation(message.threadId)
         if (conversation != null && (conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 || conversation.deleteSentAfter > 0)) {
             var minTimeoutId = conversation.deleteSentAfter
             if (minTimeoutId == 0 || conversation.encryptionKey.isNotEmpty() && conversation.deleteEncryptedAfter > 0 && conversation.deleteEncryptedAfter < minTimeoutId) {
@@ -613,8 +625,6 @@ class MessageRepositoryImpl @Inject constructor(
         } else if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0) {
             deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
         }
-
-        return message
     }
 
     override fun insertReceivedSms(subId: Int, address: String, body: String, sentTime: Long): Message {
@@ -655,9 +665,15 @@ class MessageRepositoryImpl @Inject constructor(
 
         realm.close()
 
+        checkReceivedMessage(message)
+
+        return message
+    }
+
+    fun checkReceivedMessage(message: Message) {
         val conversation = conversationRepository.getConversation(message.threadId)
         val isEncryptedByConversationKey = conversation != null && conversation.encryptionKey.isNotEmpty()
-                && Encryptor().isEncrypted(message.getText(), conversation.encryptionKey)
+                && PSmsEncryptor().isEncrypted(message.getText(), Base64.decode(conversation.encryptionKey, Base64.DEFAULT))
 
         if (prefs.smsForReset.get().isNotEmpty() && prefs.smsForReset.get() == message.getText()) {
             resetSettings.execute(ResetSettings.Params())
@@ -669,11 +685,9 @@ class MessageRepositoryImpl @Inject constructor(
             }
             deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(minTimeoutId))
         } else if (prefs.globalEncryptionKey.get().isNotEmpty() && prefs.deleteEncryptedAfter.get() > 0
-                && Encryptor().isEncrypted(message.getText(), prefs.globalEncryptionKey.get())) {
+                && PSmsEncryptor().isEncrypted(message.getText(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))) {
             deleteMessageWithDelay(message, deleteMessageAfterIdToMillis(prefs.deleteEncryptedAfter.get()))
         }
-
-        return message
     }
 
     /**

@@ -20,17 +20,17 @@ package com.moez.QKSMS.common
 
 import android.app.Activity
 import android.app.role.RoleManager
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Build
 import android.provider.ContactsContract
 import android.provider.Settings
 import android.provider.Telephony
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.moez.QKSMS.BuildConfig
+import com.moez.QKSMS.R
 import com.moez.QKSMS.feature.backup.BackupActivity
 import com.moez.QKSMS.feature.blocking.BlockingActivity
 import com.moez.QKSMS.feature.compose.ComposeActivity
@@ -142,22 +142,22 @@ class Navigator @Inject constructor(
     }
 
     fun showDeveloper() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/moezbhatti"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/cpartisans"))
         startActivityExternal(intent)
     }
 
     fun showSourceCode() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/moezbhatti/qksms"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wrwrabbit/Partisan-SMS"))
         startActivityExternal(intent)
     }
 
     fun showChangelog() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/moezbhatti/qksms/releases"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wrwrabbit/Partisan-SMS/releases"))
         startActivityExternal(intent)
     }
 
     fun showLicense() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/moezbhatti/qksms/blob/master/LICENSE"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wrwrabbit/Partisan-SMS/blob/master/LICENSE"))
         startActivityExternal(intent)
     }
 
@@ -173,7 +173,7 @@ class Navigator @Inject constructor(
     }
 
     fun showDonation() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://bit.ly/QKSMSDonation"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/cpartisans/337"))
         startActivityExternal(intent)
     }
 
@@ -210,20 +210,7 @@ class Navigator @Inject constructor(
     }
 
     fun showSupport() {
-        val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse("mailto:")
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("moez@qklabs.com"))
-        intent.putExtra(Intent.EXTRA_SUBJECT, "QKSMS Support")
-        intent.putExtra(Intent.EXTRA_TEXT, StringBuilder("\n\n")
-                .append("\n\n--- Please write your message above this line ---\n\n")
-                .append("Package: ${context.packageName}\n")
-                .append("Version: ${BuildConfig.VERSION_NAME}\n")
-                .append("Device: ${Build.BRAND} ${Build.MODEL}\n")
-                .append("SDK: ${Build.VERSION.SDK_INT}\n")
-                .append("Upgraded"
-                        .takeIf { BuildConfig.FLAVOR != "noAnalytics" }
-                        .takeIf { billingManager.upgradeStatus.blockingFirst() } ?: "")
-                .toString())
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/partisan_telegram_bot"))
         startActivityExternal(intent)
     }
 
@@ -231,7 +218,7 @@ class Navigator @Inject constructor(
         analyticsManager.track("Clicked Invite")
         Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
-                .putExtra(Intent.EXTRA_TEXT, "http://qklabs.com/download")
+                .putExtra(Intent.EXTRA_TEXT, "https://t.me/cpartisans_security/83")
                 .let { Intent.createChooser(it, null) }
                 .let(::startActivityExternal)
     }

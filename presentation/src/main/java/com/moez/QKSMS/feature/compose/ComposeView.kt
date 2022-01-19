@@ -53,6 +53,7 @@ interface ComposeView : QkView<ComposeState> {
     val scheduleCancelIntent: Observable<*>
     val changeSimIntent: Observable<*>
     val sendIntent: Observable<Unit>
+    val sendRawIntent: Observable<Unit>
     val viewQksmsPlusIntent: Subject<Unit>
     val backPressedIntent: Observable<Unit>
 

@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.core.view.iterator
 import androidx.lifecycle.Lifecycle
 import com.moez.QKSMS.R
@@ -127,6 +128,15 @@ abstract class QkThemedActivity : QkActivity() {
         val icon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
         val taskDesc = ActivityManager.TaskDescription(getString(R.string.app_name), icon, toolbarColor)
         setTaskDescription(taskDesc)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (prefs.showInTaskSwitcher.get()) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        } else {
+            window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

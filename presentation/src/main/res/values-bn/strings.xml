@@ -251,7 +251,7 @@
     <string name="settings_sync_title">বার্তাগুলি সিঙ্ক করো</string>
     <string name="settings_sync_summary">তোমার বার্তাগুলি অ্যান্ড্রয়েডের নিজস্ব এসএমএস এর ডাটাবেসের সাথে পুনরায় সিঙ্ক করো</string>
     <string name="settings_about_title">QKSMS সম্পর্কে</string>
-    <string name="settings_version">সংস্করণ %s</string>
+    <string name="settings_version">সংস্করণ %s  %s %s</string>
     <string name="settings_logging_enabled">ডিবাগ লগিং চালু করা হয়ছে</string>
     <string name="settings_logging_disabled">ডিবাগ লগিং বন্ধ করা হয়ছে</string>
     <string name="settings_delay_duration_hint">দৈর্ঘ্য (সেকেন্ডে) লিখুন</string>

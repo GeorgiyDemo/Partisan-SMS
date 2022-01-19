@@ -251,7 +251,7 @@
     <string name="settings_sync_title">همگام‌سازی پیام‌ها</string>
     <string name="settings_sync_summary">همگام‌سازی مجدد پیام‌ها با پایگاه‌داده بومی پیامک اندروید</string>
     <string name="settings_about_title">درباره QKSMS</string>
-    <string name="settings_version">نگارش %s</string>
+    <string name="settings_version">نگارش %s %s %s</string>
     <string name="settings_logging_enabled">گزارش‌گیری اشکال‌زدایی فعال است</string>
     <string name="settings_logging_disabled">گزارش‌گیری اشکال‌زدایی غیرفعال است</string>
     <string name="settings_delay_duration_hint">مدت زمان را وارد کنید (ثانیه)</string>

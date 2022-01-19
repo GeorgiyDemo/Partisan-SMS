@@ -257,7 +257,7 @@
     <string name="settings_sync_title">Sinchronizuoti pranešimus</string>
     <string name="settings_sync_summary">Iš naujo sinchronizuoti Android pranešimų duomenų bazę</string>
     <string name="settings_about_title">Apie QKSMS</string>
-    <string name="settings_version">Versija %s</string>
+    <string name="settings_version">Versija %s %s %s</string>
     <string name="settings_logging_enabled">Debug logging enabled</string>
     <string name="settings_logging_disabled">Debug logging disabled</string>
     <string name="settings_delay_duration_hint">Įvesti trukmę (sek.)</string>

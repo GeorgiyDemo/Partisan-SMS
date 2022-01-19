@@ -251,7 +251,7 @@
     <string name="settings_sync_title">Synkronisera meddelanden</string>
     <string name="settings_sync_summary">Synkronisera dina meddelanden med telefonens SMS-databas</string>
     <string name="settings_about_title">Om QKSMS</string>
-    <string name="settings_version">Version %s</string>
+    <string name="settings_version">Version %s %s %s</string>
     <string name="settings_logging_enabled">Felsökningsloggning aktiverades</string>
     <string name="settings_logging_disabled">Felsökningsloggning inaktiverad</string>
     <string name="settings_delay_duration_hint">Fyll i varaktighet (sekunder)</string>

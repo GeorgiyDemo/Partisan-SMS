@@ -32,11 +32,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import by.cyberpartisan.psms.PSmsEncryptor
+import by.cyberpartisan.psms.Message as PSmsMessage
 import com.jakewharton.rxbinding2.view.clicks
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.base.QkRealmAdapter
 import com.moez.QKSMS.common.base.QkViewHolder
-import com.moez.QKSMS.encryption.Encryptor
 import com.moez.QKSMS.common.util.Colors
 import com.moez.QKSMS.common.util.DateFormatter
 import com.moez.QKSMS.common.util.TextViewStyler
@@ -73,6 +74,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Provider
+import android.util.Base64
 
 class MessagesAdapter @Inject constructor(
     subscriptionManager: SubscriptionManagerCompat,
@@ -149,8 +151,10 @@ class MessagesAdapter @Inject constructor(
             view = layoutInflater.inflate(R.layout.message_list_item_out, parent, false)
             view.findViewById<ImageView>(R.id.cancelIcon).setTint(theme.theme)
             view.findViewById<ProgressBar>(R.id.cancel).setTint(theme.theme)
+            view.findViewById<ImageView>(R.id.encrypted_out).setTint(theme.theme)
         } else {
             view = layoutInflater.inflate(R.layout.message_list_item_in, parent, false)
+            view.findViewById<ImageView>(R.id.encrypted_in).setTint(theme.theme)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -243,9 +247,30 @@ class MessagesAdapter @Inject constructor(
         if (!message.isMe()) {
             holder.avatar.setRecipient(contactCache[message.address])
             holder.avatar.setVisible(!canGroup(message, next), View.INVISIBLE)
+            holder.avatar.setVisible(false, View.INVISIBLE)
 
             holder.body.setTextColor(theme.textPrimary)
             holder.body.setBackgroundTint(theme.theme)
+        }
+
+        // Bind encrypted icon
+
+        val isEncrypted = if (conversation != null) {
+            if (conversation!!.encryptionKey.isNotEmpty()) {
+                PSmsEncryptor().isEncrypted(message.body, Base64.decode(conversation!!.encryptionKey, Base64.DEFAULT))
+            } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
+                PSmsEncryptor().isEncrypted(message.body, Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+
+        if (message.isMe()) {
+            holder.encrypted_out.setVisible(isEncrypted, View.INVISIBLE)
+        } else {
+            holder.encrypted_in.setVisible(isEncrypted, View.INVISIBLE)
         }
 
         // Bind the body text
@@ -276,14 +301,20 @@ class MessagesAdapter @Inject constructor(
             false -> TextViewStyler.SIZE_PRIMARY
         })
 
-        holder.body.text =
-        if (conversation != null && !conversation!!.encryptionKey.isEmpty()) {
-            Encryptor().tryDecode(messageText.toString(), conversation!!.encryptionKey)
+        val decryptedMessage = if (conversation != null && conversation!!.encryptionKey.isNotEmpty()) {
+            PSmsEncryptor().tryDecode(messageText.toString(), Base64.decode(conversation!!.encryptionKey, Base64.DEFAULT))
         } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-            Encryptor().tryDecode(messageText.toString(), prefs.globalEncryptionKey.get())
+            PSmsEncryptor().tryDecode(messageText.toString(), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT))
         } else {
-            messageText
+            PSmsMessage(messageText.toString())
         }
+        if (decryptedMessage.channelId != null) {
+            val channelIdStr = context.resources.getString(R.string.channel_id)
+            holder.body.text = decryptedMessage.text + " (${channelIdStr}: ${decryptedMessage.channelId})"
+        } else {
+            holder.body.text = decryptedMessage.text
+        }
+
         holder.body.setVisible(message.isSms() || messageText.isNotBlank())
         holder.body.setBackgroundResource(getBubble(
                 emojiOnly = emojiOnly,
