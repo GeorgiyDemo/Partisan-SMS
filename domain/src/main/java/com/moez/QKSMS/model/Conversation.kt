@@ -39,7 +39,7 @@ open class Conversation constructor(
 
     // hidden
     var encryptionKey: String = "",
-    var encodingSchemeId: Int = 0,
+    var encodingSchemeId: Int = SCHEME_NOT_DEF,
     var deleteEncryptedAfter: Int = 0,
     var deleteReceivedAfter: Int = 0,
     var deleteSentAfter: Int = 0
@@ -52,6 +52,10 @@ open class Conversation constructor(
 
     fun getTitle(): String {
         return name.takeIf { it.isNotBlank() } ?: recipients.joinToString { recipient -> recipient.getDisplayName() }
+    }
+
+    companion object {
+        const val SCHEME_NOT_DEF = -1
     }
 
 }

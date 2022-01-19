@@ -84,7 +84,7 @@ class ConversationInfoController(
         adapter.deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
         adapter.deleteSentAfterDialog.adapter.setData(R.array.delete_message_after_labels)
         adapter.deleteReceivedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
-        adapter.encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels)
+        adapter.encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels_conversation)
 
         themedActivity?.theme
                 ?.autoDisposable(scope())

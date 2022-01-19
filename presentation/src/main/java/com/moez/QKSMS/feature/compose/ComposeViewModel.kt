@@ -647,12 +647,31 @@ class ComposeViewModel @Inject constructor(
                 .filter { permissionManager.isDefaultSms().also { if (!it) view.requestDefaultSms() } }
                 .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
                 .withLatestFrom(view.textChangedIntent, conversation) { _, body, conversation ->
-                    if (conversation.encryptionKey.isNotEmpty()) {
-                        PSmsEncryptor().encode(PSmsMessage(body.toString()), Base64.decode(conversation.encryptionKey, Base64.DEFAULT), prefs.encodingScheme.get())
-                    } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-                        PSmsEncryptor().encode(PSmsMessage(body.toString()), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT), prefs.encodingScheme.get())
+                    when {
+                        conversation.encryptionKey.isNotEmpty() -> {
+                            val encryptionSchemeId = conversation.encodingSchemeId
+                                .takeIf { it!= Conversation.SCHEME_NOT_DEF }
+                                ?:prefs.encodingScheme.get()
+
+                            PSmsEncryptor().encode(
+                                message = PSmsMessage(body.toString()),
+                                key = Base64.decode(conversation.encryptionKey, Base64.DEFAULT),
+                                encryptionSchemeId = encryptionSchemeId
+                            )
+                        }
+                        prefs.globalEncryptionKey.get().isNotEmpty() -> {
+                            val encryptionSchemeId = conversation.encodingSchemeId
+                                .takeIf { it!= Conversation.SCHEME_NOT_DEF }
+                                ?:prefs.encodingScheme.get()
+
+                            PSmsEncryptor().encode(
+                                message = PSmsMessage(body.toString()),
+                                key = Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT),
+                                encryptionSchemeId = encryptionSchemeId
+                            )
+                        }
+                        else -> body
                     }
-                    else body
                 }
                 .map { body -> body.toString() }
                 .withLatestFrom(state, attachments, conversation, selectedChips) { body, state, attachments,

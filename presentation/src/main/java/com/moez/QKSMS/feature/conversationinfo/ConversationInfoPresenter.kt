@@ -102,8 +102,13 @@ class ConversationInfoPresenter @Inject constructor(
                     archived = conversation.archived,
                     blocked = conversation.blocked,
                     encryptionKey = conversation.encryptionKey,
-                    encodingSchemeId = conversation.encodingSchemeId,
-                    encodingSchemeSummary = encodingSchemeDialogLabels[conversation.encodingSchemeId],
+                    encodingSchemeId = conversation.encodingSchemeId
+                        .takeIf { it != Conversation.SCHEME_NOT_DEF }
+                        ?: GLOBAL_SCHEME_INDEX,
+                    encodingSchemeSummary = conversation.encodingSchemeId
+                        .takeIf { it != Conversation.SCHEME_NOT_DEF }
+                        ?.let { encodingSchemeDialogLabels[it] }
+                        ?: "",
                     deleteEncryptedAfter = conversation.deleteEncryptedAfter,
                     deleteReceivedAfter = conversation.deleteReceivedAfter,
                     deleteSentAfter = conversation.deleteSentAfter
@@ -226,31 +231,54 @@ class ConversationInfoPresenter @Inject constructor(
                 .subscribe { conversation -> view.showDeleteSentAfterDialog(conversation) }
 
         view.deleteEncryptedAfterSelected()
-                .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
-                .doOnNext { (conversation, duration) ->
-                    setDeleteMessagesAfter.execute(SetDeleteMessagesAfter.Params(conversation.id, SetDeleteMessagesAfter.MessageType.ENCRYPTED, duration))
-                }
-                .autoDisposable(view.scope())
-                .subscribe()
+            .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
+            .doOnNext { (conversation, duration) ->
+                setDeleteMessagesAfter.execute(
+                    SetDeleteMessagesAfter.Params(
+                        conversation.id,
+                        SetDeleteMessagesAfter.MessageType.ENCRYPTED,
+                        duration
+                    )
+                )
+            }
+            .autoDisposable(view.scope())
+            .subscribe()
 
         view.deleteReceivedAfterSelected()
-                .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
-                .doOnNext { (conversation, duration) ->
-                    setDeleteMessagesAfter.execute(SetDeleteMessagesAfter.Params(conversation.id, SetDeleteMessagesAfter.MessageType.RECEIVED, duration))
-                }
-                .autoDisposable(view.scope())
-                .subscribe()
+            .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
+            .doOnNext { (conversation, duration) ->
+                setDeleteMessagesAfter.execute(
+                    SetDeleteMessagesAfter.Params(
+                        conversation.id,
+                        SetDeleteMessagesAfter.MessageType.RECEIVED,
+                        duration
+                    )
+                )
+            }
+            .autoDisposable(view.scope())
+            .subscribe()
 
         view.deleteSentAfterSelected()
-                .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
-                .doOnNext { (conversation, duration) ->
-                    setDeleteMessagesAfter.execute(SetDeleteMessagesAfter.Params(conversation.id, SetDeleteMessagesAfter.MessageType.SENT, duration))
-                }
-                .autoDisposable(view.scope())
-                .subscribe()
+            .withLatestFrom(conversation) { duration, conversation -> Pair(conversation, duration) }
+            .doOnNext { (conversation, duration) ->
+                setDeleteMessagesAfter.execute(
+                    SetDeleteMessagesAfter.Params(
+                        conversation.id,
+                        SetDeleteMessagesAfter.MessageType.SENT,
+                        duration
+                    )
+                )
+            }
+            .autoDisposable(view.scope())
+            .subscribe()
 
         view.encodingSchemeSelected()
-            .withLatestFrom(conversation) { encodingSchemeId, conversation -> Pair(conversation, encodingSchemeId) }
+            .map {
+                it.takeIf { it != GLOBAL_SCHEME_INDEX } ?: Conversation.SCHEME_NOT_DEF
+            }
+            .withLatestFrom(conversation) { encodingSchemeId, conversation ->
+                Pair(conversation, encodingSchemeId)
+            }
             .doOnNext { (conversation, encodingSchemeId) ->
                 setEncodingScheme.execute(
                     SetEncodingScheme.Params(
@@ -261,6 +289,11 @@ class ConversationInfoPresenter @Inject constructor(
             }
             .autoDisposable(view.scope())
             .subscribe()
+    }
+
+    companion object {
+        /*index of item "Use Scheme from Settings" at R.array.encoding_scheme_labels_conversation*/
+        private const val GLOBAL_SCHEME_INDEX = 3
     }
 
 }

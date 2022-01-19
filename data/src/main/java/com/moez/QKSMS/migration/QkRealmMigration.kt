@@ -238,7 +238,7 @@ class QkRealmMigration @Inject constructor(
             realm.schema.get("Conversation")
                 ?.addField("encodingSchemeId", Int::class.java)
                 ?.transform { part ->
-                    part.setInt("encodingSchemeId", 0)
+                    part.setInt("encodingSchemeId", 3/*index of item "Use Scheme from Settings" at R.array.encoding_scheme_labels_conversation*/)
                 }
 
             version++
