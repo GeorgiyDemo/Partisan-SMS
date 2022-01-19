@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.conversation_info_settings.notifications
 import kotlinx.android.synthetic.main.conversation_media_list_item.*
 import kotlinx.android.synthetic.main.conversation_recipient_list_item.*
 import kotlinx.android.synthetic.main.conversation_recipient_list_item.theme
-import kotlinx.android.synthetic.main.settings_controller.*
 import javax.inject.Inject
 
 class ConversationInfoAdapter @Inject constructor(
@@ -31,7 +30,8 @@ class ConversationInfoAdapter @Inject constructor(
     private val colors: Colors,
     val deleteEncryptedAfterDialog: QkDialog,
     val deleteReceivedAfterDialog: QkDialog,
-    val deleteSentAfterDialog: QkDialog
+    val deleteSentAfterDialog: QkDialog,
+    val encodingSchemeDialog: QkDialog,
 ) : QkAdapter<ConversationInfoItem>() {
 
     val recipientClicks: Subject<Long> = PublishSubject.create()
@@ -44,6 +44,7 @@ class ConversationInfoAdapter @Inject constructor(
     val deleteClicks: Subject<Unit> = PublishSubject.create()
     val mediaClicks: Subject<Long> = PublishSubject.create()
     val encryptionKeyClicks: Subject<Unit> = PublishSubject.create()
+    val encodingSchemeClicks: Subject<Unit> = PublishSubject.create()
     val deleteEncryptedAfterClicks: Subject<Unit> = PublishSubject.create()
     val deleteReceivedAfterClicks: Subject<Unit> = PublishSubject.create()
     val deleteSentAfterClicks: Subject<Unit> = PublishSubject.create()
@@ -77,6 +78,7 @@ class ConversationInfoAdapter @Inject constructor(
                 block.clicks().subscribe(blockClicks)
                 delete.clicks().subscribe(deleteClicks)
                 encryptionKey.clicks().subscribe(encryptionKeyClicks)
+                encodingScheme.clicks().subscribe(encodingSchemeClicks)
                 conversationDeleteEncryptedAfter.clicks().subscribe(deleteEncryptedAfterClicks)
                 conversationDeleteReceivedAfter.clicks().subscribe(deleteReceivedAfterClicks)
                 conversationDeleteSentAfter.clicks().subscribe(deleteSentAfterClicks)
@@ -131,6 +133,10 @@ class ConversationInfoAdapter @Inject constructor(
 
                 holder.encryptionKey.isVisible = HiddenSettingsSingleton.hiddenEnabled
                 holder.encryptionKey.summary = if (item.encryptionKey.isNotEmpty()) "***" else ""
+
+                holder.encodingScheme.isVisible = HiddenSettingsSingleton.hiddenEnabled
+                holder.encodingScheme.summary = item.encodingSchemeSummary
+                encodingSchemeDialog.adapter.selectedItem = item.encodingSchemeId
 
                 val labels = context.resources.getStringArray(R.array.delete_message_after_labels)
 

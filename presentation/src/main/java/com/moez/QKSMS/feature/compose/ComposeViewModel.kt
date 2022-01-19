@@ -26,7 +26,6 @@ import android.telephony.SmsMessage
 import android.util.Base64
 import androidx.core.content.getSystemService
 import by.cyberpartisan.psms.PSmsEncryptor
-import by.cyberpartisan.psms.Message as PSmsMessage
 import com.moez.QKSMS.R
 import com.moez.QKSMS.common.Navigator
 import com.moez.QKSMS.common.base.QkViewModel
@@ -65,7 +64,6 @@ import com.uber.autodispose.autoDisposable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
-import io.reactivex.rxkotlin.combineLatest
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.withLatestFrom
 import io.reactivex.schedulers.Schedulers
@@ -76,6 +74,7 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
+import by.cyberpartisan.psms.Message as PSmsMessage
 
 class ComposeViewModel @Inject constructor(
     @Named("query") private val query: String,
@@ -647,12 +646,22 @@ class ComposeViewModel @Inject constructor(
                 .filter { permissionManager.isDefaultSms().also { if (!it) view.requestDefaultSms() } }
                 .filter { permissionManager.hasSendSms().also { if (!it) view.requestSmsPermission() } }
                 .withLatestFrom(view.textChangedIntent, conversation) { _, body, conversation ->
-                    if (conversation.encryptionKey.isNotEmpty()) {
-                        PSmsEncryptor().encode(PSmsMessage(body.toString()), Base64.decode(conversation.encryptionKey, Base64.DEFAULT), prefs.encodingScheme.get())
-                    } else if (prefs.globalEncryptionKey.get().isNotEmpty()) {
-                        PSmsEncryptor().encode(PSmsMessage(body.toString()), Base64.decode(prefs.globalEncryptionKey.get(), Base64.DEFAULT), prefs.encodingScheme.get())
-                    }
-                    else body
+                    val encryptionKey = conversation.encryptionKey
+                        .takeIf { it.isNotEmpty() }
+                        ?: prefs.globalEncryptionKey.get()
+                            .takeIf { it.isNotEmpty() }
+
+                    encryptionKey?.let {
+                        val encryptionSchemeId = conversation.encodingSchemeId
+                            .takeIf { it != Conversation.SCHEME_NOT_DEF }
+                            ?: prefs.encodingScheme.get()
+
+                        PSmsEncryptor().encode(
+                            message = PSmsMessage(body.toString()),
+                            key = Base64.decode(encryptionKey, Base64.DEFAULT),
+                            encryptionSchemeId = encryptionSchemeId
+                        )
+                    } ?: body
                 }
                 .map { body -> body.toString() }
                 .withLatestFrom(state, attachments, conversation, selectedChips) { body, state, attachments,

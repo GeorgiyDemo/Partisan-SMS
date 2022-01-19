@@ -56,7 +56,8 @@ class ConversationInfoPresenter @Inject constructor(
     private val markUnarchived: MarkUnarchived,
     private val navigator: Navigator,
     private val permissionManager: PermissionManager,
-    private val setDeleteMessagesAfter: SetDeleteMessagesAfter
+    private val setDeleteMessagesAfter: SetDeleteMessagesAfter,
+    private val setEncodingScheme: SetEncodingScheme,
 ) : QkPresenter<ConversationInfoView, ConversationInfoState>(
         ConversationInfoState(threadId = threadId)
 ) {
@@ -80,6 +81,8 @@ class ConversationInfoPresenter @Inject constructor(
         disposables += markUnarchived
         disposables += deleteConversations
 
+        val encodingSchemeDialogLabels = context.resources.getStringArray(R.array.encoding_scheme_labels)
+
         disposables += Observables
                 .combineLatest(
                         conversation,
@@ -99,6 +102,13 @@ class ConversationInfoPresenter @Inject constructor(
                             archived = conversation.archived,
                             blocked = conversation.blocked,
                             encryptionKey = conversation.encryptionKey,
+                            encodingSchemeId = conversation.encodingSchemeId
+                                .takeIf { it != Conversation.SCHEME_NOT_DEF }
+                                ?: GLOBAL_SCHEME_INDEX,
+                            encodingSchemeSummary = conversation.encodingSchemeId
+                                .takeIf { it != Conversation.SCHEME_NOT_DEF }
+                                ?.let { encodingSchemeDialogLabels[it] }
+                                ?: "",
                             deleteEncryptedAfter = conversation.deleteEncryptedAfter,
                             deleteReceivedAfter = conversation.deleteReceivedAfter,
                             deleteSentAfter = conversation.deleteSentAfter)
@@ -199,6 +209,11 @@ class ConversationInfoPresenter @Inject constructor(
                 .autoDisposable(view.scope())
                 .subscribe { conversation -> view.showEncryptionKeyDialog(conversation) }
 
+        view.encodingSchemeClicks()
+                .withLatestFrom(conversation) { _, conversation -> conversation }
+                .autoDisposable(view.scope())
+                .subscribe { conversation -> view.showEncodingSchemeDialog(conversation) }
+
         view.deleteEncryptedAfterClicks()
                 .withLatestFrom(conversation) { _, conversation -> conversation }
                 .autoDisposable(view.scope())
@@ -237,6 +252,30 @@ class ConversationInfoPresenter @Inject constructor(
                 }
                 .autoDisposable(view.scope())
                 .subscribe()
+
+
+        view.encodingSchemeSelected()
+                .map {
+                    it.takeIf { it != GLOBAL_SCHEME_INDEX } ?: Conversation.SCHEME_NOT_DEF
+                }
+                .withLatestFrom(conversation) { encodingSchemeId, conversation ->
+                    Pair(conversation, encodingSchemeId)
+                }
+                .doOnNext { (conversation, encodingSchemeId) ->
+                    setEncodingScheme.execute(
+                        SetEncodingScheme.Params(
+                            conversation.id,
+                            encodingSchemeId
+                        )
+                    )
+                }
+                .autoDisposable(view.scope())
+                .subscribe()
+    }
+
+    companion object {
+        /*index of item "Use Scheme from Settings" at R.array.encoding_scheme_labels_conversation*/
+        private const val GLOBAL_SCHEME_INDEX = 3
     }
 
 }

@@ -42,6 +42,9 @@ interface ConversationInfoView : QkViewContract<ConversationInfoState> {
     fun deleteEncryptedAfterSelected(): Observable<Int>
     fun deleteReceivedAfterSelected(): Observable<Int>
     fun deleteSentAfterSelected(): Observable<Int>
+    fun encodingSchemeSelected(): Observable<Int>
+    fun encodingSchemeClicks(): Observable<*>
+    fun showEncodingSchemeDialog(conversation: Conversation)
 
     fun showNameDialog(name: String)
     fun showThemePicker(recipientId: Long)
