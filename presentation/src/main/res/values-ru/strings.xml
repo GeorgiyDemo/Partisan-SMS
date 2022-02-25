@@ -442,6 +442,8 @@
     <string name="conversation_delete_sent_after">Удалять отправленные сообщения через</string>
     <string name="sms_for_reset">СМС для сброса</string>
     <string name="encoding_scheme">Схема кодирования</string>
+    <string name="encryption_key_copied">Ключ шифрования скопирован в буфер обмена</string>
+    <string name="copy">Скопировать</string>
     <string-array name="encoding_scheme_labels">
         <item>Base64</item>
         <item>Кириллическая Base64</item>
@@ -456,6 +458,7 @@
     <string name="show_in_task_switcher">Показывать содержимое приложения в переключателе задач</string>
     <string name="channel_id">ID канала</string>
     <string name="invalid_key">Неверный ключ</string>
-    <string name="button_generate">Сгенерировать</string>
+    <string name="button_generate">&#128259;</string>
     <string name="drawer_plus">Пожертвовать</string>
+    <string name="key_description">Поделитесь этим ключом с вашим собеседником по безопасной связи</string>
 </resources>
