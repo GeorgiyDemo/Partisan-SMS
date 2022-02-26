@@ -508,6 +508,8 @@
     <string name="conversation_delete_sent_after">Delete Sent Messages After</string>
     <string name="sms_for_reset">SMS for Reset</string>
     <string name="encoding_scheme">Encoding Scheme</string>
+    <string name="encryption_key_copied">Encryption Key copied to clipboard</string>
+    <string name="copy">Copy</string>
     <string-array name="encoding_scheme_labels">
         <item>Base64</item>
         <item>Base64 Cyrillic</item>
@@ -522,5 +524,6 @@
     <string name="show_in_task_switcher">Show App Content in Task Switcher</string>
     <string name="channel_id">Channel ID</string>
     <string name="invalid_key">Invalid Key</string>
-    <string name="button_generate">Generate</string>
+    <string name="button_generate">&#128259;</string>
+    <string name="key_description">Share this key with your interlocutor for a secure messaging</string>
 </resources>

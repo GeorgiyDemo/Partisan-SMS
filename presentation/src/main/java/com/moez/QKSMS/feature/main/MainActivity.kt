@@ -48,10 +48,13 @@ import com.moez.QKSMS.common.util.extensions.scrapViews
 import com.moez.QKSMS.common.util.extensions.setBackgroundTint
 import com.moez.QKSMS.common.util.extensions.setTint
 import com.moez.QKSMS.common.util.extensions.setVisible
+import com.moez.QKSMS.common.widget.KeyInputDialog
 import com.moez.QKSMS.feature.blocking.BlockingDialog
 import com.moez.QKSMS.feature.changelog.ChangelogDialog
 import com.moez.QKSMS.feature.conversations.ConversationItemTouchCallback
 import com.moez.QKSMS.feature.conversations.ConversationsAdapter
+import com.moez.QKSMS.feature.settings.SettingsController
+import com.moez.QKSMS.feature.settings.SettingsPresenter
 import com.moez.QKSMS.manager.ChangelogManager
 import com.moez.QKSMS.repository.SyncRepository
 import com.uber.autodispose.android.lifecycle.scope
@@ -80,6 +83,7 @@ class MainActivity : QkThemedActivity(), MainView {
 
     override val onNewIntentIntent: Subject<Intent> = PublishSubject.create()
     override val activityResumedIntent: Subject<Boolean> = PublishSubject.create()
+    override val showGenerateKeyIntent: Subject<Boolean> = PublishSubject.create()
     override val queryChangedIntent by lazy { toolbarSearch.textChanges() }
     override val composeIntent by lazy { compose.clicks() }
     override val drawerOpenIntent: Observable<Boolean> by lazy {
@@ -328,6 +332,7 @@ class MainActivity : QkThemedActivity(), MainView {
     override fun onResume() {
         super.onResume()
         activityResumedIntent.onNext(true)
+        showGenerateKeyIntent.onNext(prefs.globalEncryptionKey.get().isEmpty())
     }
 
     override fun onPause() {
@@ -346,6 +351,12 @@ class MainActivity : QkThemedActivity(), MainView {
             true -> resolveThemeColor(android.R.attr.textColorSecondary)
             false -> resolveThemeColor(android.R.attr.textColorPrimary)
         }
+    }
+
+    override fun showGenerateKeyDialog() {
+        KeyInputDialog(this, getString(R.string.conversation_encryption_key_title)) {
+            prefs.globalEncryptionKey.set(it)
+        }.show()
     }
 
     override fun requestDefaultSms() {
