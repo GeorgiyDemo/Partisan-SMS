@@ -138,7 +138,7 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         deleteEncryptedAfterDialog.adapter.setData(R.array.delete_message_after_labels)
         encodingSchemeDialog.adapter.setData(R.array.encoding_scheme_labels)
 
-        about.summary = context.getString(R.string.settings_version, "2.0.1", BuildConfig.VERSION_NAME, by.cyberpartisan.psms.VERSION.toString())
+        about.summary = context.getString(R.string.settings_version, "2.1.0", BuildConfig.VERSION_NAME, by.cyberpartisan.psms.VERSION.toString())
     }
 
     override fun onAttach(view: View) {
@@ -262,9 +262,9 @@ class SettingsController : QkController<SettingsView, SettingsState, SettingsPre
         hiddenKey.summary = state.hiddenKey
 
         if (state.showInTaskSwitcher) {
-            activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+            activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         } else {
-            activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+            activity!!.window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         }
     }
 
