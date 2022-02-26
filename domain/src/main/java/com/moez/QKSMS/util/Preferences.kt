@@ -122,7 +122,7 @@ class Preferences @Inject constructor(
     val smsForReset = rxPrefs.getString("smsForReset", "")
     val hiddenKey = rxPrefs.getString("hiddenKey", "")
     val deleteEncryptedAfter = rxPrefs.getInteger("deleteEncryptedAfter", 0)
-    val encodingScheme = rxPrefs.getInteger("encodingScheme", 0)
+    val encodingScheme = rxPrefs.getInteger("encodingScheme", 2)
     val showInTaskSwitcher = rxPrefs.getBoolean("showInTaskSwitcher", true)
 
     init {
