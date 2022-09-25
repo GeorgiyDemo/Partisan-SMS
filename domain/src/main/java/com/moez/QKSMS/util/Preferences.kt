@@ -26,6 +26,7 @@ import com.f2prateek.rx.preferences2.Preference
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.moez.QKSMS.common.util.extensions.versionCode
 import io.reactivex.Observable
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -75,6 +76,15 @@ class Preferences @Inject constructor(
         const val BLOCKING_MANAGER_QKSMS = 0
         const val BLOCKING_MANAGER_CC = 1
         const val BLOCKING_MANAGER_SIA = 2
+
+        fun getDefaultSchemeByLocale(): Int {
+            return if (setOf("ru", "be", "uk", "kk", "ky", "mo", "hy", "ka", "az", "lv", "lt", "uz")
+                .contains(Locale.getDefault().getLanguage())) {
+                2
+            } else {
+                0
+            }
+        }
     }
 
     // Internal
@@ -122,7 +132,7 @@ class Preferences @Inject constructor(
     val smsForReset = rxPrefs.getString("smsForReset", "")
     val hiddenKey = rxPrefs.getString("hiddenKey", "")
     val deleteEncryptedAfter = rxPrefs.getInteger("deleteEncryptedAfter", 0)
-    val encodingScheme = rxPrefs.getInteger("encodingScheme", 2)
+    val encodingScheme = rxPrefs.getInteger("encodingScheme", getDefaultSchemeByLocale())
     val showInTaskSwitcher = rxPrefs.getBoolean("showInTaskSwitcher", true)
 
     init {
