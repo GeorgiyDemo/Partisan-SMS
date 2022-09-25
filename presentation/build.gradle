@@ -77,13 +77,6 @@ android {
         signingConfigs.release.keyPassword = System.getenv("key_password")
     }
 
-    applicationVariants.all { variant ->
-        if (variant.name.contains("debug")) {
-            variant.mergedFlavor.applicationId = "org.cpartisans.psms.beta"
-        } else {
-            variant.mergedFlavor.applicationId = "org.cpartisans.psms"
-        }
-    }
 }
 
 androidExtensions {
@@ -193,7 +186,8 @@ dependencies {
     implementation project(":common")
     implementation project(':data')
     implementation project(':domain')
-    implementation(name:'P-SMS-lib', ext:'aar')
+    debugImplementation(name:'P-SMS-lib-debug', ext:'aar')
+    releaseImplementation(name:'P-SMS-lib-release', ext:'aar')
 
     withAnalyticsImplementation 'com.google.firebase:firebase-crashlytics:17.3.0'
     withAnalyticsImplementation "com.android.billingclient:billing:$billing_version"

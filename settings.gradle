@@ -1,2 +1,1 @@
 include ':presentation', ':android-smsmms', ':domain', ':data', ':common'
-include ':P-SMS-lib'
