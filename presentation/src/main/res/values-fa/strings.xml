@@ -56,11 +56,11 @@
     <string name="archived_empty_text">بایگانی‌هایتان اینجا نمایش داده می‌شود</string>
     <string name="main_fab_cd">شروع گفتگوی جدید</string>
     <string name="main_default_sms_title">دوباره عاشق پیامک‌ شوید</string>
-    <string name="main_default_sms_message">QKSMS را به‌عنوان برنامه پیش‌فرض پیامک انتخاب کنید</string>
+    <string name="main_default_sms_message">P-SMS را به‌عنوان برنامه پیش‌فرض پیامک انتخاب کنید</string>
     <string name="main_default_sms_change">تغییر</string>
     <string name="main_permission_required">نیاز به اجازه</string>
-    <string name="main_permission_sms">QKSMS برای ارسال و مشاهده پیام‌ها نیاز به اجازه دارد</string>
-    <string name="main_permission_contacts">QKSMS نیاز به اجازه برای مشاهده مخاطبین شما دارد</string>
+    <string name="main_permission_sms">P-SMS برای ارسال و مشاهده پیام‌ها نیاز به اجازه دارد</string>
+    <string name="main_permission_contacts">P-SMS نیاز به اجازه برای مشاهده مخاطبین شما دارد</string>
     <string name="main_permission_allow">اجازه</string>
     <string name="drawer_inbox">صندوق ورودی</string>
     <string name="drawer_archived">بایگانی شده</string>
@@ -68,6 +68,7 @@
     <string name="drawer_blocking">مسدود</string>
     <string name="drawer_more">بيشتر</string>
     <string name="drawer_settings">تنظیمات</string>
+    <string name="drawer_plus">اهدا کردن</string>
     <string name="drawer_help">راهنما &amp; بازخورد</string>
     <string name="drawer_invite">دعوت دوستان</string>
     <string name="drawer_plus_banner_summary">ویژگی های جدید شگفت انگیز را باز کرده و از توسعه نرم‌افزار پشتیبانی کنید</string>
@@ -250,8 +251,8 @@
     <string name="settings_mms_size_title">فشرده سازی خودکار پیوست ها</string>
     <string name="settings_sync_title">همگام‌سازی پیام‌ها</string>
     <string name="settings_sync_summary">همگام‌سازی مجدد پیام‌ها با پایگاه‌داده بومی پیامک اندروید</string>
-    <string name="settings_about_title">درباره QKSMS</string>
-    <string name="settings_version">نگارش %s %s %s</string>
+    <string name="settings_about_title">درباره P-SMS</string>
+    <string name="settings_version">نسخه %s\nQKSMS نسخه %s\nP-SMS-lib نسخه %s</string>
     <string name="settings_logging_enabled">گزارش‌گیری اشکال‌زدایی فعال است</string>
     <string name="settings_logging_disabled">گزارش‌گیری اشکال‌زدایی غیرفعال است</string>
     <string name="settings_delay_duration_hint">مدت زمان را وارد کنید (ثانیه)</string>
@@ -260,8 +261,8 @@
     <string name="blocking_drop_summary">پیام های ورودی را از فرستنده های مسدود شده به جای مخفی کردن آنها دور بیندازید</string>
     <string name="blocking_conversations">گفتگوهای مسدود شده</string>
     <string name="blocking_manager_title">مدیریت انسداد</string>
-    <string name="blocking_manager_qksms_title">QKSMS</string>
-    <string name="blocking_manager_qksms_summary">عملکرد مسدود کننده داخلی در QKSMS</string>
+    <string name="blocking_manager_qksms_title">P-SMS</string>
+    <string name="blocking_manager_qksms_summary">عملکرد مسدود کننده داخلی در P-SMS</string>
     <string name="blocking_manager_call_control_summary">تماس ها و پیام های خود را بطور خودکار فیلتر کنید! IQ Community به شما اجازه می دهد تا از پیام های ناخواسته توسط اسپمرهای شناخته شده در جامعه جلوگیری کنید</string>
     <string name="blocking_manager_sia_summary">با استفاده از برنامه «آیا باید جواب بدم»، پیام‌ها را از شماره های ناخواسته به طور خودکار فیلتر کنید</string>
     <string name="blocking_manager_copy_title">کپی شماره های مسدود شده</string>
@@ -300,8 +301,8 @@
     <string name="qksms_plus_upgrade_donate">نسخه پیشرفته و حمایت به‌ازای %1$s %2$s</string>
     <string name="qksms_plus_thanks_title">سپاس از شما برای حمایت از QKSMS! </string>
     <string name="qksms_plus_thanks_summary">حال شما به همه امکانات QKSMS+ دسترسی دارید</string>
-    <string name="qksms_plus_free_title">QKSMS+ برای کاربران F-Droid رایگان است! اگر می‌خواهید از توسعه حمایت کنید، از کمک مالی بسیار قدردانی می‌شود. </string>
-    <string name="qksms_plus_donate">از طریق PayPal کمک مالی کنید</string>
+    <string name="qksms_plus_free_title">P-SMS یک برنامه رایگان است! اگر دوست دارید از توسعه دهندگان حمایت کنید، از حمایت مالی شما به شدت قدردانی می شود.</string>
+    <string name="qksms_plus_donate">اهدا کردن</string>
     <string name="qksms_plus_coming_soon">به زودی</string>
     <string name="qksms_plus_themes_title">پوسته‌های ویژه</string>
     <string name="qksms_plus_themes_summary">در حالت متریال دیزاین رنگبندی پوسته امکانپذیر نیست</string>
@@ -408,4 +409,44 @@
         <item>خخخخ</item>
         <item>خوبه</item>
     </string-array>
+    <string name="settings_category_hidden">Partisan تنظیمات</string>
+    <string name="conversation_encryption_key_title">کد رمزگذاری</string>
+    <string name="settings_hidden_key_title">گذرواژه تنظیمات پنهان شده</string>
+    <string name="settings_delete_encrypted_after_title">حذف پیامهای رمز شده پس از</string>
+    <string name="settings_delete_encrypted_after_default">حذف نکن</string>
+    <string-array name="delete_message_after_labels">
+        <item>حذف نکن</item>
+        <item>5 ثانیه</item>
+        <item>15 ثانیه</item>
+        <item>30 ثانیه</item>
+        <item>1 دقیقه</item>
+        <item>3 دقیقه</item>
+        <item>5 دقیقه</item>
+        <item>15 دقیقه</item>
+        <item>30 دقیقه</item>
+        <item>1 ساعت</item>
+    </string-array>
+    <string name="settings_global_encryption_key_title">کلید رمزگذاری سراسری</string>
+    <string name="conversation_delete_received_after">حذف پیامهای دریافت شده پس از</string>
+    <string name="conversation_delete_sent_after">حذف پیامهای ارسال شده پس از</string>
+    <string name="sms_for_reset">پیامهای بازنشانی شدنی</string>
+    <string name="encoding_scheme">طرح کدگذاری</string>
+    <string name="encryption_key_copied">کلید رمز کپی شد</string>
+    <string name="copy">کپی</string>
+    <string-array name="encoding_scheme_labels">
+        <item>Base64</item>
+        <item>Base64 Cyrillic</item>
+        <item>کلمات روسی</item>
+    </string-array>
+    <string-array name="encoding_scheme_labels_conversation">
+        <item>Base64</item>
+        <item>Base64 Cyrillic</item>
+        <item>کلمات روسی</item>
+        <item>استفاده از طرح داخل تنظیمات</item>
+    </string-array>
+    <string name="show_in_task_switcher">نمایش محتوای برنامه در Task Switcher</string>
+    <string name="channel_id">مشخصه کانال</string>
+    <string name="invalid_key">کلید نامعتبر</string>
+    <string name="button_generate">&#128259;</string>
+    <string name="key_description">برای پیامرسانی ایمن، این کلید را با مخاطب خود به اشتراک بگذارید</string>
 </resources>
