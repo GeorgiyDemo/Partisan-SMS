@@ -37,8 +37,8 @@ class KeyInputDialog(context: Activity, hint: String, val listener: (String) -> 
         }
 
         setView(layout)
-        setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.button_cancel)) { _, _ -> }
-        setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.button_save)) { _, _ -> }
+        setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.button_cancel), null as DialogInterface.OnClickListener?)
+        setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.button_save), null as DialogInterface.OnClickListener?)
     }
 
 
