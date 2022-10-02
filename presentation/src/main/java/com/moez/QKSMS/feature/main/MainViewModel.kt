@@ -81,6 +81,8 @@ class MainViewModel @Inject constructor(
     private val syncMessages: SyncMessages
 ) : QkViewModel<MainView, MainState>(MainState(page = Inbox(data = conversationRepo.getConversations()))) {
 
+    private var keyDialogShowed = false
+
     init {
         disposables += deleteConversations
         disposables += markAllSeen
@@ -164,7 +166,10 @@ class MainViewModel @Inject constructor(
             .first(false)
             .autoDisposable(view.scope())
             .subscribe { show ->
-                if(show) view.showGenerateKeyDialog()
+                if (show && !keyDialogShowed) {
+                    keyDialogShowed = true
+                    view.showGenerateKeyDialog()
+                }
             }
 
         // Launch screen from intent
