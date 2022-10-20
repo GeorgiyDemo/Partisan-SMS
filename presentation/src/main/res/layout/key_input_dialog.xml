@@ -2,45 +2,46 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/btnGenerateKey"
-            android:layout_weight="0.1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_sync_black_24dp"
-            android:contentDescription="@string/button_generate" />
+            android:contentDescription="@string/button_generate"
+            android:tint="?android:attr/textColorPrimary"/>
 
         <include layout="@layout/text_input_dialog"
-            android:layout_weight="0.8"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
 
         <ImageButton
             android:id="@+id/btnCopyKey"
-            android:layout_weight="0.1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_copy_24dp"
-            android:contentDescription="@string/copy" />
+            android:contentDescription="@string/copy"
+            android:tint="?android:attr/textColorPrimary"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
+    <com.moez.QKSMS.common.widget.QkTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/key_description"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        android:padding="10dp"/>
+        android:textColor="?android:attr/textColorPrimary"
+        app:textSize="dialog" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
