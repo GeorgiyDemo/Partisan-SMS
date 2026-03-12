@@ -43,6 +43,10 @@ captures/
 libs/
 *.aar
 
+local.properties                                                
+*.jks                                                                                                                                                                     
+*.keystore
+
 # Mac .DS_STORE files
 *.DS_STORE
 
